@@ -39,7 +39,7 @@ namespace DWAP
             }
             var locations = Helpers.GetLocations();
             Client.PopulateLocations(locations);
-            Client.Login(slotTextbox.Text).ConfigureAwait(false).GetAwaiter().GetResult();
+            Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null).ConfigureAwait(false).GetAwaiter().GetResult();
 
             timer1.Start();
 
