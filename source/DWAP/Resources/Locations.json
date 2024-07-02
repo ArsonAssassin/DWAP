@@ -1,0 +1,413 @@
+[
+  {
+    "Name": "Agumon",
+    "Id": 691000,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA2D0"
+  },
+  {
+    "Name": "Betamon",
+    "Id": 691001,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA288"
+  },
+  {
+    "Name": "Greymon",
+    "Id": 691002,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BBE62"
+
+  },
+  {
+    "Name": "Devimon",
+    "Id": 691003,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Airdramon",
+    "Id": 691004,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Tyrannomon",
+    "Id": 691005,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BADA4"
+
+  },
+  {
+    "Name": "Meramon",
+    "Id": 691006,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA6FC"
+
+  },
+  {
+    "Name": "Seadramon",
+    "Id": 691007,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Numemon",
+    "Id": 691008,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "MetalGreymon",
+    "Id": 691009,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Mamemon",
+    "Id": 691010,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Monzaemon",
+    "Id": 691011,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Gabumon",
+    "Id": 691012,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA332"
+
+  },
+  {
+    "Name": "Elecmon",
+    "Id": 691013,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA2F8"
+
+  },
+  {
+    "Name": "Kabuterimon",
+    "Id": 691014,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Angemon",
+    "Id": 691015,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Birdramon",
+    "Id": 691016,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA3DA"
+
+  },
+  {
+    "Name": "Garurumon",
+    "Id": 691017,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Frigimon",
+    "Id": 691018,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Whamon",
+    "Id": 691019,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Vegimon",
+    "Id": 691020,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "SkullGreymon",
+    "Id": 691021,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "MetalMamemon",
+    "Id": 691022,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Vademon",
+    "Id": 691023,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Patamon",
+    "Id": 691024,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA38E"
+
+  },
+  {
+    "Name": "Kunemon",
+    "Id": 691025,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA3CC"
+  },
+  {
+    "Name": "Unimon",
+    "Id": 691026,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA4CC"
+
+  },
+  {
+    "Name": "Ogremon",
+    "Id": 691027,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Shellmon",
+    "Id": 691028,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Centarumon",
+    "Id": 691029,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BB448"
+
+  },
+  {
+    "Name": "Bakemon",
+    "Id": 691030,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA2F4"
+
+  },
+  {
+    "Name": "Drimogemon",
+    "Id": 691031,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Sukamon",
+    "Id": 691032,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Andromon",
+    "Id": 691033,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Giromon",
+    "Id": 691034,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Etemon",
+    "Id": 691035,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Biyomon",
+    "Id": 691036,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BAB72"
+
+  },
+  {
+    "Name": "Palmon",
+    "Id": 691037,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA2D6"
+  },
+  {
+    "Name": "Monochromon",
+    "Id": 691038,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BAD86"
+
+  },
+  {
+    "Name": "Leomon",
+    "Id": 691039,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Coelamon",
+    "Id": 691040,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA4A4"
+
+  },
+  {
+    "Name": "Kokatorimon",
+    "Id": 691041,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Kuwagamon",
+    "Id": 691042,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Mojyamon",
+    "Id": 691043,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Nanimon",
+    "Id": 691044,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Megadramon",
+    "Id": 691045,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Piximon",
+    "Id": 691046,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0x801BA1FC"
+
+  },
+  {
+    "Name": "Digitamamon",
+    "Id": 691047,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Penguinmon",
+    "Id": 691048,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "Ninjamon",
+    "Id": 691049,
+    "Address": "0x00B8C97C",
+    "CheckType": 2,
+    "CheckValue": "0xFFFFFFFF"
+
+  },
+  {
+    "Name": "50 Prosperity",
+    "Id": 692000,
+    "Address": "0xFFFFFFFF",
+    "CheckType": 1,
+    "CheckValue": "50"
+  },
+  {
+    "Name": "100 Prosperity",
+    "Id": 692001,
+    "Address": "0xFFFFFFFF",
+    "CheckType": 1,
+    "CheckValue": "100"
+  }
+
+]

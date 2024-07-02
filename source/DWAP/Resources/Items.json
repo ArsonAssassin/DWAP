@@ -1,0 +1,257 @@
+[
+  {
+    "Id": 691000,
+    "Name": "Agumon",
+    "Type": 0
+  },
+  {
+    "Id": 691001,
+    "Name": "Betamon",
+    "Type": 0
+  },
+  {
+    "Name": "Greymon",
+    "Id": 691002,
+    "Type": 0
+  },
+  {
+    "Name": "Devimon",
+    "Id": 691003,
+    "Type": 0
+  },
+  {
+    "Name": "Airdramon",
+    "Id": 691004,
+    "Type": 0
+  },
+  {
+    "Name": "Tyrannomon",
+    "Id": 691005,
+    "Type": 0
+  },
+  {
+    "Name": "Meramon",
+    "Id": 691006,
+    "Type": 0
+  },
+  {
+    "Name": "Seadramon",
+    "Id": 691007,
+    "Type": 0
+  },
+  {
+    "Name": "Numemon",
+    "Id": 691008,
+    "Type": 0
+  },
+  {
+    "Name": "MetalGreymon",
+    "Id": 691009,
+    "Type": 0
+  },
+  {
+    "Name": "Mamemon",
+    "Id": 691010,
+    "Type": 0
+  },
+  {
+    "Name": "Monzaemon",
+    "Id": 691011,
+    "Type": 0
+  },
+  {
+    "Name": "Gabumon",
+    "Id": 691012,
+    "Type": 0
+  },
+  {
+    "Name": "Elecmon",
+    "Id": 691013,
+    "Type": 0
+  },
+  {
+    "Name": "Kabuterimon",
+    "Id": 691014,
+    "Type": 0
+  },
+  {
+    "Name": "Angemon",
+    "Id": 691015,
+    "Type": 0
+  },
+  {
+    "Name": "Birdramon",
+    "Id": 691016,
+    "Type": 0
+  },
+  {
+    "Name": "Garurumon",
+    "Id": 691017,
+    "Type": 0
+  },
+  {
+    "Name": "Frigimon",
+    "Id": 691018,
+    "Type": 0
+  },
+  {
+    "Name": "Whamon",
+    "Id": 691019,
+    "Type": 0
+  },
+  {
+    "Name": "Vegimon",
+    "Id": 691020,
+    "Type": 0
+  },
+  {
+    "Name": "SkullGreymon",
+    "Id": 691021,
+    "Type": 0
+  },
+  {
+    "Name": "MetalMamemon",
+    "Id": 691022,
+    "Type": 0
+  },
+  {
+    "Name": "Vademon",
+    "Id": 691023,
+    "Type": 0
+  },
+  {
+    "Name": "Patamon",
+    "Id": 691024,
+    "Type": 0
+  },
+  {
+    "Name": "Kunemon",
+    "Id": 691025,
+    "Type": 0
+  },
+  {
+    "Name": "Unimon",
+    "Id": 691026,
+    "Type": 0
+  },
+  {
+    "Name": "Ogremon",
+    "Id": 691027,
+    "Type": 0
+  },
+  {
+    "Name": "Shellmon",
+    "Id": 691028,
+    "Type": 0
+  },
+  {
+    "Name": "Centarumon",
+    "Id": 691029,
+    "Type": 0
+  },
+  {
+    "Name": "Bakemon",
+    "Id": 691030,
+    "Type": 0
+  },
+  {
+    "Name": "Drimogemon",
+    "Id": 691031,
+    "Type": 0
+  },
+  {
+    "Name": "Sukamon",
+    "Id": 691032,
+    "Type": 0
+  },
+  {
+    "Name": "Andromon",
+    "Id": 691033,
+    "Type": 0
+  },
+  {
+    "Name": "Giromon",
+    "Id": 691034,
+    "Type": 0
+  },
+  {
+    "Name": "Etemon",
+    "Id": 691035,
+    "Type": 0
+  },
+  {
+    "Name": "Biyomon",
+    "Id": 691036,
+    "Type": 0
+  },
+  {
+    "Name": "Palmon",
+    "Id": 691037,
+    "Type": 0
+  },
+  {
+    "Name": "Monochromon",
+    "Id": 691038,
+    "Type": 0
+  },
+  {
+    "Name": "Leomon",
+    "Id": 691039,
+    "Type": 0
+  },
+  {
+    "Name": "Coelamon",
+    "Id": 691040,
+    "Type": 0
+  },
+  {
+    "Name": "Kokatorimon",
+    "Id": 691041,
+    "Type": 0
+  },
+  {
+    "Name": "Kuwagamon",
+    "Id": 691042,
+    "Type": 0
+  },
+  {
+    "Name": "Mojyamon",
+    "Id": 691043,
+    "Type": 0
+  },
+  {
+    "Name": "Nanimon",
+    "Id": 691044,
+    "Type": 0
+  },
+  {
+    "Name": "Megadramon",
+    "Id": 691045,
+    "Type": 0
+  },
+  {
+    "Name": "Piximon",
+    "Id": 691046,
+    "Type": 0
+  },
+  {
+    "Name": "Digitamamon",
+    "Id": 691047,
+    "Type": 0
+  },
+  {
+    "Name": "Penguinmon",
+    "Id": 691048,
+    "Type": 0
+  },
+  {
+    "Name": "Ninjamon",
+    "Id": 691049,
+    "Type": 0
+  },
+  {
+    "Name": "1000 Bits",
+    "Id": 692001,
+    "Type": 1
+  }
+]

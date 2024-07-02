@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Items.json" />
+    <None Remove="Resources\Locations.json" />
+    <None Remove="Resources\Recruitment.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Items.json" />
+    <EmbeddedResource Include="Resources\Locations.json" />
+    <EmbeddedResource Include="Resources\Recruitment.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Archipelago.ePSXe" Version="0.0.2" />
+  </ItemGroup>
+
+</Project>

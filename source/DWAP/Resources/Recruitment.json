@@ -1,0 +1,346 @@
+[
+  {
+    "Name": "Agumon",
+    "Address": "0x00C15986",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Betamon",
+    "Address": "0x00C15986",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Greymon",
+    "Address": "0x00C15986",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Devimon",
+    
+    "Address": "0x00C15986",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Airdramon",
+    
+    "Address": "0x00C15986",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Tyrannomon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Meramon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Seadramon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "Numemon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 3
+  },
+  {
+    "Name": "MetalGreymon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 4
+  },
+  {
+    "Name": "Mamemon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 5
+  },
+  {
+    "Name": "Monzaemon",
+    
+    "Address": "0x00C15987",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Gabumon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Elecmon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "Kabuterimon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 3
+  },
+  {
+    "Name": "Angemon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 4
+  },
+  {
+    "Name": "Birdramon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 5
+  },
+  {
+    "Name": "Garurumon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Frigimon",
+    
+    "Address": "0x00C15988",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Whamon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Vegimon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "SkullGreymon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "MetalMamemon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 3
+  },
+  {
+    "Name": "Vademon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 4
+  },
+  {
+    "Name": "Patamon",
+    
+    "Address": "0x00C15989",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Kunemon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Unimon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Ogremon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "Shellmon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 3
+  },
+  {
+    "Name": "Centarumon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 4
+  },
+  {
+    "Name": "Bakemon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 5
+  },
+  {
+    "Name": "Drimogemon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Sukamon",
+    
+    "Address": "0x00C1598A",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Andromon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Giromon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Etemon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "Biyomon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 5
+  },
+  {
+    "Name": "Palmon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Monochromon",
+    
+    "Address": "0x00C1598B",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Leomon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Coelamon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Kokatorimon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 2
+  },
+  {
+    "Name": "Kuwagamon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 3
+  },
+  {
+    "Name": "Mojyamon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 4
+  },
+  {
+    "Name": "Nanimon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 5
+  },
+  {
+    "Name": "Megadramon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 6
+  },
+  {
+    "Name": "Piximon",
+    
+    "Address": "0x00C1598C",
+    
+    "AddressBit": 7
+  },
+  {
+    "Name": "Digitamamon",
+    
+    "Address": "0x00C1598D",
+    
+    "AddressBit": 0
+  },
+  {
+    "Name": "Penguinmon",
+    
+    "Address": "0x00C1598D",
+    
+    "AddressBit": 1
+  },
+  {
+    "Name": "Ninjamon",
+    
+    "Address": "0x00C1598D",
+    
+    "AddressBit": 2
+  }
+]
