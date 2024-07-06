@@ -28,7 +28,7 @@ class DigimonWorldItem(Item):
 
 
 key_item_names = {
-"Airdramon"
+    "Agumon", "Airdramon", "MetalGreymon"
 }
 
 
@@ -84,10 +84,10 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Penguinmon",            1048, DigimonWorldItemCategory.RECRUIT),  
     ("Ninjamon",            1049, DigimonWorldItemCategory.RECRUIT),  
     
-    ("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),  
-    ("1000 Bits",            2001, DigimonWorldItemCategory.MISC),  
+    #("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),  
+    #("1000 Bits",            2001, DigimonWorldItemCategory.MISC),      
     
-    
+    #("Bridge Fixed",            3001, DigimonWorldItemCategory.EVENT),  
 ]]
 
 item_descriptions = {

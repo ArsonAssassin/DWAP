@@ -1,0 +1,60 @@
+def calculate_prosperity_points(state, player) -> int:
+    total_prosperity_points = 0
+    digimon_prosperity_points = {
+        "Agumon": 1,
+        "Gabumon": 1,
+        "Patamon": 1,
+        "Biyomon": 1,
+        "Elecmon": 1,
+        "Kunemon": 1,
+        "Palmon": 1,
+        "Betamon": 1,
+        "Penguinmon": 1,
+        "Greymon": 2,
+        "Monochromon": 2,
+        "Ogremon": 2,
+        "Airdramon": 2,
+        "Kuwagamon": 2,
+        "Whamon": 2,
+        "Frigimon": 2,
+        "Nanimon": 1,
+        "Meramon": 2,
+        "Drimogemon": 2,
+        "Leomon": 2,
+        "Kokatorimon": 2,
+        "Vegiemon": 2,
+        "Shellmon": 2,
+        "Mojyamon": 2,
+        "Birdramon": 2,
+        "Tyrannomon": 2,
+        "Angemon": 2,
+        "Unimon": 2,
+        "Ninjamon": 2,
+        "Coelamon": 2,
+        "Numemon": 1,
+        "Centarumon": 2,
+        "Devimon": 2,
+        "Bakemon": 2,
+        "Kabuterimon": 2,
+        "Seadramon": 2,
+        "Garurumon": 2,
+        "Sukamon": 1,
+        "MetalGreymon": 3,
+        "SkullGreymon": 3,
+        "Giromon": 3,
+        "Mamemon": 3,
+        "Monzaemon": 3,
+        "Digitamamon": 3,
+        "Andromon": 3,
+        "Megadramon": 3,
+        "Piximon": 3,
+        "MetalMamemon": 3,
+        "Vademon": 3,
+        "Etemon": 3        
+        }
+    
+    for digimon, points in digimon_prosperity_points.items():
+        if state.has(digimon, player):
+            total_prosperity_points += points
+
+    return total_prosperity_points
