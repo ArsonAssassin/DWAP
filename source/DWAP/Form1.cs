@@ -1,4 +1,5 @@
 using Archipelago.ePSXe;
+using Archipelago.ePSXe.Models;
 using Archipelago.ePSXe.Util;
 using Newtonsoft.Json;
 using System.Text;
@@ -14,14 +15,10 @@ namespace DWAP
         {
             InitializeComponent();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            WriteLine("DWAP - Digimon world Archipelago Randomiser -- By ArsonAssassin --");
-            WriteLine("Initialising collections...");
-            Items = Helpers.GetItems();
-            RecruitList = Helpers.GetRecruitment();
-            WriteLine("Ready to connect!");
-            
+
+
         }
-        public void Connect()
+        public async Task Connect()
         {
             ePSXeClient client = new ePSXeClient();
             var ePSXeConnected = client.Connect();
@@ -31,16 +28,14 @@ namespace DWAP
                 return;
             }
             Client = new ArchipelagoClient();
-            Client.Connect(hostTextbox.Text, "Digimon World").ConfigureAwait(false).GetAwaiter().GetResult();
-            if (!client.IsConnected)
-            {
-                WriteLine("Could not connect to Archipelago, please check your settings and try again.");
-                return;
-            }
-            var locations = Helpers.GetLocations();
+            await Client.Connect(hostTextbox.Text, "Digimon World");
+            // var locations = Helpers.GetLocations();
+            var locations = GetRecruitmentLocations();
+            locations.AddRange(Helpers.GetTemp());
             Client.PopulateLocations(locations);
-            Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null).ConfigureAwait(false).GetAwaiter().GetResult();
-
+            await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
+            WriteLine("Connected to Archipelago");
+            WriteLine($"Playing as {Client.CurrentSession.ConnectionInfo.Slot} playing {Client.CurrentSession.ConnectionInfo.Game}");
             timer1.Start();
 
             Client.ItemReceived += (e, args) =>
@@ -52,10 +47,39 @@ namespace DWAP
                     if (item.Type == ItemType.Recruitment)
                     {
                         RecruitDigimon(item.Name);
-                        EnsureRecruitment();
+                  //      EnsureRecruitment();
+                    }
+                    else if(item.Name == "1000 Bits")
+                    {
+                        var currentCash = Memory.ReadInt(0x00B8C858);
+                        var newCash = currentCash + 1000;
+                        Memory.Write(0x00B8C858, newCash);
                     }
                 }
             };
+        }
+
+        private List<Location> GetRecruitmentLocations()
+        {
+            var recruits = Helpers.GetRecruitment();
+            var locations = Helpers.GetLocations();
+
+            var result = new List<Location>();
+            foreach(var recruit in  recruits)
+            {
+                var location = new Location
+                {
+                    Id = locations.First(x => x.Name.ToLower() == recruit.Name.ToLower()).Id,
+                    Address = recruit.Address,
+                    AddressBit = recruit.AddressBit,
+                    Name = recruit.Name,
+                    CheckType = LocationCheckType.Bit,
+                    CompareType = LocationCheckCompareType.Match
+                };
+                result.Add(location);
+
+            }
+            return result;
         }
         private void RecruitDigimon(string name)
         {
@@ -70,17 +94,20 @@ namespace DWAP
         {
             foreach (var digimon in RecruitList)
             {
-                Memory.WriteBit(digimon.Address, digimon.AddressBit, digimon.IsRecruited);
+             //   Memory.WriteBit(digimon.Address, digimon.AddressBit, digimon.IsRecruited);
             }
         }
 
         public void WriteLine(string output)
         {
-            outputTextbox.Text += output;
-            outputTextbox.Text += System.Environment.NewLine;
+            Invoke(() =>
+            {
+                outputTextbox.Text += output;
+                outputTextbox.Text += System.Environment.NewLine;
+            });
         }
 
-        private void connectbtn_Click(object sender, EventArgs e)
+        private async void connectbtn_Click(object sender, EventArgs e)
         {
             var valid = ValidateSettings();
             if (!valid)
@@ -88,7 +115,7 @@ namespace DWAP
                 WriteLine("Invalid settings, please check your input and try again.");
                 return;
             }
-            Connect();
+            Connect().ConfigureAwait(false);
         }
         private bool ValidateSettings()
         {
@@ -98,7 +125,17 @@ namespace DWAP
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            EnsureRecruitment();
+            //EnsureRecruitment();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            WriteLine("DWAP - Digimon world Archipelago Randomiser -- By ArsonAssassin --");
+            WriteLine("Initialising collections...");
+            Items = Helpers.GetItems();
+            RecruitList = Helpers.GetRecruitment();
+            WriteLine("Ready to connect!");
         }
     }
 }
