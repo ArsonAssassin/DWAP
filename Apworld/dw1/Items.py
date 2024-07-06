@@ -8,8 +8,8 @@ class DigimonWorldItemCategory(IntEnum):
     CONSUMABLE = 0
     MISC = 1,
     EVENT = 2,
-    SKIP = 3,
-    RECRUIT = 4
+    RECRUIT = 3,
+    SKIP = 4
 
 
 class DigimonWorldItemData(NamedTuple):
@@ -28,21 +28,20 @@ class DigimonWorldItem(Item):
 
 
 key_item_names = {
-    "Agumon", "Airdramon", "MetalGreymon"
 }
 
 
 _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [    
-    ("Agumon",             1000, DigimonWorldItemCategory.SKIP),  
+    ("Agumon",             1000, DigimonWorldItemCategory.RECRUIT),  
     ("Betamon",            1001, DigimonWorldItemCategory.RECRUIT),  
     ("Greymon",            1002, DigimonWorldItemCategory.RECRUIT),  
     ("Devimon",            1003, DigimonWorldItemCategory.RECRUIT),  
-    ("Airdramon",            1004, DigimonWorldItemCategory.SKIP),  
+    ("Airdramon",            1004, DigimonWorldItemCategory.RECRUIT),  
     ("Tyrannomon",            1005, DigimonWorldItemCategory.RECRUIT),  
     ("Meramon",            1006, DigimonWorldItemCategory.RECRUIT),  
     ("Seadramon",            1007, DigimonWorldItemCategory.RECRUIT),  
     ("Numemon",            1008, DigimonWorldItemCategory.RECRUIT),  
-    ("MetalGreymon",            109, DigimonWorldItemCategory.SKIP),  
+    ("MetalGreymon",            1009, DigimonWorldItemCategory.RECRUIT),  
     ("Mamemon",            1010, DigimonWorldItemCategory.RECRUIT),  
     ("Monzaemon",            1011, DigimonWorldItemCategory.RECRUIT),  
     ("Gabumon",            1012, DigimonWorldItemCategory.RECRUIT),  
@@ -84,8 +83,8 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Penguinmon",            1048, DigimonWorldItemCategory.RECRUIT),  
     ("Ninjamon",            1049, DigimonWorldItemCategory.RECRUIT),  
     
-    #("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),  
-    #("1000 Bits",            2001, DigimonWorldItemCategory.MISC),      
+    ("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),  
+    ("1000 Bits",            2001, DigimonWorldItemCategory.MISC),      
     
     #("Bridge Fixed",            3001, DigimonWorldItemCategory.EVENT),  
 ]]

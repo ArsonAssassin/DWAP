@@ -59,7 +59,7 @@ class DigimonWorldWorld(World):
     def generate_early(self):
         self.enabled_location_categories.add(DigimonWorldLocationCategory.RECRUIT)
         self.enabled_location_categories.add(DigimonWorldLocationCategory.MISC)
-        #self.enabled_location_categories.add(DigimonWorldLocationCategory.EVENT)
+        self.enabled_location_categories.add(DigimonWorldLocationCategory.EVENT)
 
 
     def create_regions(self):
@@ -67,7 +67,7 @@ class DigimonWorldWorld(World):
         regions: Dict[str, Region] = {}
         regions["Menu"] = self.create_region("Menu", [])
         regions.update({region_name: self.create_region(region_name, location_tables[region_name]) for region_name in [
-            "Recruitment",
+            "Recruitment", "Prosperity"
         ]})
         
 
@@ -79,7 +79,7 @@ class DigimonWorldWorld(World):
 
         regions["Menu"].exits.append(Entrance(self.player, "New Game", regions["Menu"]))
         self.multiworld.get_entrance("New Game", self.player).connect(regions["Recruitment"])
-
+        self.multiworld.get_entrance("New Game", self.player).connect(regions["Prosperity"])
        # create_connection("Palm Brinks", "Underground Water Channel")
 
         
@@ -133,7 +133,7 @@ class DigimonWorldWorld(World):
         for location in self.multiworld.get_locations(self.player):
             if location.category in itempool_by_category:
                 item_data = item_dictionary[location.default_item_name]
-                if item_data.category == DigimonWorldItemCategory.SKIP:
+                if item_data.category == DigimonWorldItemCategory.SKIP or item_data.category == DigimonWorldItemCategory.EVENT or item_data.category == DigimonWorldItemCategory.RECRUIT:
                     print("Adding skip item: " + location.default_item_name)
                     skip_items.append(self.create_item(location.default_item_name))
                 else:
@@ -189,7 +189,7 @@ class DigimonWorldWorld(World):
         }
         data = self.item_name_to_id[name]
 
-        if name in key_item_names or item_dictionary[name].category == DigimonWorldItemCategory.RECRUIT:
+        if name in key_item_names:
             item_classification = ItemClassification.progression
         elif item_dictionary[name].category in useful_categories:
             item_classification = ItemClassification.useful
@@ -203,132 +203,134 @@ class DigimonWorldWorld(World):
         return "1000 Bits"
 
 
-    def set_rules(self) -> None:
+    #def set_rules(self) -> None:
         # Define the access rules to the entrances
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Palmon", self.player),
-                  lambda state: state.has("Agumon", self.player))       
-        set_rule(self.multiworld.get_location("Kunemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Meramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Betamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Coelamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Piximon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Centarumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Monochromon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Bakemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Elecmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Patamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Biyomon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Greymon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Angemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Birdramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Frigimon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Gabumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Garurumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Kokatorimon", self.player),
-                  lambda state: state.has("Agumon", self.player))  
-        set_rule(self.multiworld.get_location("Mamemon", self.player),
-                  lambda state: state.has("Agumon", self.player))     
-        set_rule(self.multiworld.get_location("Mojyamon", self.player),
-                  lambda state: state.has("Agumon", self.player))     
-        set_rule(self.multiworld.get_location("Monzaemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Penguinmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Seadramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Shellmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Sukamon", self.player),
-                  lambda state: state.has("Agumon", self.player))   
-        set_rule(self.multiworld.get_location("Whamon", self.player),
-                  lambda state: state.has("Agumon", self.player))   
+        # set_rule(self.multiworld.get_location("Airdramon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Palmon", self.player),
+                  # lambda state: state.has("Agumon", self.player))       
+        # set_rule(self.multiworld.get_location("Kunemon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Meramon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Betamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Coelamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Piximon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Centarumon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Monochromon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Bakemon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Elecmon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Patamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Biyomon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Greymon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Angemon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Birdramon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Frigimon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Gabumon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Garurumon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Kokatorimon", self.player),
+                  # lambda state: state.has("Agumon", self.player))  
+        # set_rule(self.multiworld.get_location("Mamemon", self.player),
+                  # lambda state: state.has("Agumon", self.player))     
+        # set_rule(self.multiworld.get_location("Mojyamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))     
+        # set_rule(self.multiworld.get_location("Monzaemon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Penguinmon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Seadramon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Shellmon", self.player),
+                  # lambda state: state.has("Agumon", self.player))    
+        # set_rule(self.multiworld.get_location("Sukamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))   
+        # set_rule(self.multiworld.get_location("Whamon", self.player),
+                  # lambda state: state.has("Agumon", self.player))   
         
           
-        set_rule(self.multiworld.get_location("Kuwagamon", self.player),
-                  lambda state: state.has("Seadramon", self.player))    
-        set_rule(self.multiworld.get_location("Kabuterimon", self.player),
-                  lambda state: state.has("Seadramon", self.player))   
+        # set_rule(self.multiworld.get_location("Kuwagamon", self.player),
+                  # lambda state: state.has("Seadramon", self.player))    
+        # set_rule(self.multiworld.get_location("Kabuterimon", self.player),
+                  # lambda state: state.has("Seadramon", self.player))   
          
-        set_rule(self.multiworld.get_location("MetalMamemon", self.player),
-                  lambda state: state.has("Whamon", self.player))    
-        set_rule(self.multiworld.get_location("SkullGreymon", self.player),
-                  lambda state: state.has("Greymon", self.player))    
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: state.has("MetalGreymon", self.player))                       
-        set_rule(self.multiworld.get_location("Digitamamon", self.player),
-                  lambda state: state.has("Airdramon", self.player))  
-        set_rule(self.multiworld.get_location("Drimogemon", self.player),
-                  lambda state: state.has("Meramon", self.player)) 
+        # set_rule(self.multiworld.get_location("MetalMamemon", self.player),
+                  # lambda state: state.has("Whamon", self.player))    
+        # set_rule(self.multiworld.get_location("SkullGreymon", self.player),
+                  # lambda state: state.has("Greymon", self.player))    
+        # set_rule(self.multiworld.get_location("Airdramon", self.player),
+                  # lambda state: state.has("MetalGreymon", self.player))                       
+        # set_rule(self.multiworld.get_location("Digitamamon", self.player),
+                  # lambda state: state.has("Airdramon", self.player))  
+        # set_rule(self.multiworld.get_location("Drimogemon", self.player),
+                  # lambda state: state.has("Meramon", self.player)) 
                       
-        set_rule(self.multiworld.get_location("Unimon", self.player),
-                  lambda state: state.has("Centarumon", self.player))    
-        set_rule(self.multiworld.get_location("Tyrannomon", self.player),
-                  lambda state: state.has("Centarumon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Tyrannomon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Leomon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Andromon", self.player))    
-        set_rule(self.multiworld.get_location("Andromon", self.player),
-                  lambda state: state.has("Numemon", self.player))    
-        set_rule(self.multiworld.get_location("Numemon", self.player),
-                  lambda state: state.has("Giromon", self.player))    
-        set_rule(self.multiworld.get_location("Giromon", self.player),
-                  lambda state: state.has("Whamon", self.player))  
-        set_rule(self.multiworld.get_location("Vademon", self.player),
-                  lambda state: state.has("Shellmon", self.player))  
-        set_rule(self.multiworld.get_location("Vegiemon", self.player),
-                  lambda state: state.has("Palmon", self.player))         
+        # set_rule(self.multiworld.get_location("Unimon", self.player),
+                  # lambda state: state.has("Centarumon", self.player))    
+        # set_rule(self.multiworld.get_location("Tyrannomon", self.player),
+                  # lambda state: state.has("Centarumon", self.player))    
+        # set_rule(self.multiworld.get_location("Nanimon", self.player),
+                  # lambda state: state.has("Tyrannomon", self.player))    
+        # set_rule(self.multiworld.get_location("Nanimon", self.player),
+                  # lambda state: state.has("Leomon", self.player))    
+        # set_rule(self.multiworld.get_location("Nanimon", self.player),
+                  # lambda state: state.has("Andromon", self.player))    
+        # set_rule(self.multiworld.get_location("Andromon", self.player),
+                  # lambda state: state.has("Numemon", self.player))    
+        # set_rule(self.multiworld.get_location("Numemon", self.player),
+                  # lambda state: state.has("Giromon", self.player))    
+        # set_rule(self.multiworld.get_location("Giromon", self.player),
+                  # lambda state: state.has("Whamon", self.player))  
+        # set_rule(self.multiworld.get_location("Vademon", self.player),
+                  # lambda state: state.has("Shellmon", self.player))  
+        # set_rule(self.multiworld.get_location("Vegiemon", self.player),
+                  # lambda state: state.has("Palmon", self.player))         
  
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: state.has("MetalGreymon", self.player))       
+        # set_rule(self.multiworld.get_location("Airdramon", self.player),
+                  # lambda state: state.has("MetalGreymon", self.player))       
  
-        set_rule(self.multiworld.get_location("Devimon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        set_rule(self.multiworld.get_location("Megadramon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        set_rule(self.multiworld.get_location("Digitamamon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        set_rule(self.multiworld.get_location("MetalGreymon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Devimon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Megadramon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Digitamamon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("MetalGreymon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
 
-        set_rule(self.multiworld.get_location("Ogremon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 6)  
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50)   
-        set_rule(self.multiworld.get_location("Greymon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 25)  
-        set_rule(self.multiworld.get_location("Vademon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 45) 
-        set_rule(self.multiworld.get_location("Etemon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        set_rule(self.multiworld.get_location("Ninjamon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        set_rule(self.multiworld.get_location("Leomon", self.player),
-                  lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Ogremon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 6)  
+        # set_rule(self.multiworld.get_location("Airdramon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50)   
+        # set_rule(self.multiworld.get_location("Greymon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 25)  
+        # set_rule(self.multiworld.get_location("Vademon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 45) 
+        # set_rule(self.multiworld.get_location("Etemon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Ninjamon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        # set_rule(self.multiworld.get_location("Leomon", self.player),
+                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
        
-        self.multiworld.completion_condition[self.player] = lambda state: \
-                    calculate_prosperity_points(state, self.player) >= 100 
+        # self.multiworld.completion_condition[self.player] = lambda state: \
+        #             state.has("100 Prosperity", self.player)
+        # self.multiworld.completion_condition[self.player] = lambda state: \
+                    # calculate_prosperity_points(state, self.player) >= 100 
     
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
