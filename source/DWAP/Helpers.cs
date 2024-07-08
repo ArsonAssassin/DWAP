@@ -17,6 +17,12 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<Location>>(json);
             return list;
         }
+        public static List<Consumable> GetConsumables()
+        {
+            var json = OpenEmbeddedResource("DWAP.Resources.Consumables.json");
+            var list = JsonConvert.DeserializeObject<List<Consumable>>(json);
+            return list;
+        }
         public static List<Location> GetTemp()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.temp.json");
@@ -43,6 +49,42 @@ namespace DWAP
             {
                 string jsonFile = reader.ReadToEnd();
                 return jsonFile;
+            }
+        }
+        public static int GetRookieNum(int option)
+        {
+            switch (option)
+            {
+                //Agumon
+                case 0:
+                    return 3;
+                //Gabumon
+                case 1:
+                    return 17;
+                //Betamon
+                case 2:
+                    return 4;
+                //Elecmon
+                case 3:
+                    return 18;
+                //Palmon
+                case 4:
+                    return 46;
+                //Patamon
+                case 5:
+                    return 31;
+                //Biyomon
+                case 6:
+                    return 45;
+                //Kunemon
+                case 7:
+                    return 32;
+                //Penguinmon
+                case 8:
+                    return 57;
+
+                default:
+                    return 3;
             }
         }
     }

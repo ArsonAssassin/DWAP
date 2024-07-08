@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DWAP", "DWAP.csproj", "{BF6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Archipelago.ePSXe", "..\..\..\Archipelago.ePSXe\Archipelago.ePSXe.csproj", "{232250C8-9585-4F39-ADD0-FC20802F7A2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWAP.RomPatcher", "..\DWAP.RomPatcher\DWAP.RomPatcher.csproj", "{47218A12-1662-49D3-A809-DCD232DA0D5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

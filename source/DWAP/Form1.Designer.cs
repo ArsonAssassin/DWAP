@@ -38,6 +38,7 @@
             passwordTextbox = new TextBox();
             label3 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            button1 = new Button();
             SuspendLayout();
             // 
             // outputTextbox
@@ -113,11 +114,22 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
+            // button1
+            // 
+            button1.Location = new Point(13, 403);
+            button1.Name = "button1";
+            button1.Size = new Size(126, 23);
+            button1.TabIndex = 8;
+            button1.Text = "Patch Rom";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(passwordTextbox);
             Controls.Add(label3);
             Controls.Add(slotTextbox);
@@ -144,5 +156,6 @@
         private TextBox passwordTextbox;
         private Label label3;
         private System.Windows.Forms.Timer timer1;
+        private Button button1;
     }
 }

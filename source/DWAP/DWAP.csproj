@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Consumables.json" />
     <None Remove="Resources\Items.json" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\Recruitment.json" />
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Consumables.json" />
     <EmbeddedResource Include="Resources\temp.json" />
   </ItemGroup>
 
@@ -27,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Archipelago.ePSXe\Archipelago.ePSXe.csproj" />
+    <ProjectReference Include="..\DWAP.RomPatcher\DWAP.RomPatcher.csproj" />
   </ItemGroup>
 
 </Project>
