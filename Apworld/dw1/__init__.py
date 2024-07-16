@@ -143,6 +143,9 @@ class DigimonWorldWorld(World):
         itempool: List[DigimonWorldItem] = []
         for category in itempool_by_category:
             itempool += [self.create_item(name) for name in itempool_by_category[category]]
+        if(self.multiworld.progressive_stats[self.player].value):
+            for _ in range(9):
+                itempool += [self.create_item("Progressive Stat Cap")]
         print("created item pool with " + str(len(itempool)) + " items")
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
         print("marked " + str(len(removable_items)) + " items as removable")
@@ -368,6 +371,9 @@ class DigimonWorldWorld(World):
         slot_data = {
             "options": {
                 "guaranteed_items": self.multiworld.guaranteed_items[self.player].value,
+                "exp_multiplier": self.multiworld.exp_multiplier[self.player].value,
+                "progressive_stats": self.multiworld.progressive_stats[self.player].value,
+                "random_starter": self.multiworld.random_starter[self.player].value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server
