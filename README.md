@@ -16,7 +16,7 @@ Digimon World Archipelago Randomiser
 - Press connect.  
 
 All Digimon are currently set to send a location check and receive an item with the digimon's name just to get the tracker working.
-All actual rewarded location checks are done by increasing your prosperity rating. Currently the only reward is a 1000 Bits item.
+All actual rewarded location checks are done by increasing your prosperity rating. 
 
 # Tracker
 I have written a Poptracker you can use at https://github.com/ArsonAssassin/DigimonWorldAPTracker
