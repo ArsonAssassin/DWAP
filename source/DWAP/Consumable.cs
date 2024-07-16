@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DWAP
 {
-    public class Consumable
+    public class DigimonItem
     {
         public string Name { get; set; }
         public int Id { get; set; }

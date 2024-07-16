@@ -9,20 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Consumables.json" />
-    <None Remove="Resources\Items.json" />
+    <None Remove="Resources\APItems.json" />
+    <None Remove="Resources\DigimonItems.json" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\Recruitment.json" />
     <None Remove="Resources\temp.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Consumables.json" />
+    <EmbeddedResource Include="Resources\DigimonItems.json" />
     <EmbeddedResource Include="Resources\temp.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Items.json" />
+    <EmbeddedResource Include="Resources\APItems.json" />
     <EmbeddedResource Include="Resources\Locations.json" />
     <EmbeddedResource Include="Resources\Recruitment.json" />
   </ItemGroup>

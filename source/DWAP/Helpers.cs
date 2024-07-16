@@ -17,10 +17,10 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<Location>>(json);
             return list;
         }
-        public static List<Consumable> GetConsumables()
+        public static List<DigimonItem> GetConsumables()
         {
-            var json = OpenEmbeddedResource("DWAP.Resources.Consumables.json");
-            var list = JsonConvert.DeserializeObject<List<Consumable>>(json);
+            var json = OpenEmbeddedResource("DWAP.Resources.DigimonItems.json");
+            var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
             return list;
         }
         public static List<Location> GetTemp()
@@ -31,7 +31,7 @@ namespace DWAP
         }
         public static List<DigimonWorldItem> GetItems()
         {
-            var json = OpenEmbeddedResource("DWAP.Resources.Items.json");
+            var json = OpenEmbeddedResource("DWAP.Resources.APItems.json");
             var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
             return list;
         }

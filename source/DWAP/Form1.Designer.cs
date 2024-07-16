@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             outputTextbox = new RichTextBox();
-            connectbtn = new Button();
+            connectBtn = new Button();
             label1 = new Label();
             hostTextbox = new TextBox();
             slotTextbox = new TextBox();
@@ -50,15 +50,15 @@
             outputTextbox.TabIndex = 0;
             outputTextbox.Text = "";
             // 
-            // connectbtn
+            // connectBtn
             // 
-            connectbtn.Location = new Point(542, 105);
-            connectbtn.Name = "connectbtn";
-            connectbtn.Size = new Size(158, 23);
-            connectbtn.TabIndex = 1;
-            connectbtn.Text = "Connect";
-            connectbtn.UseVisualStyleBackColor = true;
-            connectbtn.Click += connectbtn_Click;
+            connectBtn.Location = new Point(542, 105);
+            connectBtn.Name = "connectBtn";
+            connectBtn.Size = new Size(158, 23);
+            connectBtn.TabIndex = 1;
+            connectBtn.Text = "Connect";
+            connectBtn.UseVisualStyleBackColor = true;
+            connectBtn.Click += connectbtn_Click;
             // 
             // label1
             // 
@@ -116,12 +116,14 @@
             // 
             // button1
             // 
+            button1.Enabled = false;
             button1.Location = new Point(13, 403);
             button1.Name = "button1";
             button1.Size = new Size(126, 23);
             button1.TabIndex = 8;
             button1.Text = "Patch Rom";
             button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
             button1.Click += button1_Click;
             // 
             // Form1
@@ -136,10 +138,15 @@
             Controls.Add(label2);
             Controls.Add(hostTextbox);
             Controls.Add(label1);
-            Controls.Add(connectbtn);
+            Controls.Add(connectBtn);
             Controls.Add(outputTextbox);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MaximumSize = new Size(816, 489);
+            MinimumSize = new Size(816, 489);
             Name = "Form1";
-            Text = "Form1";
+            SizeGripStyle = SizeGripStyle.Hide;
+            Text = "Digimon World Archipelago Randomiser";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -148,7 +155,7 @@
         #endregion
 
         private RichTextBox outputTextbox;
-        private Button connectbtn;
+        private Button connectBtn;
         private Label label1;
         private TextBox hostTextbox;
         private TextBox slotTextbox;

@@ -1,81 +1,81 @@
 [
   {
     "Name": "1 Prosperity",
-    "Id": 694000,
+    "Id": 693000,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "0",
     "CompareType": 1
   },
   {
     "Name": "2 Prosperity",
-    "Id": 694001,
+    "Id": 693001,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "1",
     "CompareType": 1
   },
   {
     "Name": "3 Prosperity",
-    "Id": 694002,
+    "Id": 693002,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "2",
     "CompareType": 1
   },
   {
     "Name": "4 Prosperity",
-    "Id": 694003,
+    "Id": 693003,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "3",
     "CompareType": 1
   },
   {
     "Name": "5 Prosperity",
-    "Id": 694004,
+    "Id": 693004,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "4",
     "CompareType": 1
   },
   {
     "Name": "6 Prosperity",
-    "Id": 694005,
+    "Id": 693005,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "5",
     "CompareType": 1
   },
   {
     "Name": "7 Prosperity",
-    "Id": 694006,
+    "Id": 693006,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "6",
     "CompareType": 1
   },
   {
     "Name": "8 Prosperity",
-    "Id": 694007,
+    "Id": 693007,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "7",
     "CompareType": 1
   },
   {
     "Name": "9 Prosperity",
-    "Id": 694008,
+    "Id": 693008,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "8",
     "CompareType": 1
   },
   {
     "Name": "10 Prosperity",
-    "Id": 694009,
+    "Id": 693009,
     "Address": "0x00C159D2",
-    "CheckType": 1,
+    "CheckType": 3,
     "CheckValue": "9",
     "CompareType": 1
   }

@@ -15,6 +15,11 @@ namespace DWAP
         public const int CurrentDefence = 0x00BAD182;
         public const int CurrentSpeed = 0x00BAD184;
         public const int CurrentBrains = 0x00BAD186;
+        public const int InventorySize = 0x00B94E6E;
+        public const int ItemBankBaseAddress = 0x00C158CC;
+        public const int CurrentBits = 0x00B8C858;
 
+        public const int Starter1 = 0x00B46378;
+        public const int Starter2 = 0x00B46370;
     }
 }

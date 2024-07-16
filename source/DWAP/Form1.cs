@@ -12,7 +12,7 @@ namespace DWAP
         public static ArchipelagoClient Client { get; set; }
         public static List<DigimonWorldItem> Items { get; set; }
         public static List<Recruitment> RecruitList { get; set; }
-        public static List<Consumable> Consumables { get; set; }
+        public static List<DigimonItem> DigimonItems { get; set; }
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
@@ -20,6 +20,10 @@ namespace DWAP
         {
             InitializeComponent();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#if DEBUG
+            button1.Enabled = true;
+            button1.Visible = true;
+#endif
 
         }
 
@@ -33,16 +37,25 @@ namespace DWAP
                 return;
             }
             Client = new ArchipelagoClient();
+            Client.Connected += (e, args) =>
+            {
+                WriteLine("Connected to Archipelago");
+                WriteLine($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
+                connectBtn.Text = "Disconnect";
+            };
+            Client.Disconnected += (e, args) =>
+            {
+                WriteLine("Disconnected from Archipelago");
+                connectBtn.Text = "Connect";
+            };
             await Client.Connect(hostTextbox.Text, "Digimon World");
             // var locations = Helpers.GetLocations();
             var locations = GetRecruitmentLocations();
             locations.AddRange(Helpers.GetTemp());
             Client.PopulateLocations(locations);
             await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
-            WriteLine("Connected to Archipelago");
-            WriteLine($"Playing as {Client.CurrentSession.ConnectionInfo.Slot} playing {Client.CurrentSession.ConnectionInfo.Game}");
+           
             timer1.Start();
-
             ConfigureOptions(Client.Options);
 
             Client.ItemReceived += (e, args) =>
@@ -58,7 +71,7 @@ namespace DWAP
                     }
                     else if (item.Type == ItemType.Consumable)
                     {
-                        AddConsumable(item.Id);
+                        AddDigimonItem(item.Id);
                     }
                     else if (item.Name == "1000 Bits")
                     {
@@ -70,7 +83,7 @@ namespace DWAP
                     }
                     else if (item.Name == "Progressive Stat Cap")
                     {
-                        var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemId == 3000));
+                        var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
                         if (boostsReceived >= 9)
                         {
                             StatCap = 999;
@@ -80,37 +93,38 @@ namespace DWAP
                 }
             };
         }
-        private void AddConsumable(int id)
+        private void AddDigimonItem(int id)
         {
-            var consumable = Consumables.First(x => x.Id == id);
-            var inventorySize = (int)Memory.ReadByte(0x00B94E6E);
-            //first pass
+            var localId = id - 692000;
+            var consumable = DigimonItems.First(x => x.Id == localId);
+            var inventorySize = (int)Memory.ReadByte(Addresses.InventorySize);
+            //Get matching item pile in inventory
             for (int i = 0; i < inventorySize; i++)
             {
                 var slotAddress = 0x00B94E14 + i;
                 var amountAddress = 0x00B94E32 + i;
-                if (Memory.ReadByte(slotAddress) == consumable.Id)
+                var currentItemInSlot = Memory.ReadByte(slotAddress);
+                if (currentItemInSlot == consumable.Id)
                 {
                     var currentAmount = (int)Memory.ReadByte(amountAddress);
                     Memory.WriteByte(amountAddress, (byte)(currentAmount + 1));
                     return;
                 }
             }
+
             //Item not already in inventory, find empty space
-            for (int i = 0; i < inventorySize; i++)
+            var invSlot = GetEmptyInventorySlot();
+            if(invSlot != null)
             {
-                var slotAddress = 0x00B94E14 + i;
-                var amountAddress = 0x00B94E32 + i;
-                if (Memory.ReadByte(slotAddress) == 255)
-                {
-                    Memory.WriteByte(slotAddress, (byte)id);
-                    Memory.WriteByte(amountAddress, 1);
-                    return;
-                }
+                Memory.WriteByte(invSlot.Item1, (byte)localId);
+                Memory.WriteByte(invSlot.Item2, 1);
+                return;
             }
+
             //add to item bank
-            var itemBankAddress = 0x00C158CC + id;
-            if (Memory.ReadByte(itemBankAddress) == 255)
+            var itemBankAddress = Addresses.ItemBankBaseAddress + localId;
+            var storedItemCount = Memory.ReadByte(itemBankAddress);
+            if (storedItemCount == 255)
             {
                 Memory.WriteByte(itemBankAddress, 1);
             }
@@ -119,11 +133,26 @@ namespace DWAP
                 Memory.WriteByte(itemBankAddress, (byte)(Memory.ReadByte(itemBankAddress) + 1));
             }
         }
+
+        private Tuple<int, int> GetEmptyInventorySlot()
+        {
+            var inventorySize = (int)Memory.ReadByte(Addresses.InventorySize);
+            for (int i = 0; i < inventorySize; i++)
+            {
+                var slotAddress = 0x00B94E14 + i;
+                var amountAddress = 0x00B94E32 + i;
+                if (Memory.ReadByte(slotAddress) == 255)
+                {
+                    return new Tuple<int, int>(slotAddress, amountAddress);
+                }
+            }
+            return null;
+        }
         private void AddMoney(int amount)
         {
-            var currentCash = Memory.ReadInt(0x00B8C858);
+            var currentCash = Memory.ReadInt(Addresses.CurrentBits);
             var newCash = currentCash + amount;
-            Memory.Write(0x00B8C858, newCash);
+            Memory.Write(Addresses.CurrentBits, newCash);
         }
         private void ConfigureOptions(Dictionary<string, object> options)
         {
@@ -134,7 +163,7 @@ namespace DWAP
             if (options.ContainsKey("progressive_stats"))
             {
                 StatCapEnabled = true;
-                var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemId == 3000));
+                var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
                 if (boostsReceived >= 9)
                 {
                     StatCap = 999;
@@ -160,15 +189,15 @@ namespace DWAP
                 {
                     var option1 = (byte)random.Next(1, 65);
                     var option2 = (byte)random.Next(1, 65);
-                    Memory.WriteByte(0x00B46378, option1);
-                    Memory.WriteByte(0x00B46370, option2);
+                    Memory.WriteByte(Addresses.Starter1, option1);
+                    Memory.WriteByte(Addresses.Starter2, option2);
                 }
                 else if (starterOption == 2)
                 {
                     var option1 = (byte)Helpers.GetRookieNum(random.Next(0, 8));
                     var option2 = (byte)Helpers.GetRookieNum(random.Next(0, 8));
-                    Memory.WriteByte(0x00B46378, option1);
-                    Memory.WriteByte(0x00B46370, option2);
+                    Memory.WriteByte(Addresses.Starter1, option1);
+                    Memory.WriteByte(Addresses.Starter2, option2);
                 }
             }
         }
@@ -221,8 +250,14 @@ namespace DWAP
         }
         private void EnsureStatCap()
         {
-            var currHpMax = Memory.ReadInt(Addresses.MaxHp);
-            var currMpMax = Memory.ReadInt(Addresses.MaxMp);
+            var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
+            if (boostsReceived >= 9)
+            {
+                StatCap = 999;
+            }
+            else StatCap = (boostsReceived * 100) + 100;
+            var currHpMax = Memory.ReadShort(Addresses.MaxHp);
+            var currMpMax = Memory.ReadShort(Addresses.MaxMp);
             var currOff = Memory.ReadShort(Addresses.CurrentOffense);
             var currDef = Memory.ReadShort(Addresses.CurrentDefence);
             var currSpd = Memory.ReadShort(Addresses.CurrentSpeed);
@@ -230,18 +265,18 @@ namespace DWAP
 
             if (StatCap < 999)
             {
-                Memory.Write(Addresses.MaxHp, Math.Min(currHpMax, StatCap * 10));
-                Memory.Write(Addresses.MaxMp, Math.Min(currMpMax, StatCap * 10));
+                Memory.Write(Addresses.MaxHp, (short)Math.Min(currHpMax, (short)(StatCap * 10)));
+                Memory.Write(Addresses.MaxMp, (short)Math.Min(currMpMax, (short)(StatCap * 10)));
             }
             else
             {
-                Memory.Write(Addresses.MaxHp, Math.Min(currHpMax, 9999));
-                Memory.Write(Addresses.MaxMp, Math.Min(currMpMax, 9999));
+                Memory.Write(Addresses.MaxHp, (short)Math.Min(currHpMax, (short)9999));
+                Memory.Write(Addresses.MaxMp, (short)Math.Min(currMpMax, (short)9999));
             }
-            Memory.Write(Addresses.CurrentOffense, Math.Min(currOff, StatCap));
-            Memory.Write(Addresses.CurrentDefence, Math.Min(currDef, StatCap));
-            Memory.Write(Addresses.CurrentSpeed, Math.Min(currSpd, StatCap));
-            Memory.Write(Addresses.CurrentBrains, Math.Min(currBrn, StatCap));
+            Memory.Write(Addresses.CurrentOffense, (short)Math.Min(currOff, StatCap));
+            Memory.Write(Addresses.CurrentDefence, (short)Math.Min(currDef, StatCap));
+            Memory.Write(Addresses.CurrentSpeed, (short)Math.Min(currSpd, StatCap));
+            Memory.Write(Addresses.CurrentBrains, (short)Math.Min(currBrn, StatCap));
         }
         public void WriteLine(string output)
         {
@@ -281,11 +316,12 @@ namespace DWAP
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            WriteLine("DWAP - Digimon world Archipelago Randomiser -- By ArsonAssassin --");
+            WriteLine("DWAP - Digimon world Archipelago Randomiser");
+            WriteLine("-- By ArsonAssassin --");
             WriteLine("Initialising collections...");
             Items = Helpers.GetItems();
             RecruitList = Helpers.GetRecruitment();
-            Consumables = Helpers.GetConsumables();
+            DigimonItems = Helpers.GetConsumables();
             WriteLine("Ready to connect!");
         }
 
@@ -300,9 +336,11 @@ namespace DWAP
                 if (result == DialogResult.OK)
                 {
                     var file = dlg.FileName;
-                    RomReader reader = new RomReader();
-                    var output = reader.ReadRom(file);
-                    WriteLine(JsonConvert.SerializeObject(output));
+                    RomManager mgr = new RomManager();
+                    var output = mgr.ReadRom(file);
+
+                    mgr.WriteRom(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "digimonWorldClone.bin"), output);
+                    WriteLine("Finished patching ROM");
                 }
             });
         }
