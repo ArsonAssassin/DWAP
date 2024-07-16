@@ -77,10 +77,11 @@ class DigimonWorldWorld(World):
             regions[from_region].exits.append(connection)
             connection.connect(regions[to_region])
 
-        regions["Menu"].exits.append(Entrance(self.player, "New Game", regions["Menu"]))
-        self.multiworld.get_entrance("New Game", self.player).connect(regions["Recruitment"])
-        self.multiworld.get_entrance("New Game", self.player).connect(regions["Prosperity"])
-       # create_connection("Palm Brinks", "Underground Water Channel")
+        #regions["Menu"].exits.append(Entrance(self.player, "Recruitment", regions["Menu"]))
+       # self.multiworld.get_entrance("New Game", self.player).connect(regions["Recruitment"])
+        #self.multiworld.get_entrance("New Game", self.player).connect(regions["Prosperity"])
+        create_connection("Menu", "Recruitment")
+        create_connection("Menu", "Prosperity")
 
         
         
@@ -206,7 +207,10 @@ class DigimonWorldWorld(World):
         return "1000 Bits"
 
 
-    #def set_rules(self) -> None:
+    def set_rules(self) -> None:
+        
+        # self.multiworld.completion_condition[self.player] = lambda state: \
+        #     state.has("100 Prosperity", self.player)
         # Define the access rules to the entrances
         # set_rule(self.multiworld.get_location("Airdramon", self.player),
                   # lambda state: state.has("Agumon", self.player))    
@@ -315,25 +319,24 @@ class DigimonWorldWorld(World):
         # set_rule(self.multiworld.get_location("MetalGreymon", self.player),
                   # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
 
-        # set_rule(self.multiworld.get_location("Ogremon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 6)  
-        # set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 50)   
-        # set_rule(self.multiworld.get_location("Greymon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 25)  
-        # set_rule(self.multiworld.get_location("Vademon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 45) 
-        # set_rule(self.multiworld.get_location("Etemon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        # set_rule(self.multiworld.get_location("Ninjamon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-        # set_rule(self.multiworld.get_location("Leomon", self.player),
-                  # lambda state: calculate_prosperity_points(state, self.player) >= 50) 
-       
-        # self.multiworld.completion_condition[self.player] = lambda state: \
-        #             state.has("100 Prosperity", self.player)
-        # self.multiworld.completion_condition[self.player] = lambda state: \
-                    # calculate_prosperity_points(state, self.player) >= 100 
+        set_rule(self.multiworld.get_location("Ogremon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 6)  
+        set_rule(self.multiworld.get_location("Airdramon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 50)   
+        set_rule(self.multiworld.get_location("Greymon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 25)  
+        set_rule(self.multiworld.get_location("Vademon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 45) 
+        set_rule(self.multiworld.get_location("Etemon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        set_rule(self.multiworld.get_location("Ninjamon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        set_rule(self.multiworld.get_location("Leomon", self.player),
+            lambda state: calculate_prosperity_points(state, self.player) >= 50) 
+        self.multiworld.completion_condition[self.player] = lambda state: \
+            calculate_prosperity_points(state, self.player) >= 50 
+
+
     
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
