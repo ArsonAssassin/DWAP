@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             outputTextbox = new RichTextBox();
             connectBtn = new Button();
             label1 = new Label();
@@ -39,6 +40,8 @@
             label3 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             button1 = new Button();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // outputTextbox
@@ -126,11 +129,23 @@
             button1.Visible = false;
             button1.Click += button1_Click;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(662, 310);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(126, 128);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 9;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(800, 450);
+            Controls.Add(pictureBox1);
             Controls.Add(button1);
             Controls.Add(passwordTextbox);
             Controls.Add(label3);
@@ -141,6 +156,7 @@
             Controls.Add(connectBtn);
             Controls.Add(outputTextbox);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MaximumSize = new Size(816, 489);
             MinimumSize = new Size(816, 489);
@@ -148,6 +164,7 @@
             SizeGripStyle = SizeGripStyle.Hide;
             Text = "Digimon World Archipelago Randomiser";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -164,5 +181,6 @@
         private Label label3;
         private System.Windows.Forms.Timer timer1;
         private Button button1;
+        private PictureBox pictureBox1;
     }
 }

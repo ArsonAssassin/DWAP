@@ -6,18 +6,53 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Resources\dwap.ico</ApplicationIcon>
+    <Version>0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\agumon.wav" />
     <None Remove="Resources\APItems.json" />
+    <None Remove="Resources\betamon.wav" />
+    <None Remove="Resources\biyomon.wav" />
     <None Remove="Resources\DigimonItems.json" />
+    <None Remove="Resources\dwap.ico" />
+    <None Remove="Resources\DWAP.png" />
+    <None Remove="Resources\elecmon.wav" />
+    <None Remove="Resources\gabumon.wav" />
     <None Remove="Resources\Locations.json" />
+    <None Remove="Resources\patamon.wav" />
     <None Remove="Resources\Recruitment.json" />
     <None Remove="Resources\temp.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\dwap.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\agumon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\betamon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\biyomon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\DigimonItems.json" />
+    <EmbeddedResource Include="Resources\DWAP.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\elecmon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\gabumon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\patamon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\temp.json" />
   </ItemGroup>
 

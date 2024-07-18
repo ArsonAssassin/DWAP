@@ -21,5 +21,7 @@ namespace DWAP
 
         public const int Starter1 = 0x00B46378;
         public const int Starter2 = 0x00B46370;
+
+        public const int TechniqueSlot1 = 0x00BAD18C;
     }
 }

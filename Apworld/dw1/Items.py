@@ -28,7 +28,7 @@ class DigimonWorldItem(Item):
 
 
 key_item_names = {
-    "Progressive Stat Cap"
+    #"Progressive Stat Cap"
 }
 
 
