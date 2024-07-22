@@ -439,57 +439,10 @@ class DigimonWorldWorld(World):
                 else:
                     locations_target.append(0)
 
-
-        #     if(location.game != "Digimon World" or location.item.game != "Digimon World"):
-        #         print("Non-digimon item: ")
-        #         print(str(location.item))
-        #         items_id.append(location.item.code)
-        #         items_address.append(name_to_dw_code[location.item.name])
-        #         continue
-        #     if location.category == DigimonWorldLocationCategory.RECRUIT:
-        #         #print("Adding " + str(location.item) + " to " + location.name)
-        #         items_id.append(location.item.code)
-        #         items_address.append(name_to_dw_code[location.item.name])                
-        #         continue
-
-        #     if location.category == DigimonWorldLocationCategory.EVENT:
-        #         #print(str(location.item))                
-        #         #print("Adding " + str(location.item) + " to " + str(location.name))
-        #         items_id.append(location.item.code)
-        #         items_address.append(name_to_dw_code[location.item.name])
-        #         locations_address.append(item_dictionary[location_dictionary[location.name].default_item].dw_code)
-        #         locations_id.append(location.address)
-        #         if location.item.player == self.player:
-        #             locations_target.append(name_to_dw_code[location.item.name])
-        #         else:
-        #             locations_target.append(0)
-        #         continue
-
-        #     if location.category == DigimonWorldLocationCategory.MISC:
-        #         #print("Skipping misc location: " + location.name)
-        #         continue
-        #     #print("Attempting to fill location: " + location.name)
-        #     # Skip events
-        #     if location.item.code is None:
-        #         #print("Skipping event: " + location.name)
-        #         continue
-
-        #     if location.item.player == self.player:
-        #         #print("Adding " + str(location.item) + " to " + location.name)
-        #         items_id.append(location.item.code)
-        #         items_address.append(name_to_dw_code[location.item.name])
-
-        # for location in self.multiworld.get_filled_locations():
-        #     if location.item.player == self.player or location.player == self.player:
-        #         print(f"Debug: Item {location.item.name} placed at {location.name}")
-        #print("items_id: " + str(items_id))
-        #print("items_address: " + str(items_address))
-        #print("locations_id: " + str(locations_id))
-        #print("locations_address: " + str(locations_address))
-        #print("locations_target: " + str(locations_target))
-
         slot_data = {
             "options": {
+                "goal": self.options.goal.value,
+                "required_prosperity": self.options.required_prosperity.value,
                 "guaranteed_items": self.options.guaranteed_items.value,
                 "exp_multiplier": self.options.exp_multiplier.value,
                 "progressive_stats": self.options.progressive_stats.value,
