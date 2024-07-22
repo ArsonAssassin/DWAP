@@ -7,9 +7,9 @@ from Options import Toggle
 from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule, add_rule, add_item_rule
 
-from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, item_descriptions
+from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, item_descriptions, BuildItemPool
 from .Locations import DigimonWorldLocation, DigimonWorldLocationCategory, location_tables, location_dictionary
-from .Options import digimon_world_options
+from .Options import DigimonWorldOption
 from .Prosperity import calculate_prosperity_points, calculate_reachable_prosperity_points, can_get_points
 
 class DigimonWorldWeb(WebWorld):
@@ -34,13 +34,14 @@ class DigimonWorldWorld(World):
     """
 
     game: str = "Digimon World"
-    option_definitions = digimon_world_options
+    options_dataclass = DigimonWorldOption
+    options: DigimonWorldOption
     topology_present: bool = True
     web = DigimonWorldWeb()
     data_version = 0
     base_id = 690000
     enabled_location_categories: Set[DigimonWorldLocationCategory]
-    required_client_version = (0, 4, 6)
+    required_client_version = (0, 5, 0)
     item_name_to_id = DigimonWorldItem.get_name_to_id()
     location_name_to_id = DigimonWorldLocation.get_name_to_id()
     item_name_groups = {
@@ -127,7 +128,7 @@ class DigimonWorldWorld(World):
                 event_item = self.create_item(location.default_item)
                 #if event_item.classification != ItemClassification.progression:
                 #    continue
-                print("Adding Location: " + location.name + " as an event with default item " + location.default_item)
+                #print("Adding Location: " + location.name + " as an event with default item " + location.default_item)
                 new_location = DigimonWorldLocation(
                     self.player,
                     location.name,
@@ -150,6 +151,8 @@ class DigimonWorldWorld(World):
     def create_items(self):
         skip_items: List[DigimonWorldItem] = []
         itempool: List[DigimonWorldItem] = []
+        itempoolSize = 0
+        
         #print("Creating items")
         for location in self.multiworld.get_locations(self.player):
             
@@ -160,38 +163,49 @@ class DigimonWorldWorld(World):
                     skip_items.append(self.create_item(location.default_item_name))
                 elif location.category in self.enabled_location_categories:
                     #print("Adding item: " + location.default_item_name)
+                    itempoolSize += 1
                     itempool.append(self.create_item(location.default_item_name))
-        #print("itempool count: " + str(len(itempool)))
-        #print("skip item count: " + str(len(skip_items)))
+        progressiveStatsEnabled = self.options.progressive_stats.value
 
-        #if(self.multiworld.progressive_stats[self.player].value):
-        #    for _ in range(9):
-        #        itempool += [self.create_item("Progressive Stat Cap")]
+        print("Requesting itempool size: " + str(itempoolSize))
+        foo = BuildItemPool(itempoolSize, progressiveStatsEnabled, self.options.guaranteed_items.value)
+        print("Created item pool size: " + str(len(foo)))
+
+        
+
+
+
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
-        #print("marked " + str(len(removable_items)) + " items as removable")
-        guaranteed_items = self.multiworld.guaranteed_items[self.player].value
-        for item_name in guaranteed_items:
-            if len(removable_items) == 0:
-                break
-            num_existing_copies = len([item for item in itempool if item.name == item_name])
-            for _ in range(guaranteed_items[item_name]):
-                if num_existing_copies > 0:
-                    num_existing_copies -= 1
-                    continue
-                if len(removable_items) == 0:
-                    break
-                removable_shortlist = [
-                    item for item
-                    in removable_items
-                    if item_dictionary[item.name].category == item_dictionary[item_name].category
-                ]
-                if len(removable_shortlist) == 0:
-                    removable_shortlist = removable_items
-                removed_item = self.multiworld.random.choice(removable_shortlist)
-                #print(f"Replacing {removed_item.name} with {item_name}")
-                removable_items.remove(removed_item)
-                itempool.remove(removed_item)
-                itempool.append(self.create_item(item_name))
+        print("marked " + str(len(removable_items)) + " items as removable")
+
+        for item in removable_items:
+            print("removable item: " + item.name)
+            itempool.remove(item)
+            itempool.append(self.create_item(foo.pop().name))
+
+        # guaranteed_items = self.options.guaranteed_items.value
+        # for item_name in guaranteed_items:
+        #     if len(removable_items) == 0:
+        #         break
+        #     num_existing_copies = len([item for item in itempool if item.name == item_name])
+        #     for _ in range(guaranteed_items[item_name]):
+        #         if num_existing_copies > 0:
+        #             num_existing_copies -= 1
+        #             continue
+        #         if len(removable_items) == 0:
+        #             break
+        #         removable_shortlist = [
+        #             item for item
+        #             in removable_items
+        #             if item_dictionary[item.name].category == item_dictionary[item_name].category
+        #         ]
+        #         if len(removable_shortlist) == 0:
+        #             removable_shortlist = removable_items
+        #         removed_item = self.multiworld.random.choice(removable_shortlist)
+        #         #print(f"Replacing {removed_item.name} with {item_name}")
+        #         removable_items.remove(removed_item)
+        #         itempool.remove(removed_item)
+        #         itempool.append(self.create_item(item_name))
 
         # Add regular items to itempool
         self.multiworld.itempool += itempool
@@ -203,6 +217,10 @@ class DigimonWorldWorld(World):
             location.place_locked_item(skip_item)
             #self.multiworld.itempool.append(skip_item)
             #print("Placing skip item: " + skip_item.name + " in location: " + location.name)
+        
+        print("Final Item pool: ")
+        for item in self.multiworld.itempool:
+            print(item.name)
 
 
     def create_item(self, name: str) -> Item:
@@ -246,24 +264,27 @@ class DigimonWorldWorld(World):
             set_rule(location, lambda state: True)  # All Digimon are initially recruitable
         prosperity_region = self.multiworld.get_region("Prosperity", self.player)
         print("region length: " + str(len(prosperity_region.locations)))
-        #for location in prosperity_region.locations:
-        #    set_rule(location, lambda state: True)
+        for location in prosperity_region.locations:
+            set_rule(location, lambda state: True)
 
-        goalLocation = self.multiworld.get_location("100 Prosperity", self.player)
+       # if self.options.goal.value == 0:
+        required_prosperity_points = self.options.required_prosperity.value
+        print("Setting completion condition for " + str(required_prosperity_points) + " prosperity points")
+        completionLocation = self.multiworld.get_location(str(required_prosperity_points) + " Prosperity", self.player)
         self.multiworld.completion_condition[self.player] = lambda state: \
-                    goalLocation.can_reach(state) or \
-                    state.has("Digitamamon", self.player) or \
-                    calculate_prosperity_points(state, self) >= 100
-
+            completionLocation.can_reach(state) or \
+            calculate_prosperity_points(state, self) >= required_prosperity_points
+        # self.multiworld.completion_condition[self.player] = lambda state: \
+        #             state.has(str(required_prosperity_points) + " Prosperity", self.player) or \
+        #             calculate_prosperity_points(state, self) >= required_prosperity_points
+       # elif self.options.goal.value == 1:
+        #    self.multiworld.completion_condition[self.player] = lambda state: \
+        #                state.has("Machinedramon", self.player)     
 
         #for location in prosperity_region.locations:
         #    prosperityVal = location.name.split(" ")[0]
         #    set_rule(location, lambda state: calculate_reachable_prosperity_points(state, self) >= int(prosperityVal))
 
-        #self.multiworld.completion_condition[self.player] = lambda state: \
-        #    state.has("100 Prosperity", self.player)
-        #self.multiworld.completion_condition[self.player] = lambda state: \
-        #    state.has("Digitamamon", self.player)
         # Define the access rules to the entrances
         set_rule(self.multiworld.get_location("Airdramon", self.player),
                 lambda state: state.has("Agumon", self.player))    
@@ -401,56 +422,78 @@ class DigimonWorldWorld(World):
         locations_address = []
         locations_target = []
         for location in self.multiworld.get_filled_locations():
-            if(location.game != "Digimon World" or location.item.game != "Digimon World"):
-                continue
-            if location.category == DigimonWorldLocationCategory.RECRUIT:
-                #print("Adding " + str(location.item) + " to " + location.name)
-                items_id.append(location.item.code)
-                items_address.append(name_to_dw_code[location.item.name])                
-                continue
 
-            if location.category == DigimonWorldLocationCategory.EVENT:
-                #print(str(location.item))                
-                #print("Adding " + str(location.item) + " to " + str(location.name))
+
+            if location.item.player == self.player:
+                #we are the receiver of the item
                 items_id.append(location.item.code)
                 items_address.append(name_to_dw_code[location.item.name])
+
+
+            if location.player == self.player:
+                #we are the sender of the location check
                 locations_address.append(item_dictionary[location_dictionary[location.name].default_item].dw_code)
                 locations_id.append(location.address)
                 if location.item.player == self.player:
                     locations_target.append(name_to_dw_code[location.item.name])
                 else:
                     locations_target.append(0)
-                continue
 
-            if location.category == DigimonWorldLocationCategory.MISC:
-                #print("Skipping misc location: " + location.name)
-                continue
-            #print("Attempting to fill location: " + location.name)
-            # Skip events
-            if location.item.code is None:
-                #print("Skipping event: " + location.name)
-                continue
 
-            if location.item.player == self.player:
-                #print("Adding " + str(location.item) + " to " + location.name)
-                items_id.append(location.item.code)
-                items_address.append(name_to_dw_code[location.item.name])
+        #     if(location.game != "Digimon World" or location.item.game != "Digimon World"):
+        #         print("Non-digimon item: ")
+        #         print(str(location.item))
+        #         items_id.append(location.item.code)
+        #         items_address.append(name_to_dw_code[location.item.name])
+        #         continue
+        #     if location.category == DigimonWorldLocationCategory.RECRUIT:
+        #         #print("Adding " + str(location.item) + " to " + location.name)
+        #         items_id.append(location.item.code)
+        #         items_address.append(name_to_dw_code[location.item.name])                
+        #         continue
 
-        for location in self.multiworld.get_filled_locations():
-            if location.item.player == self.player:
-                print(f"Debug: Item {location.item.name} placed at {location.name}")
-        print("items_id: " + str(items_id))
-        print("items_address: " + str(items_address))
-        print("locations_id: " + str(locations_id))
-        print("locations_address: " + str(locations_address))
-        print("locations_target: " + str(locations_target))
+        #     if location.category == DigimonWorldLocationCategory.EVENT:
+        #         #print(str(location.item))                
+        #         #print("Adding " + str(location.item) + " to " + str(location.name))
+        #         items_id.append(location.item.code)
+        #         items_address.append(name_to_dw_code[location.item.name])
+        #         locations_address.append(item_dictionary[location_dictionary[location.name].default_item].dw_code)
+        #         locations_id.append(location.address)
+        #         if location.item.player == self.player:
+        #             locations_target.append(name_to_dw_code[location.item.name])
+        #         else:
+        #             locations_target.append(0)
+        #         continue
+
+        #     if location.category == DigimonWorldLocationCategory.MISC:
+        #         #print("Skipping misc location: " + location.name)
+        #         continue
+        #     #print("Attempting to fill location: " + location.name)
+        #     # Skip events
+        #     if location.item.code is None:
+        #         #print("Skipping event: " + location.name)
+        #         continue
+
+        #     if location.item.player == self.player:
+        #         #print("Adding " + str(location.item) + " to " + location.name)
+        #         items_id.append(location.item.code)
+        #         items_address.append(name_to_dw_code[location.item.name])
+
+        # for location in self.multiworld.get_filled_locations():
+        #     if location.item.player == self.player or location.player == self.player:
+        #         print(f"Debug: Item {location.item.name} placed at {location.name}")
+        #print("items_id: " + str(items_id))
+        #print("items_address: " + str(items_address))
+        #print("locations_id: " + str(locations_id))
+        #print("locations_address: " + str(locations_address))
+        #print("locations_target: " + str(locations_target))
 
         slot_data = {
             "options": {
-                "guaranteed_items": self.multiworld.guaranteed_items[self.player].value,
-                "exp_multiplier": self.multiworld.exp_multiplier[self.player].value,
-                "progressive_stats": self.multiworld.progressive_stats[self.player].value,
-                "random_starter": self.multiworld.random_starter[self.player].value
+                "guaranteed_items": self.options.guaranteed_items.value,
+                "exp_multiplier": self.options.exp_multiplier.value,
+                "progressive_stats": self.options.progressive_stats.value,
+                "random_starter": self.options.random_starter.value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server

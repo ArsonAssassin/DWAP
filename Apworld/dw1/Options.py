@@ -1,6 +1,7 @@
 import typing
+from dataclasses import dataclass
+from Options import Toggle, DefaultOnToggle, Option, Range, Choice, ItemDict, DeathLink, PerGameCommonOptions
 
-from Options import Toggle, DefaultOnToggle, Option, Range, Choice, ItemDict, DeathLink
 
 
 class GuaranteedItemsOption(ItemDict):
@@ -15,6 +16,21 @@ class ExpMultiplierOption(Range):
     range_end = 10
     default = 1
 
+class GoalOption(Choice):
+    """Sets the goal for the game"""
+    display_name = "Goal"
+    default = 0
+    option_prosperity = 0
+    #option_machinedramon = 1    
+
+class RequiredProsperityOption(Range):
+    """Sets the required prosperity points to complete the game"""
+    display_name = "Required Prosperity Points"
+    min_value = 1
+    range_start = 1
+    range_end = 100
+    default = 100
+
 class ProgressiveStatOption(DefaultOnToggle):
     """Enables Progressive Stat gain caps"""
     display_name = "Progressive Stat Caps"
@@ -28,11 +44,13 @@ class RandomStarterOption(Choice):
     option_vanilla = 0
     option_all = 1
     option_rookie = 2
+    default = 2
 
-digimon_world_options: typing.Dict[str, Option] = {
-
-    "guaranteed_items": GuaranteedItemsOption,
-    "exp_multiplier": ExpMultiplierOption,
-    "progressive_stats": ProgressiveStatOption,
-    "random_starter": RandomStarterOption,
-}
+@dataclass
+class DigimonWorldOption(PerGameCommonOptions):
+    #goal: GoalOption
+    required_prosperity: RequiredProsperityOption
+    guaranteed_items: GuaranteedItemsOption
+    exp_multiplier: ExpMultiplierOption
+    progressive_stats: ProgressiveStatOption
+    random_starter: RandomStarterOption
