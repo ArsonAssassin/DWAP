@@ -30,7 +30,7 @@ class DigimonWorldWeb(WebWorld):
 
 class DigimonWorldWorld(World):
     """
-    Digimon World is a game.
+    Digimon World is a game about raising digital monsters and recruiting allies to save the digital world.
     """
 
     game: str = "Digimon World"
@@ -84,16 +84,9 @@ class DigimonWorldWorld(World):
         prospEntrance = Entrance(self.player, "Enter Prosperity", regions["Menu"])
         regions["Menu"].exits.append(recruitEntrance)
         regions["Menu"].exits.append(prospEntrance)
-        #regions["Recruitment"].exits.append(Entrance(self.player, "Enter Prosperity", regions["Menu"]))
-        #regions["Prosperity"].exits.append(Entrance(self.player, "Enter Recruitment", regions["Menu"]))
         recruitEntrance.connect(regions["Recruitment"])
         prospEntrance.connect(regions["Prosperity"])
-
-        #self.multiworld.get_entrance("New Game", self.player).connect(regions["Prosperity"])
-        #create_connection("New Game", "Recruitment")
-        #create_connection("Enter Recruitment", "Recruitment")
-        #create_connection("Enter Prosperity", "Prosperity")
-       
+      
         for entrance in self.multiworld.get_entrances(self.player):
             print("Entrance: " + entrance.name)
         for region in self.multiworld.regions:
@@ -171,10 +164,6 @@ class DigimonWorldWorld(World):
         foo = BuildItemPool(itempoolSize, progressiveStatsEnabled, self.options.guaranteed_items.value)
         print("Created item pool size: " + str(len(foo)))
 
-        
-
-
-
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
         print("marked " + str(len(removable_items)) + " items as removable")
 
@@ -182,30 +171,6 @@ class DigimonWorldWorld(World):
             print("removable item: " + item.name)
             itempool.remove(item)
             itempool.append(self.create_item(foo.pop().name))
-
-        # guaranteed_items = self.options.guaranteed_items.value
-        # for item_name in guaranteed_items:
-        #     if len(removable_items) == 0:
-        #         break
-        #     num_existing_copies = len([item for item in itempool if item.name == item_name])
-        #     for _ in range(guaranteed_items[item_name]):
-        #         if num_existing_copies > 0:
-        #             num_existing_copies -= 1
-        #             continue
-        #         if len(removable_items) == 0:
-        #             break
-        #         removable_shortlist = [
-        #             item for item
-        #             in removable_items
-        #             if item_dictionary[item.name].category == item_dictionary[item_name].category
-        #         ]
-        #         if len(removable_shortlist) == 0:
-        #             removable_shortlist = removable_items
-        #         removed_item = self.multiworld.random.choice(removable_shortlist)
-        #         #print(f"Replacing {removed_item.name} with {item_name}")
-        #         removable_items.remove(removed_item)
-        #         itempool.remove(removed_item)
-        #         itempool.append(self.create_item(item_name))
 
         # Add regular items to itempool
         self.multiworld.itempool += itempool
@@ -226,6 +191,7 @@ class DigimonWorldWorld(World):
     def create_item(self, name: str) -> Item:
         useful_categories = {
             DigimonWorldItemCategory.CONSUMABLE,
+            DigimonWorldItemCategory.DV,
             DigimonWorldItemCategory.MISC,
         }
         data = self.item_name_to_id[name]
