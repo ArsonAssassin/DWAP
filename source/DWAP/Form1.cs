@@ -21,6 +21,7 @@ namespace DWAP
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
+        public static Randomiser RandomSettings { get; set; }
         bool firstConnect = true;
         public Form1()
         {
@@ -62,8 +63,9 @@ namespace DWAP
             await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
 
             timer1.Start();
+            ReadTechniques();
             ConfigureOptions(Client.Options);
-
+           
             Client.ItemReceived += (e, args) =>
             {
                 WriteLine($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
@@ -181,6 +183,14 @@ namespace DWAP
         }
         private async void ConfigureOptions(Dictionary<string, object> options)
         {
+            int randomSeed = 0;
+            foreach (char c in Client.CurrentSession.RoomState.Seed)
+            {
+                randomSeed += Convert.ToInt32(c);
+            }
+            randomSeed += Client.CurrentSession.ConnectionInfo.Slot;
+            var randomOptions = new RandomiserOptions(randomSeed);
+
             if (options.ContainsKey("exp_multiplier"))
             {
                 ExpMultiplier = Convert.ToInt32(options["exp_multiplier"]);
@@ -200,44 +210,41 @@ namespace DWAP
                 var starterOption = Convert.ToInt32(options["random_starter"]);
                 if (starterOption == 0)
                 {
-                    return;
-                }
-                WriteLine("Randomising Starter");
-                var seed = Client.CurrentSession.RoomState.Seed;
-                var numericSeed = 0;
-                foreach (char c in seed)
+                    randomOptions.StarterRandomisation = StarterRandomisation.Vanilla;
+                }           
+                else if (starterOption == 1)
                 {
-                    numericSeed += Convert.ToInt32(c);
-                }
-                var random = new Random(numericSeed);
-                byte starter = 0;
-                if (starterOption == 1)
-                {
-                    starter = (byte)random.Next(1, 65);
-                    Memory.WriteByte(Addresses.Starter1, starter);
-                    Memory.WriteByte(Addresses.Starter2, starter);
+                    randomOptions.StarterRandomisation = StarterRandomisation.All;
                 }
                 else if (starterOption == 2)
                 {
-                    starter = (byte)Helpers.GetRookieNum(random.Next(0, 8));
-                    Memory.WriteByte(Addresses.Starter1, starter);
-                    Memory.WriteByte(Addresses.Starter2, starter);
+                    randomOptions.StarterRandomisation = StarterRandomisation.RookieOnly;
+                   
                 }
+
+
+                RandomSettings = new Randomiser(randomOptions);
+                WriteLine("Running Randomisation");
+                RandomSettings.Generate();
+                WriteLine("Writing new Starters");
+                Memory.WriteByte(Addresses.Starter1, RandomSettings.Starter);
+                Memory.WriteByte(Addresses.Starter2, RandomSettings.Starter);
+
                 WriteLine("Checking for existing moveset");
                 if (!CheckForMoves())
                 {
                     _ = Task.Run(async () =>
-                     {
-                         try
-                         {
-                             await WaitForJijimonIntro();
-                             WriteStarterMove(starter);
-                         }
-                         catch (Exception ex)
-                         {
-                             WriteLine(ex.Message);
-                         }
-                     }).ConfigureAwait(false);
+                    {
+                        try
+                        {
+                            await WaitForJijimonIntro();
+                            WriteStarterMove(RandomSettings.Starter);
+                        }
+                        catch (Exception ex)
+                        {
+                            WriteLine(ex.Message);
+                        }
+                    }).ConfigureAwait(false);
                 }
             }
         }
@@ -321,6 +328,53 @@ namespace DWAP
                     break;
             }
             Memory.WriteByte(Addresses.TechniqueSlot1, 46);
+        }
+        private void ReadTechniques()
+        {
+            WriteLine("Reading Technique Data");
+            List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
+            var currentAddress = Addresses.TechniqueStartAddress;
+            var learningChanceAddress = Addresses.LearningChanceStartAddress;
+            for(int i = 0; i < 120; i++)
+            {
+                DigimonTechniqueData tech = new DigimonTechniqueData();
+                tech.Unknown1 = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Unknown2 = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.AITargetDistance = Memory.ReadShort(currentAddress);
+                currentAddress += Addresses.ShortOffset;
+                tech.Power = Memory.ReadShort(currentAddress);
+                currentAddress += Addresses.ShortOffset;
+                tech.MP = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.IFrames = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Range = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Type = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.StatusEffect = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.BlockingFactor = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.StatusChance = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Unknown3 = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Unknown4 = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.Unknown5 = Memory.ReadByte(currentAddress);
+                currentAddress += Addresses.ByteOffset;
+                tech.LearningChance1 = Memory.ReadByte(learningChanceAddress);
+                learningChanceAddress += Addresses.ByteOffset;
+                tech.LearningChance2 = Memory.ReadByte(learningChanceAddress);
+                learningChanceAddress += Addresses.ByteOffset;
+                tech.LearningChance3 = Memory.ReadByte(learningChanceAddress);
+                learningChanceAddress += Addresses.ByteOffset;
+                techniques.Add(tech);
+            }
+            WriteLine("Techniques Loaded");
         }
         private byte GetStarterMove(byte starter)
         {
@@ -497,13 +551,21 @@ namespace DWAP
 
         private async void connectbtn_Click(object sender, EventArgs e)
         {
-            var valid = ValidateSettings();
-            if (!valid)
+            if (!(Client?.IsConnected ?? false))
             {
-                WriteLine("Invalid settings, please check your input and try again.");
-                return;
+                var valid = ValidateSettings();
+                if (!valid)
+                {
+                    WriteLine("Invalid settings, please check your input and try again.");
+                    return;
+                }
+                Connect().ConfigureAwait(false);
             }
-            Connect().ConfigureAwait(false);
+            else
+            {
+                WriteLine("Disconnecting...");
+                Client.Disconnect();
+            }
         }
         private bool ValidateSettings()
         {

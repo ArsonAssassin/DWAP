@@ -8,6 +8,10 @@ namespace DWAP
 {
     public class Addresses
     {
+        public const int ByteOffset = 0x00000001;
+        public const int ShortOffset = 0x00000002;
+        public const int IntOffset = 0x00000004;
+
         public const int LastScript = 0x00B8C97C;
         public const int MaxHp = 0x00BAD190;
         public const int MaxMp = 0x00BAD192;
@@ -23,5 +27,8 @@ namespace DWAP
         public const int Starter2 = 0x00B46370;
 
         public const int TechniqueSlot1 = 0x00BAD18C;
+
+        public const int TechniqueStartAddress = 0x00B7DBDC;
+        public const int LearningChanceStartAddress = 0x00B7D944;
     }
 }

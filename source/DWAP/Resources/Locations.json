@@ -444,13 +444,5 @@
     "CheckValue": "0xFFFFFFFF",
     "CompareType": 0
 
-  },
-  {
-    "Name": "1 Prosperity",
-    "Id": 694001,
-    "Address": "0x00C159D2",
-    "CheckType": 3,
-    "CheckValue": "0",
-    "CompareType": 1
   }
 ]
