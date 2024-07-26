@@ -1,6 +1,6 @@
+using Archipelago.Core.Util;
 using Archipelago.ePSXe;
-using Archipelago.ePSXe.Models;
-using Archipelago.ePSXe.Util;
+using Archipelago.Core.Models;
 using DWAP.RomPatcher;
 using Newtonsoft.Json;
 using System.Media;
@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.Design.AxImporter;
+using Archipelago.Core;
 
 namespace DWAP
 {
@@ -49,7 +50,7 @@ namespace DWAP
                 WriteLine("ePSXE not running, open ePSXe and launch the game before connecting!");
                 return;
             }
-            Client = new ArchipelagoClient();
+            Client = new ArchipelagoClient(client);
 
 
             Client.Connected += OnConnected;
@@ -128,8 +129,8 @@ namespace DWAP
             //Get matching item pile in inventory
             for (int i = 0; i < inventorySize; i++)
             {
-                var slotAddress = 0x00B94E14 + i;
-                var amountAddress = 0x00B94E32 + i;
+                uint slotAddress = (uint)(0x00B94E14 + i);
+                uint amountAddress = (uint)(0x00B94E32 + i);
                 var currentItemInSlot = Memory.ReadByte(slotAddress);
                 if (currentItemInSlot == consumable.Id)
                 {
@@ -149,7 +150,7 @@ namespace DWAP
             }
 
             //add to item bank
-            var itemBankAddress = Addresses.ItemBankBaseAddress + localId;
+            uint itemBankAddress = (uint)(Addresses.ItemBankBaseAddress + localId);
             var storedItemCount = Memory.ReadByte(itemBankAddress);
             if (storedItemCount == 255)
             {
@@ -161,16 +162,16 @@ namespace DWAP
             }
         }
 
-        private Tuple<int, int> GetEmptyInventorySlot()
+        private Tuple<uint, uint> GetEmptyInventorySlot()
         {
-            var inventorySize = (int)Memory.ReadByte(Addresses.InventorySize);
+            var inventorySize = (uint)Memory.ReadByte(Addresses.InventorySize);
             for (int i = 0; i < inventorySize; i++)
             {
-                var slotAddress = 0x00B94E14 + i;
-                var amountAddress = 0x00B94E32 + i;
+                uint slotAddress = (uint)(0x00B94E14 + i);
+                uint amountAddress = (uint)(0x00B94E32 + i);
                 if (Memory.ReadByte(slotAddress) == 255)
                 {
-                    return new Tuple<int, int>(slotAddress, amountAddress);
+                    return new Tuple<uint, uint>(slotAddress, amountAddress);
                 }
             }
             return null;
@@ -333,8 +334,8 @@ namespace DWAP
         {
             WriteLine("Reading Technique Data");
             List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
-            var currentAddress = Addresses.TechniqueStartAddress;
-            var learningChanceAddress = Addresses.LearningChanceStartAddress;
+            uint currentAddress = Addresses.TechniqueStartAddress;
+            uint learningChanceAddress = Addresses.LearningChanceStartAddress;
             for(int i = 0; i < 120; i++)
             {
                 DigimonTechniqueData tech = new DigimonTechniqueData();

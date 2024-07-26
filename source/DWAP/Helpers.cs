@@ -1,4 +1,4 @@
-﻿using Archipelago.ePSXe.Models;
+﻿using Archipelago.Core.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
