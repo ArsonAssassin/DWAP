@@ -225,23 +225,29 @@ item_descriptions = {
 
 item_dictionary = {item_data.name: item_data for item_data in _all_items}
 
-def BuildItemPool(count, includeProgressive, guaranteed_items):
+def BuildItemPool(count, options):
     item_pool = []
 
     consumable_count = round(count * 0.6)
     dv_count = random.randint(1, 10)
     bit_count = count - (consumable_count + dv_count)
 
-    if guaranteed_items:
-        for item_name in guaranteed_items:
+    if options.guaranteed_items.value:
+        for item_name in options.guaranteed_items.value:
             item = item_dictionary[item_name]
             item_pool.append(item)
             bit_count -= 1
-    if(includeProgressive):
+    if(options.progressive_stats.value):
         # add 9 stat cap items to the pool
-        for i in range(9):
-            item_pool.append(item_dictionary["Progressive Stat Cap"])
-            bit_count -= 1
+        if(options.early_statcap.value):
+            
+            for i in range(8):
+                item_pool.append(item_dictionary["Progressive Stat Cap"])
+                bit_count -= 1
+        else: 
+            for i in range(9):
+                item_pool.append(item_dictionary["Progressive Stat Cap"])
+                bit_count -= 1
 
     for i in range(consumable_count):
         consumables = [item for item in _all_items if item.category == DigimonWorldItemCategory.CONSUMABLE]

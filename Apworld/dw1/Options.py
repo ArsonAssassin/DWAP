@@ -16,6 +16,10 @@ class ExpMultiplierOption(Range):
     range_end = 10
     default = 1
 
+class EnsureEarlyStatCapOption(DefaultOnToggle):
+    """Places a Stat Cap in the first properity point location"""
+    display_name = "Ensure Early Stat Cap"    
+
 class GoalOption(Choice):
     """Sets the goal for the game"""
     display_name = "Goal"
@@ -49,6 +53,7 @@ class RandomStarterOption(Choice):
 @dataclass
 class DigimonWorldOption(PerGameCommonOptions):
     #goal: GoalOption
+    early_statcap: EnsureEarlyStatCapOption
     required_prosperity: RequiredProsperityOption
     guaranteed_items: GuaranteedItemsOption
     exp_multiplier: ExpMultiplierOption

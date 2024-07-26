@@ -155,18 +155,23 @@ class DigimonWorldWorld(World):
                     #print("Adding skip item: " + location.default_item_name)
                     skip_items.append(self.create_item(location.default_item_name))
                 elif location.category in self.enabled_location_categories:
+                    if(location.name == "1 Prosperity" and self.options.early_statcap.value):
+                        continue
                     #print("Adding item: " + location.default_item_name)
                     itempoolSize += 1
                     itempool.append(self.create_item(location.default_item_name))
-        progressiveStatsEnabled = self.options.progressive_stats.value
-
+        
         print("Requesting itempool size: " + str(itempoolSize))
-        foo = BuildItemPool(itempoolSize, progressiveStatsEnabled, self.options.guaranteed_items.value)
+        foo = BuildItemPool(itempoolSize, self.options)
         print("Created item pool size: " + str(len(foo)))
+        if self.options.early_statcap.value:
+            print("Adding early stat cap item")
+            location = self.multiworld.get_location("1 Prosperity", self.player)
+            location.place_locked_item(self.create_item("Progressive Stat Cap"))
 
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
         print("marked " + str(len(removable_items)) + " items as removable")
-
+        
         for item in removable_items:
             print("removable item: " + item.name)
             itempool.remove(item)
@@ -407,12 +412,13 @@ class DigimonWorldWorld(World):
 
         slot_data = {
             "options": {
-                "goal": self.options.goal.value,
+                #"goal": self.options.goal.value,
                 "required_prosperity": self.options.required_prosperity.value,
                 "guaranteed_items": self.options.guaranteed_items.value,
                 "exp_multiplier": self.options.exp_multiplier.value,
                 "progressive_stats": self.options.progressive_stats.value,
-                "random_starter": self.options.random_starter.value
+                "random_starter": self.options.random_starter.value,
+                "early_statcap": self.options.early_statcap.value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server
