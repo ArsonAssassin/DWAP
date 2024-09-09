@@ -19,6 +19,7 @@ namespace DWAP
         public static List<DigimonWorldItem> Items { get; set; }
         public static List<Recruitment> RecruitList { get; set; }
         public static List<DigimonItem> DigimonItems { get; set; }
+        public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
@@ -64,9 +65,10 @@ namespace DWAP
             await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
 
             timer1.Start();
-            ReadTechniques();
-            ConfigureOptions(Client.Options);
-           
+            if (Client.Options != null)
+            {
+                ConfigureOptions(Client.Options);
+            }
             Client.ItemReceived += (e, args) =>
             {
                 WriteLine($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
@@ -191,7 +193,25 @@ namespace DWAP
             }
             randomSeed += Client.CurrentSession.ConnectionInfo.Slot;
             var randomOptions = new RandomiserOptions(randomSeed);
-
+            RandomSettings = new Randomiser(randomOptions);
+            WriteLine("Running Randomisation");
+            if (options.ContainsKey("random_starter"))
+            {
+                var starterOption = Convert.ToInt32(options["random_starter"]);
+                if (starterOption == 0)
+                {
+                    randomOptions.StarterRandomisation = StarterRandomisation.Vanilla;
+                }
+                else if (starterOption == 1)
+                {
+                    randomOptions.StarterRandomisation = StarterRandomisation.All;
+                }
+                else if (starterOption == 2)
+                {
+                    randomOptions.StarterRandomisation = StarterRandomisation.RookieOnly;
+                }
+            }
+            RandomSettings.Generate();
             if (options.ContainsKey("exp_multiplier"))
             {
                 ExpMultiplier = Convert.ToInt32(options["exp_multiplier"]);
@@ -208,45 +228,44 @@ namespace DWAP
             }
             if (options.ContainsKey("random_starter"))
             {
-                var starterOption = Convert.ToInt32(options["random_starter"]);
-                if (starterOption == 0)
-                {
-                    randomOptions.StarterRandomisation = StarterRandomisation.Vanilla;
-                }           
-                else if (starterOption == 1)
-                {
-                    randomOptions.StarterRandomisation = StarterRandomisation.All;
-                }
-                else if (starterOption == 2)
-                {
-                    randomOptions.StarterRandomisation = StarterRandomisation.RookieOnly;
-                   
-                }
-
-
-                RandomSettings = new Randomiser(randomOptions);
-                WriteLine("Running Randomisation");
-                RandomSettings.Generate();
                 WriteLine("Writing new Starters");
                 Memory.WriteByte(Addresses.Starter1, RandomSettings.Starter);
                 Memory.WriteByte(Addresses.Starter2, RandomSettings.Starter);
 
                 WriteLine("Checking for existing moveset");
-                if (!CheckForMoves())
+
+            }
+            if (options.ContainsKey("random_techniques"))
+            {
+                _ = Task.Run(async () =>
                 {
-                    _ = Task.Run(async () =>
+                    try
                     {
-                        try
+                        await WaitForJijimonIntro();
+                        WriteLine("Randomising Technique Data");
+                        DigimonTechniques = RandomSettings.ShuffleAndWriteTechniques(DigimonTechniques);
+
+                        if (!CheckForMoves())
                         {
-                            await WaitForJijimonIntro();
-                            WriteStarterMove(RandomSettings.Starter);
+                            _ = Task.Run(async () =>
+                            {
+                                try
+                                {
+                                    await WaitForJijimonIntro();
+                                    WriteStarterMove(RandomSettings.Starter);
+                                }
+                                catch (Exception ex)
+                                {
+                                    WriteLine(ex.Message);
+                                }
+                            }).ConfigureAwait(false);
                         }
-                        catch (Exception ex)
-                        {
-                            WriteLine(ex.Message);
-                        }
-                    }).ConfigureAwait(false);
-                }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLine(ex.Message);
+                    }
+                }).ConfigureAwait(false);
             }
         }
 
@@ -284,61 +303,21 @@ namespace DWAP
         {
             WriteLine("Setting Starter Technique");
             var move = GetStarterMove(starter);
-            switch (move)
-            {
 
-                case 113:
-                case 117:
-                    // do nothing for bubbles
-                    break;
-                case 44:
-                    //Dynamite Kick
-                    Memory.WriteBit(0x00BAD1A5, 4, true);
-                    break;
-                case 0:
-                    //Fire Tower
-                    Memory.WriteBit(0x00BAD1A0, 0, true);
-                    break;
-                case 2:
-                    //Spit Fire
-                    Memory.WriteBit(0x00BAD1A0, 2, true);
-                    break;
-                case 43:
-                    //Sonic Jab
-                    Memory.WriteBit(0x00BAD1A5, 3, true);
-                    break;
-                case 12:
-                    //Static Elect
-                    Memory.WriteBit(0x00BAD1A1, 4, true);
-                    break;
-                case 26:
-                    //Metal Sprinter
-                    Memory.WriteBit(0x00BAD1A3, 2, true);
-                    break;
-                case 55:
-                    //Horizontal Kick
-                    Memory.WriteBit(0x00BAD1A6, 7, true);
-                    break;
-                case 23:
-                    //Tear drop
-                    Memory.WriteBit(0x00BAD1A2, 7, true);
-                    break;
-                case 37:
-                    //Poison Claw
-                    Memory.WriteBit(0x00BAD1A4, 5, true);
-                    break;
-            }
+            Memory.WriteBit(move.Address, move.AddressBit, true);
+
             Memory.WriteByte(Addresses.TechniqueSlot1, 46);
         }
-        private void ReadTechniques()
+        private List<DigimonTechniqueData> ReadTechniques()
         {
             WriteLine("Reading Technique Data");
             List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
             uint currentAddress = Addresses.TechniqueStartAddress;
             uint learningChanceAddress = Addresses.LearningChanceStartAddress;
-            for(int i = 0; i < 120; i++)
+            for (int i = 0; i < 120; i++)
             {
                 DigimonTechniqueData tech = new DigimonTechniqueData();
+                tech.Slot = i;
                 tech.Unknown1 = Memory.ReadByte(currentAddress);
                 currentAddress += Addresses.ByteOffset;
                 tech.Unknown2 = Memory.ReadByte(currentAddress);
@@ -373,22 +352,20 @@ namespace DWAP
                 learningChanceAddress += Addresses.ByteOffset;
                 tech.LearningChance3 = Memory.ReadByte(learningChanceAddress);
                 learningChanceAddress += Addresses.ByteOffset;
+                tech = tech.PopulateTechData();
                 techniques.Add(tech);
             }
             WriteLine("Techniques Loaded");
+            return techniques;
         }
-        private byte GetStarterMove(byte starter)
+
+        private DigimonTechniqueData GetStarterMove(byte starter)
         {
             var stage = GetDigimonStage(starter);
-            if (stage == DigimonStage.baby)
+            if (stage == DigimonStage.baby || stage == DigimonStage.intraining)
             {
                 WriteLine("Teaching Bubble");
-                return 113;
-            }
-            if (stage == DigimonStage.intraining)
-            {
-                WriteLine("Teaching Bubble");
-                return 117;
+                return DigimonTechniques.First(x => x.Name == "Bubble");
             }
 
             byte[] spitFireStarters = [3, 5, 7, 8, 9, 10, 19, 21, 22, 34, 36, 45, 47, 56];
@@ -402,50 +379,50 @@ namespace DWAP
             {
                 //Mojyamon gets Dynamite Kick
                 WriteLine("Teaching Dynamite Kick");
-                return 0x2C;
+                return DigimonTechniques.First(x => x.Name == "Dynamite Kick");
             }
             if (starter == 62)
             {
                 WriteLine("Teaching Fire Tower");
                 //Weregarurumon only knows Fire Tower
-                return 0x00;
+                return DigimonTechniques.First(x => x.Name == "Fire Tower");
             }
             if (spitFireStarters.Contains(starter))
             {
                 WriteLine("Teaching Spit Fire");
-                return 0x02;
+                return DigimonTechniques.First(x => x.Name == "Spit Fire");
             }
             if (sonicJabStarters.Contains(starter))
             {
                 WriteLine("Teaching Sonic Jab");
-                return 0x2B;
+                return DigimonTechniques.First(x => x.Name == "Sonic Jab");
             }
             if (staticElectStarters.Contains(starter))
             {
                 WriteLine("Teaching Static Elect");
-                return 0x0C;
+                return DigimonTechniques.First(x => x.Name == "Static Elect");
             }
             if (metalSprintStarters.Contains(starter))
             {
                 WriteLine("Teaching Metal Sprinter");
-                return 0x1A;
+                return DigimonTechniques.First(x => x.Name == "Metal Sprinter");
             }
             if (horizontalKickStarters.Contains(starter))
             {
                 WriteLine("Teaching Horizontal Kick");
-                return 0x37;
+                return DigimonTechniques.First(x => x.Name == "Horizontal Kick");
             }
             if (teardropStarters.Contains(starter))
             {
                 WriteLine("Teaching Tear Drop");
-                return 0x17;
+                return DigimonTechniques.First(x => x.Name == "Tear Drop");
             }
             if (poisonClawStarters.Contains(starter))
             {
                 WriteLine("Teaching Poison Claw");
-                return 0x25;
+                return DigimonTechniques.First(x => x.Name == "Poison Claw");
             }
-            return 0x02;
+            return DigimonTechniques.First(x => x.Name == "Spit Fire");
 
         }
         private DigimonStage GetDigimonStage(byte id)
@@ -552,7 +529,7 @@ namespace DWAP
 
         private async void connectbtn_Click(object sender, EventArgs e)
         {
-            if (!(Client?.IsConnected ?? false))
+            if (Client == null || !(Client?.IsConnected ?? false))
             {
                 var valid = ValidateSettings();
                 if (!valid)
@@ -562,7 +539,7 @@ namespace DWAP
                 }
                 Connect().ConfigureAwait(false);
             }
-            else
+            else if (Client != null)
             {
                 WriteLine("Disconnecting...");
                 Client.Disconnect();
@@ -598,6 +575,7 @@ namespace DWAP
             Items = Helpers.GetItems();
             RecruitList = Helpers.GetRecruitment();
             DigimonItems = Helpers.GetConsumables();
+            DigimonTechniques = ReadTechniques();
             WriteLine("Ready to connect!");
         }
 
@@ -626,12 +604,12 @@ namespace DWAP
             Point clickPosition = pictureBox1.PointToClient(Cursor.Position);
             float relativeX = (float)clickPosition.X / pictureBox1.Width;
             float relativeY = (float)clickPosition.Y / pictureBox1.Height;
-            Rectangle agumonRegion = new Rectangle(5, 10, 50, 40); 
-            Rectangle elecmonRegion = new Rectangle(55, 0, 40, 50);  
-            Rectangle betamonRegion = new Rectangle(75, 20, 50, 40); 
-            Rectangle gabumonRegion = new Rectangle(5, 50, 50, 50);  
-            Rectangle patamonRegion = new Rectangle(40, 80, 50, 50);  
-            Rectangle biyomonRegion = new Rectangle(70, 55, 50, 50); 
+            Rectangle agumonRegion = new Rectangle(5, 10, 50, 40);
+            Rectangle elecmonRegion = new Rectangle(55, 0, 40, 50);
+            Rectangle betamonRegion = new Rectangle(75, 20, 50, 40);
+            Rectangle gabumonRegion = new Rectangle(5, 50, 50, 50);
+            Rectangle patamonRegion = new Rectangle(40, 80, 50, 50);
+            Rectangle biyomonRegion = new Rectangle(70, 55, 50, 50);
 
             string soundFile = "";
 

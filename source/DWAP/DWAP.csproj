@@ -63,7 +63,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Archipelago.ePSXe\Archipelago.ePSXe.csproj" />
+    <PackageReference Include="Archipelago.ePSXe" Version="0.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Archipelago.Core\Archipelago.Core.csproj" />
     <ProjectReference Include="..\DWAP.RomPatcher\DWAP.RomPatcher.csproj" />
   </ItemGroup>
 

@@ -115,7 +115,8 @@ location_tables = {
     [
     ],
     "Misc": 
-    [           
+    [     
+        DigimonWorldLocationData("Free Starter Soul",                   "1000 Bits", DigimonWorldLocationCategory.EVENT)
     ],
     "Prosperity":
     [
@@ -219,7 +220,8 @@ location_tables = {
         DigimonWorldLocationData("98 Prosperity",                       "Rain Plant",                   DigimonWorldLocationCategory.EVENT),
         DigimonWorldLocationData("99 Prosperity",                        "Rain Plant",                    DigimonWorldLocationCategory.EVENT),
         DigimonWorldLocationData("100 Prosperity",                       "Rain Plant",                   DigimonWorldLocationCategory.EVENT),
-    ]
+    ],
+    
 }
 
 location_dictionary: Dict[str, DigimonWorldLocationData] = {}

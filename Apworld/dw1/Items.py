@@ -5,12 +5,13 @@ from BaseClasses import Item
 
 
 class DigimonWorldItemCategory(IntEnum):
-    CONSUMABLE = 0
+    CONSUMABLE = 0,
     MISC = 1,
     EVENT = 2,
     RECRUIT = 3,
     SKIP = 4,
-    DV = 5
+    DV = 5,
+    SOUL = 6
 
 
 class DigimonWorldItemData(NamedTuple):
@@ -31,7 +32,9 @@ class DigimonWorldItem(Item):
 key_item_names = {
     #"Progressive Stat Cap"
 }
-
+key_item_categories = {
+    DigimonWorldItemCategory.SOUL
+}
 
 _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [    
     ("Agumon",             1000, DigimonWorldItemCategory.RECRUIT),  
@@ -218,6 +221,57 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("1000 Bits",            3001, DigimonWorldItemCategory.MISC),      
     ("5000 Bits",            3002, DigimonWorldItemCategory.MISC),      
     #("Bridge Fixed",            3001, DigimonWorldItemCategory.EVENT),  
+    
+    #("Agumon Soul",             4000, DigimonWorldItemCategory.SOUL),  
+    ("Betamon Soul",            4001, DigimonWorldItemCategory.SOUL),  
+    #("Greymon Soul",            4002, DigimonWorldItemCategory.SOUL),  
+    ("Devimon Soul",            4003, DigimonWorldItemCategory.SOUL),  
+    #("Airdramon Soul",          4004, DigimonWorldItemCategory.SOUL),  
+    ("Tyrannomon Soul",         4005, DigimonWorldItemCategory.SOUL),  
+    ("Meramon Soul",            4006, DigimonWorldItemCategory.SOUL),  
+    ("Seadramon Soul",          4007, DigimonWorldItemCategory.SOUL),  
+    ("Numemon Soul",            4008, DigimonWorldItemCategory.SOUL),  
+    #("MetalGreymon Soul",       4009, DigimonWorldItemCategory.SOUL),  
+    ("Mamemon Soul",            4010, DigimonWorldItemCategory.SOUL),  
+    ("Monzaemon Soul",          4011, DigimonWorldItemCategory.SOUL),  
+    ("Gabumon Soul",            4012, DigimonWorldItemCategory.SOUL),  
+    ("Elecmon Soul",            4013, DigimonWorldItemCategory.SOUL),  
+    ("Kabuterimon Soul",        4014, DigimonWorldItemCategory.SOUL),  
+    ("Angemon Soul",            4015, DigimonWorldItemCategory.SOUL),  
+    ("Birdramon Soul",          4016, DigimonWorldItemCategory.SOUL),  
+    ("Garurumon Soul",          4017, DigimonWorldItemCategory.SOUL),  
+    ("Frigimon Soul",           4018, DigimonWorldItemCategory.SOUL),  
+    ("Whamon Soul",             4019, DigimonWorldItemCategory.SOUL),  
+    ("Vegiemon Soul",           4020, DigimonWorldItemCategory.SOUL),  
+    ("SkullGreymon Soul",       4021, DigimonWorldItemCategory.SOUL),  
+    ("MetalMamemon Soul",       4022, DigimonWorldItemCategory.SOUL),  
+    ("Vademon Soul",            4023, DigimonWorldItemCategory.SOUL),  
+    ("Patamon Soul",            4024, DigimonWorldItemCategory.SOUL),  
+    ("Kunemon Soul",            4025, DigimonWorldItemCategory.SOUL),  
+    ("Unimon Soul",             4026, DigimonWorldItemCategory.SOUL),  
+    ("Ogremon Soul",            4027, DigimonWorldItemCategory.SOUL),  
+    ("Shellmon Soul",           4028, DigimonWorldItemCategory.SOUL),  
+    ("Centarumon Soul",         4029, DigimonWorldItemCategory.SOUL),  
+    ("Bakemon Soul",            4030, DigimonWorldItemCategory.SOUL),  
+    ("Drimogemon Soul",         4031, DigimonWorldItemCategory.SOUL),  
+    ("Sukamon Soul",            4032, DigimonWorldItemCategory.SOUL),  
+    ("Andromon Soul",           4033, DigimonWorldItemCategory.SOUL),  
+    ("Giromon Soul",            4034, DigimonWorldItemCategory.SOUL),  
+    ("Etemon Soul",             4035, DigimonWorldItemCategory.SOUL),  
+    ("Biyomon Soul",            4036, DigimonWorldItemCategory.SOUL),  
+    ("Palmon Soul",             4037, DigimonWorldItemCategory.SOUL),  
+    ("Monochromon Soul",        4038, DigimonWorldItemCategory.SOUL),  
+    ("Leomon Soul",             4039, DigimonWorldItemCategory.SOUL),  
+    ("Coelamon Soul",           4040, DigimonWorldItemCategory.SOUL),  
+    ("Kokatorimon Soul",        4041, DigimonWorldItemCategory.SOUL),  
+    ("Kuwagamon Soul",          4042, DigimonWorldItemCategory.SOUL),  
+    ("Mojyamon Soul",           4043, DigimonWorldItemCategory.SOUL),  
+    ("Nanimon Soul",            4044, DigimonWorldItemCategory.SOUL),  
+    ("Megadramon Soul",         4045, DigimonWorldItemCategory.SOUL),  
+    ("Piximon Soul",            4046, DigimonWorldItemCategory.SOUL),  
+    ("Digitamamon Soul",        4047, DigimonWorldItemCategory.SOUL),  
+    ("Penguinmon Soul",         4048, DigimonWorldItemCategory.SOUL),  
+    ("Ninjamon Soul",           4049, DigimonWorldItemCategory.SOUL),  
 ]]
 
 item_descriptions = {
@@ -225,13 +279,22 @@ item_descriptions = {
 
 item_dictionary = {item_data.name: item_data for item_data in _all_items}
 
-def BuildItemPool(count, options):
+def BuildItemPool(count, options, early_unlock):
     item_pool = []
-
-    consumable_count = round(count * 0.6)
-    dv_count = random.randint(1, 10)
-    bit_count = count - (consumable_count + dv_count)
-
+    remaining_count = count
+    soul_count = sum(1 for item in _all_items if item.category == DigimonWorldItemCategory.SOUL) - 1
+    remaining_count = remaining_count - soul_count
+    if(options.progressive_stats.value):
+        if(options.early_statcap.value):
+            remaining_count = remaining_count - 8
+        else:
+            remaining_count = remaining_count - 9
+    consumable_count = round(remaining_count * 0.6)
+    remaining_count = remaining_count - consumable_count
+    dv_count = random.randint(1, remaining_count)
+    remaining_count = remaining_count - dv_count
+    bit_count = remaining_count
+    
     if options.guaranteed_items.value:
         for item_name in options.guaranteed_items.value:
             item = item_dictionary[item_name]
@@ -243,12 +306,14 @@ def BuildItemPool(count, options):
             
             for i in range(8):
                 item_pool.append(item_dictionary["Progressive Stat Cap"])
-                bit_count -= 1
         else: 
             for i in range(9):
                 item_pool.append(item_dictionary["Progressive Stat Cap"])
-                bit_count -= 1
-
+    print("Removing free soul from pool: " + early_unlock)
+    for soul in [soul for soul in _all_items if soul.category == DigimonWorldItemCategory.SOUL]:
+        if soul.name == early_unlock:
+            continue
+        else: item_pool.append(soul)
     for i in range(consumable_count):
         consumables = [item for item in _all_items if item.category == DigimonWorldItemCategory.CONSUMABLE]
         item = random.choice(consumables)

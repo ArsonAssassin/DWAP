@@ -8,6 +8,8 @@ namespace DWAP
 {
     public class DigimonTechniqueData
     {
+        public string Name { get; set; }
+        public int Slot { get; set; }
         public byte Unknown1 { get; set; }
         public byte Unknown2 { get; set; }
         public short AITargetDistance { get; set; }
@@ -25,5 +27,8 @@ namespace DWAP
         public byte LearningChance1 { get; set; }
         public byte LearningChance2 { get; set; }
         public byte LearningChance3 { get; set; }
+
+        public uint Address { get; set; }
+        public int AddressBit { get; set; }
     }
 }

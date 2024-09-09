@@ -11,6 +11,7 @@ namespace DWAP
         public const uint ByteOffset = 0x00000001;
         public const uint ShortOffset = 0x00000002;
         public const uint IntOffset = 0x00000004;
+        public const uint TechniqueOffset = 12 * ByteOffset + 2 * ShortOffset;
 
         public const uint LastScript = 0x00B8C97C;
         public const uint MaxHp = 0x00BAD190;

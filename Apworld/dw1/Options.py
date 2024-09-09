@@ -50,6 +50,15 @@ class RandomStarterOption(Choice):
     option_rookie = 2
     default = 2
 
+class RandomTechniqueOption(Choice):
+    """Randomise the techniques that digimon learn
+    Vanilla = Digimon techniques are unchanged
+    Enabled = Techniques are randomised"""
+    display_name = "Random techniques"
+    option_vanilla = 0
+    option_enabled = 1
+    default = 1
+
 @dataclass
 class DigimonWorldOption(PerGameCommonOptions):
     #goal: GoalOption
@@ -59,3 +68,4 @@ class DigimonWorldOption(PerGameCommonOptions):
     exp_multiplier: ExpMultiplierOption
     progressive_stats: ProgressiveStatOption
     random_starter: RandomStarterOption
+    random_techniques: RandomTechniqueOption

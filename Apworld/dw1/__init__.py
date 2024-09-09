@@ -7,10 +7,11 @@ from Options import Toggle
 from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule, add_rule, add_item_rule
 
-from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, item_descriptions, BuildItemPool
+from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, key_item_categories, item_descriptions, BuildItemPool
 from .Locations import DigimonWorldLocation, DigimonWorldLocationCategory, location_tables, location_dictionary
 from .Options import DigimonWorldOption
-from .Prosperity import calculate_prosperity_points, calculate_reachable_prosperity_points, can_get_points
+from .RecruitDigimon import recruit_digimon_list
+import random
 
 class DigimonWorldWeb(WebWorld):
     bug_report_page = ""
@@ -68,7 +69,7 @@ class DigimonWorldWorld(World):
         regions: Dict[str, Region] = {}
         regions["Menu"] = self.create_region("Menu", [])
         regions.update({region_name: self.create_region(region_name, location_tables[region_name]) for region_name in [
-            "Recruitment", "Prosperity"
+            "Recruitment", "Prosperity", "Misc"
         ]})
         
 
@@ -82,23 +83,13 @@ class DigimonWorldWorld(World):
         #regions["Menu"].create_exit("Recruitment", regions["Recruitment"])
         recruitEntrance = Entrance(self.player, "Enter Recruitment", regions["Menu"])
         prospEntrance = Entrance(self.player, "Enter Prosperity", regions["Menu"])
+        miscEntrance = Entrance(self.player, "Enter Misc", regions["Menu"])
         regions["Menu"].exits.append(recruitEntrance)
         regions["Menu"].exits.append(prospEntrance)
+        regions["Menu"].exits.append(miscEntrance)
         recruitEntrance.connect(regions["Recruitment"])
         prospEntrance.connect(regions["Prosperity"])
-      
-        for entrance in self.multiworld.get_entrances(self.player):
-            print("Entrance: " + entrance.name)
-        for region in self.multiworld.regions:
-            print("Region: " + region.name)
-            for exit in region.exits:
-                print("Region exit: " + exit.name)
-            for entrance in region.entrances:
-                print("Region entrance: " + entrance.name)
-            for location in region.locations:
-                print("Region location: " + location.name)
-
-        
+        miscEntrance.connect(regions["Misc"])
         
     # For each region, add the associated locations retrieved from the corresponding location_table
     def create_region(self, region_name, location_table) -> Region:
@@ -146,23 +137,30 @@ class DigimonWorldWorld(World):
         itempool: List[DigimonWorldItem] = []
         itempoolSize = 0
         
+        early_unlock = None
         #print("Creating items")
         for location in self.multiworld.get_locations(self.player):
-            
-                #print("found item in category: " + str(location.category))
-                item_data = item_dictionary[location.default_item_name]
-                if item_data.category in [DigimonWorldItemCategory.SKIP, DigimonWorldItemCategory.EVENT, DigimonWorldItemCategory.RECRUIT] or location.category == DigimonWorldLocationCategory.RECRUIT:
-                    #print("Adding skip item: " + location.default_item_name)
-                    skip_items.append(self.create_item(location.default_item_name))
-                elif location.category in self.enabled_location_categories:
-                    if(location.name == "1 Prosperity" and self.options.early_statcap.value):
-                        continue
-                    #print("Adding item: " + location.default_item_name)
-                    itempoolSize += 1
-                    itempool.append(self.create_item(location.default_item_name))
+            if location.name == "Free Starter Soul":
+                early_game_digimon = ["Betamon", "Palmon", "Coelamon", "Bakemon", "Centarumon", "Kunemon"]
+                early_unlock = random.choice(early_game_digimon)
+                starter_soul = self.create_item(early_unlock + " Soul")
+                location.place_locked_item(starter_soul)
+                continue
+               
+            #print("found item in category: " + str(location.category))
+            item_data = item_dictionary[location.default_item_name]
+            if item_data.category in [DigimonWorldItemCategory.SKIP, DigimonWorldItemCategory.EVENT, DigimonWorldItemCategory.RECRUIT] or location.category == DigimonWorldLocationCategory.RECRUIT:
+                #print("Adding skip item: " + location.default_item_name)
+                skip_items.append(self.create_item(location.default_item_name))
+            elif location.category in self.enabled_location_categories:
+                if(location.name == "1 Prosperity" and self.options.early_statcap.value):
+                    continue
+                #print("Adding item: " + location.default_item_name)
+                itempoolSize += 1
+                itempool.append(self.create_item(location.default_item_name))
         
         print("Requesting itempool size: " + str(itempoolSize))
-        foo = BuildItemPool(itempoolSize, self.options)
+        foo = BuildItemPool(itempoolSize, self.options, early_unlock)
         print("Created item pool size: " + str(len(foo)))
         if self.options.early_statcap.value:
             print("Adding early stat cap item")
@@ -173,7 +171,6 @@ class DigimonWorldWorld(World):
         print("marked " + str(len(removable_items)) + " items as removable")
         
         for item in removable_items:
-            print("removable item: " + item.name)
             itempool.remove(item)
             itempool.append(self.create_item(foo.pop().name))
 
@@ -188,10 +185,6 @@ class DigimonWorldWorld(World):
             #self.multiworld.itempool.append(skip_item)
             #print("Placing skip item: " + skip_item.name + " in location: " + location.name)
         
-        print("Final Item pool: ")
-        for item in self.multiworld.itempool:
-            print(item.name)
-
 
     def create_item(self, name: str) -> Item:
         useful_categories = {
@@ -201,7 +194,7 @@ class DigimonWorldWorld(World):
         }
         data = self.item_name_to_id[name]
 
-        if name in key_item_names:
+        if name in key_item_names or item_dictionary[name].category in key_item_categories:
             item_classification = ItemClassification.progression
         elif item_dictionary[name].category in useful_categories:
             item_classification = ItemClassification.useful
@@ -210,177 +203,39 @@ class DigimonWorldWorld(World):
 
         return DigimonWorldItem(name, item_classification, data, self.player)
 
+    def get_recruited_digimon(self, state) -> List[str]:
+        recruited_digimon = []
+        for digimon in recruit_digimon_list:            
+            if state.has(digimon.name, self.player):
+                recruited_digimon.append(digimon.name)
+        return recruited_digimon
 
+    def has_digimon_requirements(self, state, digimon) -> bool:
+        existing_recruits = self.get_recruited_digimon(state)
+        for requirement in digimon.digimon_requirements:
+            if requirement not in existing_recruits:
+                return False
+        current_prosperity = sum([digimon.prosperity_value for digimon in recruit_digimon_list if digimon.name in existing_recruits])
+        if not current_prosperity >= digimon.prosperity_requirement:
+            return False
+        has_soul = state.has(digimon.name + " Soul", self.player) or digimon.name == "Agumon"
+        return has_soul
+    
     def get_filler_item_name(self) -> str:
         return "1000 Bits"
-    
-
-    
+        
     def set_rules(self) -> None:        
-        def get_minimum_obtainable_points(state):
-            for points in [1, 2, 3]:
-                if can_get_points(self, state, points):
-                    return points
-            return 0
-        def get_maximum_obtainable_points(state):
-            for points in [3, 2, 1]:
-                if can_get_points(self, state, points):
-                    return points
-            return 0
-
+       
         print("Setting rules")
-        # Set rules for the Recruitment region
-        recruitment_region = self.multiworld.get_region("Recruitment", self.player)
-        for location in recruitment_region.locations:
-            set_rule(location, lambda state: True)  # All Digimon are initially recruitable
-        prosperity_region = self.multiworld.get_region("Prosperity", self.player)
-        print("region length: " + str(len(prosperity_region.locations)))
-        for location in prosperity_region.locations:
-            set_rule(location, lambda state: True)
 
-       # if self.options.goal.value == 0:
         required_prosperity_points = self.options.required_prosperity.value
         print("Setting completion condition for " + str(required_prosperity_points) + " prosperity points")
         completionLocation = self.multiworld.get_location(str(required_prosperity_points) + " Prosperity", self.player)
         self.multiworld.completion_condition[self.player] = lambda state: \
-            completionLocation.can_reach(state) or \
-            calculate_prosperity_points(state, self) >= required_prosperity_points
-        # self.multiworld.completion_condition[self.player] = lambda state: \
-        #             state.has(str(required_prosperity_points) + " Prosperity", self.player) or \
-        #             calculate_prosperity_points(state, self) >= required_prosperity_points
-       # elif self.options.goal.value == 1:
-        #    self.multiworld.completion_condition[self.player] = lambda state: \
-        #                state.has("Machinedramon", self.player)     
-
-        #for location in prosperity_region.locations:
-        #    prosperityVal = location.name.split(" ")[0]
-        #    set_rule(location, lambda state: calculate_reachable_prosperity_points(state, self) >= int(prosperityVal))
-
-        # Define the access rules to the entrances
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Palmon", self.player),
-                  lambda state: state.has("Agumon", self.player))       
-        set_rule(self.multiworld.get_location("Kunemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Meramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Betamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Coelamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Piximon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Centarumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Monochromon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Bakemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Elecmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Patamon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Biyomon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Greymon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Angemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Birdramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Frigimon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Gabumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Garurumon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Kokatorimon", self.player),
-                  lambda state: state.has("Agumon", self.player))  
-        set_rule(self.multiworld.get_location("Mamemon", self.player),
-                  lambda state: state.has("Agumon", self.player))     
-        set_rule(self.multiworld.get_location("Mojyamon", self.player),
-                  lambda state: state.has("Agumon", self.player))     
-        set_rule(self.multiworld.get_location("Monzaemon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Penguinmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Seadramon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Shellmon", self.player),
-                  lambda state: state.has("Agumon", self.player))    
-        set_rule(self.multiworld.get_location("Sukamon", self.player),
-                  lambda state: state.has("Agumon", self.player))   
-        set_rule(self.multiworld.get_location("Whamon", self.player),
-                  lambda state: state.has("Agumon", self.player))   
+            completionLocation.can_reach(state)
         
-          
-        set_rule(self.multiworld.get_location("Kuwagamon", self.player),
-                  lambda state: state.has("Seadramon", self.player))    
-        set_rule(self.multiworld.get_location("Kabuterimon", self.player),
-                  lambda state: state.has("Seadramon", self.player))   
-         
-        set_rule(self.multiworld.get_location("MetalMamemon", self.player),
-                  lambda state: state.has("Whamon", self.player))    
-        set_rule(self.multiworld.get_location("SkullGreymon", self.player),
-                  lambda state: state.has("Greymon", self.player))    
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: state.has("MetalGreymon", self.player))                       
-        set_rule(self.multiworld.get_location("Digitamamon", self.player),
-                  lambda state: state.has("Airdramon", self.player))  
-        set_rule(self.multiworld.get_location("Drimogemon", self.player),
-                  lambda state: state.has("Meramon", self.player)) 
-                      
-        set_rule(self.multiworld.get_location("Unimon", self.player),
-                  lambda state: state.has("Centarumon", self.player))    
-        set_rule(self.multiworld.get_location("Tyrannomon", self.player),
-                  lambda state: state.has("Centarumon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Tyrannomon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Leomon", self.player))    
-        set_rule(self.multiworld.get_location("Nanimon", self.player),
-                  lambda state: state.has("Andromon", self.player))    
-        set_rule(self.multiworld.get_location("Andromon", self.player),
-                  lambda state: state.has("Numemon", self.player))    
-        set_rule(self.multiworld.get_location("Numemon", self.player),
-                  lambda state: state.has("Giromon", self.player))    
-        set_rule(self.multiworld.get_location("Giromon", self.player),
-                  lambda state: state.has("Whamon", self.player))  
-        set_rule(self.multiworld.get_location("Vademon", self.player),
-                  lambda state: state.has("Shellmon", self.player))  
-        set_rule(self.multiworld.get_location("Vegiemon", self.player),
-                  lambda state: state.has("Palmon", self.player))         
- 
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-                  lambda state: state.has("MetalGreymon", self.player))       
- 
-        set_rule(self.multiworld.get_location("Devimon", self.player),
-                  lambda state: calculate_reachable_prosperity_points(state, self, "Devimon") >= 50) 
-        set_rule(self.multiworld.get_location("Megadramon", self.player),
-                  lambda state: calculate_reachable_prosperity_points(state, self, "Megadramon") >= 50) 
-        set_rule(self.multiworld.get_location("Digitamamon", self.player),
-                  lambda state: calculate_reachable_prosperity_points(state, self,"Digitamamon") >= 50) 
-        set_rule(self.multiworld.get_location("MetalGreymon", self.player),
-                  lambda state: calculate_reachable_prosperity_points(state, self, "MetalGreymon") >= 50) 
 
-        set_rule(self.multiworld.get_location("Ogremon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Ogremon") >= 6)  
-        set_rule(self.multiworld.get_location("Airdramon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Airdramon") >= 50)   
-        set_rule(self.multiworld.get_location("Greymon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Greymon") >= 25)  
-        set_rule(self.multiworld.get_location("Vademon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Vademon") >= 45) 
-        set_rule(self.multiworld.get_location("Etemon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Etemon") >= 50) 
-        set_rule(self.multiworld.get_location("Ninjamon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Ninjamon") >= 50) 
-        set_rule(self.multiworld.get_location("Leomon", self.player),
-            lambda state: calculate_reachable_prosperity_points(state, self, "Leomon") >= 50) 
-
-
-    
+        
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
 
@@ -418,7 +273,8 @@ class DigimonWorldWorld(World):
                 "exp_multiplier": self.options.exp_multiplier.value,
                 "progressive_stats": self.options.progressive_stats.value,
                 "random_starter": self.options.random_starter.value,
-                "early_statcap": self.options.early_statcap.value
+                "early_statcap": self.options.early_statcap.value,
+                "random_techniques": self.options.random_techniques.value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server

@@ -4,7 +4,7 @@
 
 - [ePSXe version 1.9.0](https://www.epsxe.com/download.php)
 - [DWAP Client](https://github.com/ArsonAssassin/DWAP/releases)
-- [Digimon World APWorld](https://github.com/ArsonAssassin/DWAP/releases)
+- [Digimon World APWorld] (https://github.com/ArsonAssassin/DWAP/releases)
 - Digimon World US ROM. The Archipelago community cannot provide this.
 
 ## Optional Software
