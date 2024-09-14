@@ -30,63 +30,63 @@ class DigimonWorldItem(Item):
 
 
 key_item_names = {
-    #"Progressive Stat Cap"
+    "Progressive Stat Cap"
 }
 key_item_categories = {
-    DigimonWorldItemCategory.SOUL
+    DigimonWorldItemCategory.SOUL, DigimonWorldItemCategory.RECRUIT
 }
 
 _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [    
-    ("Agumon",             1000, DigimonWorldItemCategory.RECRUIT),  
-    ("Betamon",            1001, DigimonWorldItemCategory.RECRUIT),  
-    ("Greymon",            1002, DigimonWorldItemCategory.RECRUIT),  
-    ("Devimon",            1003, DigimonWorldItemCategory.RECRUIT),  
-    ("Airdramon",            1004, DigimonWorldItemCategory.RECRUIT),  
-    ("Tyrannomon",            1005, DigimonWorldItemCategory.RECRUIT),  
-    ("Meramon",            1006, DigimonWorldItemCategory.RECRUIT),  
-    ("Seadramon",            1007, DigimonWorldItemCategory.RECRUIT),  
-    ("Numemon",            1008, DigimonWorldItemCategory.RECRUIT),  
-    ("MetalGreymon",            1009, DigimonWorldItemCategory.RECRUIT),  
-    ("Mamemon",            1010, DigimonWorldItemCategory.RECRUIT),  
-    ("Monzaemon",            1011, DigimonWorldItemCategory.RECRUIT),  
-    ("Gabumon",            1012, DigimonWorldItemCategory.RECRUIT),  
-    ("Elecmon",            1013, DigimonWorldItemCategory.RECRUIT),  
-    ("Kabuterimon",            1014, DigimonWorldItemCategory.RECRUIT),  
-    ("Angemon",            1015, DigimonWorldItemCategory.RECRUIT),  
-    ("Birdramon",            1016, DigimonWorldItemCategory.RECRUIT),  
-    ("Garurumon",            1017, DigimonWorldItemCategory.RECRUIT),  
-    ("Frigimon",            1018, DigimonWorldItemCategory.RECRUIT),  
-    ("Whamon",            1019, DigimonWorldItemCategory.RECRUIT),  
-    ("Vegiemon",            1020, DigimonWorldItemCategory.RECRUIT),  
-    ("SkullGreymon",            1021, DigimonWorldItemCategory.RECRUIT),  
-    ("MetalMamemon",            1022, DigimonWorldItemCategory.RECRUIT),  
-    ("Vademon",            1023, DigimonWorldItemCategory.RECRUIT),  
-    ("Patamon",            1024, DigimonWorldItemCategory.RECRUIT),  
-    ("Kunemon",            1025, DigimonWorldItemCategory.RECRUIT),  
-    ("Unimon",            1026, DigimonWorldItemCategory.RECRUIT),  
-    ("Ogremon",            1027, DigimonWorldItemCategory.RECRUIT),  
-    ("Shellmon",            1028, DigimonWorldItemCategory.RECRUIT),  
-    ("Centarumon",            1029, DigimonWorldItemCategory.RECRUIT),  
-    ("Bakemon",            1030, DigimonWorldItemCategory.RECRUIT),  
-    ("Drimogemon",            1031, DigimonWorldItemCategory.RECRUIT),  
-    ("Sukamon",            1032, DigimonWorldItemCategory.RECRUIT),  
-    ("Andromon",            1033, DigimonWorldItemCategory.RECRUIT),  
-    ("Giromon",            1034, DigimonWorldItemCategory.RECRUIT),  
-    ("Etemon",            1035, DigimonWorldItemCategory.RECRUIT),  
-    ("Biyomon",            1036, DigimonWorldItemCategory.RECRUIT),  
-    ("Palmon",            1037, DigimonWorldItemCategory.RECRUIT),  
-    ("Monochromon",            1038, DigimonWorldItemCategory.RECRUIT),  
-    ("Leomon",            1039, DigimonWorldItemCategory.RECRUIT),  
-    ("Coelamon",            1040, DigimonWorldItemCategory.RECRUIT),  
-    ("Kokatorimon",            1041, DigimonWorldItemCategory.RECRUIT),  
-    ("Kuwagamon",            1042, DigimonWorldItemCategory.RECRUIT),  
-    ("Mojyamon",            1043, DigimonWorldItemCategory.RECRUIT),  
-    ("Nanimon",            1044, DigimonWorldItemCategory.RECRUIT),  
-    ("Megadramon",            1045, DigimonWorldItemCategory.RECRUIT),  
-    ("Piximon",            1046, DigimonWorldItemCategory.RECRUIT),  
-    ("Digitamamon",            1047, DigimonWorldItemCategory.RECRUIT),  
-    ("Penguinmon",            1048, DigimonWorldItemCategory.RECRUIT),  
-    ("Ninjamon",            1049, DigimonWorldItemCategory.RECRUIT),  
+    ("Agumon Recruited",             1000, DigimonWorldItemCategory.RECRUIT),  
+    ("Betamon Recruited",            1001, DigimonWorldItemCategory.RECRUIT),  
+    ("Greymon Recruited",            1002, DigimonWorldItemCategory.RECRUIT),  
+    ("Devimon Recruited",            1003, DigimonWorldItemCategory.RECRUIT),  
+    ("Airdramon Recruited",            1004, DigimonWorldItemCategory.RECRUIT),  
+    ("Tyrannomon Recruited",            1005, DigimonWorldItemCategory.RECRUIT),  
+    ("Meramon Recruited",            1006, DigimonWorldItemCategory.RECRUIT),  
+    ("Seadramon Recruited",            1007, DigimonWorldItemCategory.RECRUIT),  
+    ("Numemon Recruited",            1008, DigimonWorldItemCategory.RECRUIT),  
+    ("MetalGreymon Recruited",            1009, DigimonWorldItemCategory.RECRUIT),  
+    ("Mamemon Recruited",            1010, DigimonWorldItemCategory.RECRUIT),  
+    ("Monzaemon Recruited",            1011, DigimonWorldItemCategory.RECRUIT),  
+    ("Gabumon Recruited",            1012, DigimonWorldItemCategory.RECRUIT),  
+    ("Elecmon Recruited",            1013, DigimonWorldItemCategory.RECRUIT),  
+    ("Kabuterimon Recruited",            1014, DigimonWorldItemCategory.RECRUIT),  
+    ("Angemon Recruited",            1015, DigimonWorldItemCategory.RECRUIT),  
+    ("Birdramon Recruited",            1016, DigimonWorldItemCategory.RECRUIT),  
+    ("Garurumon Recruited",            1017, DigimonWorldItemCategory.RECRUIT),  
+    ("Frigimon Recruited",            1018, DigimonWorldItemCategory.RECRUIT),  
+    ("Whamon Recruited",            1019, DigimonWorldItemCategory.RECRUIT),  
+    ("Vegiemon Recruited",            1020, DigimonWorldItemCategory.RECRUIT),  
+    ("SkullGreymon Recruited",            1021, DigimonWorldItemCategory.RECRUIT),  
+    ("MetalMamemon Recruited",            1022, DigimonWorldItemCategory.RECRUIT),  
+    ("Vademon Recruited",            1023, DigimonWorldItemCategory.RECRUIT),  
+    ("Patamon Recruited",            1024, DigimonWorldItemCategory.RECRUIT),  
+    ("Kunemon Recruited",            1025, DigimonWorldItemCategory.RECRUIT),  
+    ("Unimon Recruited",            1026, DigimonWorldItemCategory.RECRUIT),  
+    ("Ogremon Recruited",            1027, DigimonWorldItemCategory.RECRUIT),  
+    ("Shellmon Recruited",            1028, DigimonWorldItemCategory.RECRUIT),  
+    ("Centarumon Recruited",            1029, DigimonWorldItemCategory.RECRUIT),  
+    ("Bakemon Recruited",            1030, DigimonWorldItemCategory.RECRUIT),  
+    ("Drimogemon Recruited",            1031, DigimonWorldItemCategory.RECRUIT),  
+    ("Sukamon Recruited",            1032, DigimonWorldItemCategory.RECRUIT),  
+    ("Andromon Recruited",            1033, DigimonWorldItemCategory.RECRUIT),  
+    ("Giromon Recruited",            1034, DigimonWorldItemCategory.RECRUIT),  
+    ("Etemon Recruited",            1035, DigimonWorldItemCategory.RECRUIT),  
+    ("Biyomon Recruited",            1036, DigimonWorldItemCategory.RECRUIT),  
+    ("Palmon Recruited",            1037, DigimonWorldItemCategory.RECRUIT),  
+    ("Monochromon Recruited",            1038, DigimonWorldItemCategory.RECRUIT),  
+    ("Leomon Recruited",            1039, DigimonWorldItemCategory.RECRUIT),  
+    ("Coelamon Recruited",            1040, DigimonWorldItemCategory.RECRUIT),  
+    ("Kokatorimon Recruited",            1041, DigimonWorldItemCategory.RECRUIT),  
+    ("Kuwagamon Recruited",            1042, DigimonWorldItemCategory.RECRUIT),  
+    ("Mojyamon Recruited",            1043, DigimonWorldItemCategory.RECRUIT),  
+    ("Nanimon Recruited",            1044, DigimonWorldItemCategory.RECRUIT),  
+    ("Megadramon Recruited",            1045, DigimonWorldItemCategory.RECRUIT),  
+    ("Piximon Recruited",            1046, DigimonWorldItemCategory.RECRUIT),  
+    ("Digitamamon Recruited",            1047, DigimonWorldItemCategory.RECRUIT),  
+    ("Penguinmon Recruited",            1048, DigimonWorldItemCategory.RECRUIT),  
+    ("Ninjamon Recruited",            1049, DigimonWorldItemCategory.RECRUIT),  
     
     ("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),
     ("Med Recovery",           2001, DigimonWorldItemCategory.CONSUMABLE),
@@ -222,16 +222,16 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("5000 Bits",            3002, DigimonWorldItemCategory.MISC),      
     #("Bridge Fixed",            3001, DigimonWorldItemCategory.EVENT),  
     
-    #("Agumon Soul",             4000, DigimonWorldItemCategory.SOUL),  
+    ("Agumon Soul",             4000, DigimonWorldItemCategory.SOUL),  
     ("Betamon Soul",            4001, DigimonWorldItemCategory.SOUL),  
-    #("Greymon Soul",            4002, DigimonWorldItemCategory.SOUL),  
+    ("Greymon Soul",            4002, DigimonWorldItemCategory.SOUL),  
     ("Devimon Soul",            4003, DigimonWorldItemCategory.SOUL),  
-    #("Airdramon Soul",          4004, DigimonWorldItemCategory.SOUL),  
+    ("Airdramon Soul",          4004, DigimonWorldItemCategory.SOUL),  
     ("Tyrannomon Soul",         4005, DigimonWorldItemCategory.SOUL),  
     ("Meramon Soul",            4006, DigimonWorldItemCategory.SOUL),  
     ("Seadramon Soul",          4007, DigimonWorldItemCategory.SOUL),  
     ("Numemon Soul",            4008, DigimonWorldItemCategory.SOUL),  
-    #("MetalGreymon Soul",       4009, DigimonWorldItemCategory.SOUL),  
+    ("MetalGreymon Soul",       4009, DigimonWorldItemCategory.SOUL),  
     ("Mamemon Soul",            4010, DigimonWorldItemCategory.SOUL),  
     ("Monzaemon Soul",          4011, DigimonWorldItemCategory.SOUL),  
     ("Gabumon Soul",            4012, DigimonWorldItemCategory.SOUL),  
@@ -279,11 +279,10 @@ item_descriptions = {
 
 item_dictionary = {item_data.name: item_data for item_data in _all_items}
 
-def BuildItemPool(count, options, early_unlock):
+
+def BuildItemPool(count, options):
     item_pool = []
     remaining_count = count
-    soul_count = sum(1 for item in _all_items if item.category == DigimonWorldItemCategory.SOUL) - 1
-    remaining_count = remaining_count - soul_count
     if(options.progressive_stats.value):
         if(options.early_statcap.value):
             remaining_count = remaining_count - 8
@@ -309,11 +308,6 @@ def BuildItemPool(count, options, early_unlock):
         else: 
             for i in range(9):
                 item_pool.append(item_dictionary["Progressive Stat Cap"])
-    print("Removing free soul from pool: " + early_unlock)
-    for soul in [soul for soul in _all_items if soul.category == DigimonWorldItemCategory.SOUL]:
-        if soul.name == early_unlock:
-            continue
-        else: item_pool.append(soul)
     for i in range(consumable_count):
         consumables = [item for item in _all_items if item.category == DigimonWorldItemCategory.CONSUMABLE]
         item = random.choice(consumables)
