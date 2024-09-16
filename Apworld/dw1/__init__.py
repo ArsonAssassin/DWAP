@@ -152,7 +152,7 @@ class DigimonWorldWorld(World):
                     location.category,
                     location.default_item,
                     self.location_name_to_id[location.name],
-                    new_region)
+                    new_region) 
             else:
                 # Replace non-randomized progression items with events
                 event_item = self.create_item(location.default_item)
@@ -204,7 +204,8 @@ class DigimonWorldWorld(World):
             # print("Adding early stat cap item")
             location = self.multiworld.get_location("1 Prosperity", self.player)
             location.place_locked_item(self.create_item("Progressive Stat Cap"))
-
+        location = self.multiworld.get_location("Start Game", self.player)
+        location.place_locked_item(self.create_item("Agumon Soul"))
         # Add regular items to itempool
         self.multiworld.itempool += itempool
 

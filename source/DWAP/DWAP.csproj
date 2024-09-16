@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>Resources\dwap.ico</ApplicationIcon>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,15 +15,16 @@
     <None Remove="Resources\APItems.json" />
     <None Remove="Resources\betamon.wav" />
     <None Remove="Resources\biyomon.wav" />
+    <None Remove="Resources\DigimonCards.json" />
     <None Remove="Resources\DigimonItems.json" />
+    <None Remove="Resources\DigimonSouls.json" />
     <None Remove="Resources\dwap.ico" />
     <None Remove="Resources\DWAP.png" />
     <None Remove="Resources\elecmon.wav" />
     <None Remove="Resources\gabumon.wav" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\patamon.wav" />
-    <None Remove="Resources\Recruitment.json" />
-    <None Remove="Resources\temp.json" />
+    <None Remove="Resources\Prosperity.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,7 +41,9 @@
     <EmbeddedResource Include="Resources\biyomon.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DigimonCards.json" />
     <EmbeddedResource Include="Resources\DigimonItems.json" />
+    <EmbeddedResource Include="Resources\DigimonSouls.json" />
     <EmbeddedResource Include="Resources\DWAP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -53,13 +56,12 @@
     <EmbeddedResource Include="Resources\patamon.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\temp.json" />
+    <EmbeddedResource Include="Resources\Prosperity.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\APItems.json" />
     <EmbeddedResource Include="Resources\Locations.json" />
-    <EmbeddedResource Include="Resources\Recruitment.json" />
   </ItemGroup>
 
   <ItemGroup>

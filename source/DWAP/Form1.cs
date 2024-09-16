@@ -17,7 +17,7 @@ namespace DWAP
     {
         public static ArchipelagoClient Client { get; set; }
         public static List<DigimonWorldItem> Items { get; set; }
-        public static List<Recruitment> RecruitList { get; set; }
+        public static List<DigimonItem> DigimonSouls { get; set; }
         public static List<DigimonItem> DigimonItems { get; set; }
         public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
         public static int StatCap { get; set; }
@@ -58,12 +58,11 @@ namespace DWAP
             Client.Disconnected += OnDisconnected;
 
             await Client.Connect(hostTextbox.Text, "Digimon World");
-            // var locations = Helpers.GetLocations();
-            var locations = GetRecruitmentLocations();
-            locations.AddRange(Helpers.GetTemp());
-            Client.PopulateLocations(locations);
-            await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
 
+            await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
+            var locations = Helpers.GetProsperityLocations();
+            locations.AddRange(Helpers.GetDigimonCards());
+            Client.PopulateLocations(locations);
             timer1.Start();
             if (Client.Options != null)
             {
@@ -75,12 +74,13 @@ namespace DWAP
                 if (Items.Any(x => x.Id == args.Item.Id))
                 {
                     var item = Items.First(x => x.Id == args.Item.Id);
-                    if (item.Type == ItemType.Recruitment)
+                    if (item.Type == ItemType.Soul)
                     {
-                        RecruitDigimon(item.Name);
-                        //      EnsureRecruitment();
+                        var soulName = item.Name.Split(" ")[0];
+                        var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
+                        Client.MonitorLocations(digimonRecruit);
                     }
-                    else if (item.Type == ItemType.Consumable)
+                    if (item.Type == ItemType.Consumable)
                     {
                         AddDigimonItem(item.Id);
                     }
@@ -103,6 +103,43 @@ namespace DWAP
                     }
                 }
             };
+
+            if (!Client.GameState.CompletedLocations.Any(x => x.Id == 69003000))
+            {
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await WaitForJijimonIntro();
+                        var startGameLocation = new Archipelago.Core.Models.Location() { Id = 69003000, Name = "Start Game" };
+                        Client.SendLocation(startGameLocation);
+                        Client.GameState.CompletedLocations.Add(startGameLocation);
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLine(ex.Message);
+                    }
+                }).ConfigureAwait(false);
+            }
+            var soulLocations = new List<Location>();
+            var acquiredSouls = Helpers.GetAcquiredSouls(Client);
+            if (acquiredSouls.Any())
+            {
+                var recruitLocations = Helpers.GetLocations();
+                foreach (var soul in acquiredSouls)
+                {
+                    var digimonName = soul.Name.Split(" ")[0];
+                    var recruitLocation = recruitLocations.FirstOrDefault(x => x.Name == digimonName);
+                    var recruitEvent = recruitLocations.FirstOrDefault(x => x.Name == $"{digimonName} Recruited");
+                    soulLocations.Add(recruitLocation);
+                    soulLocations.Add(recruitEvent);
+                }
+                if (soulLocations.Any())
+                {
+                    Client.MonitorLocations(soulLocations);
+                }
+            }
+
         }
         private void OnConnected(object sender, EventArgs args)
         {
@@ -226,6 +263,22 @@ namespace DWAP
                 }
                 else StatCap = (boostsReceived * 100) + 100;
             }
+            //if (options.ContainsKey("random_techniques"))
+            //{
+            //    _ = Task.Run(async () =>
+            //    {
+            //        try
+            //        {
+            //            await WaitForJijimonIntro();
+            //            WriteLine("Randomising Technique Data");
+            //            DigimonTechniques = RandomSettings.ShuffleAndWriteTechniques(DigimonTechniques);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            WriteLine(ex.Message);
+            //        }
+            //    }).ConfigureAwait(false);
+            //}
             if (options.ContainsKey("random_starter"))
             {
                 WriteLine("Writing new Starters");
@@ -233,40 +286,25 @@ namespace DWAP
                 Memory.WriteByte(Addresses.Starter2, RandomSettings.Starter);
 
                 WriteLine("Checking for existing moveset");
-
-            }
-            if (options.ContainsKey("random_techniques"))
-            {
-                _ = Task.Run(async () =>
+                if (!CheckForMoves())
                 {
-                    try
+                    _ = Task.Run(async () =>
                     {
-                        await WaitForJijimonIntro();
-                        WriteLine("Randomising Technique Data");
-                        DigimonTechniques = RandomSettings.ShuffleAndWriteTechniques(DigimonTechniques);
-
-                        if (!CheckForMoves())
+                        try
                         {
-                            _ = Task.Run(async () =>
-                            {
-                                try
-                                {
-                                    await WaitForJijimonIntro();
-                                    WriteStarterMove(RandomSettings.Starter);
-                                }
-                                catch (Exception ex)
-                                {
-                                    WriteLine(ex.Message);
-                                }
-                            }).ConfigureAwait(false);
+                            await WaitForJijimonIntro();
+                            WriteStarterMove(RandomSettings.Starter);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLine(ex.Message);
-                    }
-                }).ConfigureAwait(false);
+                        catch (Exception ex)
+                        {
+                            WriteLine(ex.Message);
+                        }
+                    }).ConfigureAwait(false);
+                }
+
             }
+
+
         }
 
         public async Task WaitForJijimonIntro()
@@ -358,7 +396,6 @@ namespace DWAP
             WriteLine("Techniques Loaded");
             return techniques;
         }
-
         private DigimonTechniqueData GetStarterMove(byte starter)
         {
             var stage = GetDigimonStage(starter);
@@ -448,44 +485,7 @@ namespace DWAP
             Memory.WriteByte(0x00B8FE4C, 63);
             Memory.Write(0x00B8FE50, 9999);
         }
-        private List<Location> GetRecruitmentLocations()
-        {
-            var recruits = Helpers.GetRecruitment();
-            var locations = Helpers.GetLocations();
 
-            var result = new List<Location>();
-            foreach (var recruit in recruits)
-            {
-                var location = new Location
-                {
-                    Id = locations.First(x => x.Name.ToLower() == recruit.Name.ToLower()).Id,
-                    Address = recruit.Address,
-                    AddressBit = recruit.AddressBit,
-                    Name = recruit.Name,
-                    CheckType = LocationCheckType.Bit,
-                    CompareType = LocationCheckCompareType.Match
-                };
-                result.Add(location);
-
-            }
-            return result;
-        }
-        private void RecruitDigimon(string name)
-        {
-            WriteLine($"Recruiting {name}");
-
-            var recruit = RecruitList.First(x => x.Name.ToLower() == name.ToLower());
-            recruit.IsRecruited = true;
-            Memory.WriteBit(recruit.Address, recruit.AddressBit, true);
-        }
-
-        private void EnsureRecruitment()
-        {
-            foreach (var digimon in RecruitList)
-            {
-                //   Memory.WriteBit(digimon.Address, digimon.AddressBit, digimon.IsRecruited);
-            }
-        }
         private void EnsureStatCap()
         {
             var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
@@ -526,7 +526,6 @@ namespace DWAP
                 System.Diagnostics.Debug.WriteLine(output + System.Environment.NewLine);
             });
         }
-
         private async void connectbtn_Click(object sender, EventArgs e)
         {
             if (Client == null || !(Client?.IsConnected ?? false))
@@ -550,7 +549,17 @@ namespace DWAP
             var valid = !string.IsNullOrWhiteSpace(hostTextbox.Text) && !string.IsNullOrWhiteSpace(slotTextbox.Text);
             return valid;
         }
-
+        private async void EnsureSouls()
+        {
+            var locations = Helpers.GetLocations();
+            var souls = Helpers.GetMissingSouls(Client);
+            foreach (var soul in souls)
+            {
+                var digimonName = soul.Name.Split(" ")[0];
+                var recruitLocation = locations.FirstOrDefault(x => x.Name == digimonName);
+                Memory.WriteBit(recruitLocation.Address, recruitLocation.AddressBit, false);
+            }
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (ExpMultiplier > 1)
@@ -558,9 +567,8 @@ namespace DWAP
                 SetExpMultiplier(ExpMultiplier);
             }
             EnsureStatCap();
-            //EnsureRecruitment();
+            EnsureSouls();
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             using (Stream imgStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DWAP.Resources.DWAP.png"))
@@ -572,8 +580,10 @@ namespace DWAP
             WriteLine("DWAP - Digimon world Archipelago Randomiser");
             WriteLine("-- By ArsonAssassin --");
             WriteLine("Initialising collections...");
+            WriteLine("Loading Items");
             Items = Helpers.GetItems();
-            RecruitList = Helpers.GetRecruitment();
+            WriteLine("Loading Souls");
+            DigimonSouls = Helpers.GetDigimonSouls();
             DigimonItems = Helpers.GetConsumables();
             DigimonTechniques = ReadTechniques();
             WriteLine("Ready to connect!");

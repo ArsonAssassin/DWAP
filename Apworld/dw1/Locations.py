@@ -38,7 +38,7 @@ class DigimonWorldLocation(Location):
 
     @staticmethod
     def get_name_to_id() -> dict:
-        base_id = 690000
+        base_id = 69000000
         table_offset = 1000
 
         table_order = [
@@ -65,7 +65,7 @@ class DigimonWorldLocation(Location):
 
 location_tables = {
     "Start Game": [
-        DigimonWorldLocationData("Start Game", "Agumon Soul", DigimonWorldLocationCategory.SKIP),
+        DigimonWorldLocationData("Start Game", "Agumon Soul", DigimonWorldLocationCategory.RECRUIT),
     ],
     "Agumon": [
         DigimonWorldLocationData("Agumon", "1000 Bits", DigimonWorldLocationCategory.RECRUIT),

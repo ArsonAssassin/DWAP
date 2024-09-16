@@ -1,4 +1,5 @@
-﻿using Archipelago.Core.Models;
+﻿using Archipelago.Core;
+using Archipelago.Core.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,21 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
             return list;
         }
-        public static List<Location> GetTemp()
+        public static List<DigimonItem> GetDigimonSouls()
         {
-            var json = OpenEmbeddedResource("DWAP.Resources.temp.json");
+            var json = OpenEmbeddedResource("DWAP.Resources.DigimonSouls.json");
+            var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
+            return list;
+        }
+        public static List<Location> GetDigimonCards()
+        {
+            var json = OpenEmbeddedResource("DWAP.Resources.DigimonCards.json");
+            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            return list;
+        }
+        public static List<Location> GetProsperityLocations()
+        {
+            var json = OpenEmbeddedResource("DWAP.Resources.Prosperity.json");
             var list = JsonConvert.DeserializeObject<List<Location>>(json);
             return list;
         }
@@ -34,12 +47,6 @@ namespace DWAP
         {
             var json = OpenEmbeddedResource("DWAP.Resources.APItems.json");
             var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
-            return list;
-        }
-        public static List<Recruitment> GetRecruitment()
-        {
-            var json = OpenEmbeddedResource("DWAP.Resources.Recruitment.json");
-            var list = JsonConvert.DeserializeObject<List<Recruitment>>(json);
             return list;
         }
         public static string OpenEmbeddedResource(string resourceName)
@@ -51,6 +58,23 @@ namespace DWAP
                 string jsonFile = reader.ReadToEnd();
                 return jsonFile;
             }
+        }
+
+        public static List<DigimonItem> GetAcquiredSouls(ArchipelagoClient client)
+        {
+            var list = client.GameState.ReceivedItems.Where(x => x.Id >= 694000 && x.Id <= 694999).Select(x => x.Id).ToList();
+            if (!list.Any()) return new List<DigimonItem>();
+            var soulLookup = GetDigimonSouls();
+            var results = soulLookup.Where(x => list.Contains(x.Id)).ToList();
+            if (!results.Any()) return new List<DigimonItem>();
+            return results;
+        }
+        public static List<DigimonItem> GetMissingSouls(ArchipelagoClient client)
+        {
+            var list = client.GameState.ReceivedItems.Where(x => x.Id >= 694000 && x.Id <= 694999).Select(x => x.Id).ToList();
+            var soulLookup = GetDigimonSouls();
+            var results = soulLookup.Where(x => !list.Contains(x.Id)).ToList();
+            return results;
         }
         public static DigimonTechniqueData PopulateTechData(this DigimonTechniqueData technique)
         {

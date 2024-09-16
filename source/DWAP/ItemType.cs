@@ -8,8 +8,12 @@ namespace DWAP
 {
     public enum ItemType
     {
-        Recruitment = 0,
+        Consumable = 0,
         Misc = 1,
-        Consumable = 2
+        Event = 2,
+        Recruit = 3,
+        Skip = 4,
+        DV = 5,
+        Soul = 6
     }
 }
