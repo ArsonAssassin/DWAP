@@ -1,164 +1,62 @@
-using Archipelago.Core.Util;
-using Archipelago.ePSXe;
+﻿using Archipelago.Core;
+using Archipelago.Core.GameClients;
+using Archipelago.Core.MauiGUI;
+using Archipelago.Core.MauiGUI.Models;
+using Archipelago.Core.MauiGUI.ViewModels;
 using Archipelago.Core.Models;
-using DWAP.RomPatcher;
+using Archipelago.Core.Util;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Newtonsoft.Json;
-using System.Media;
-using System.Reflection;
-using System.Text;
-using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
-using static System.Windows.Forms.Design.AxImporter;
-using Archipelago.Core;
-
+using Serilog;
+using System.Timers;
+using Location = Archipelago.Core.Models.Location;
 namespace DWAP
 {
-    public partial class Form1 : Form
+    public partial class App : Application
     {
+        static MainPageViewModel Context;
         public static ArchipelagoClient Client { get; set; }
-        public static List<DigimonWorldItem> Items { get; set; }
-        public static List<DigimonItem> DigimonSouls { get; set; }
+        public static List<DigimonWorldItem> APItems { get; set; }
+        public static List<DigimonWorldItem> DigimonSouls { get; set; }
         public static List<DigimonItem> DigimonItems { get; set; }
         public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
         public static Randomiser RandomSettings { get; set; }
+        private System.Timers.Timer _timer1 { get; set; } = new System.Timers.Timer(1000);
         bool firstConnect = true;
-        public Form1()
+        private static readonly object _lockObject = new object();
+        public App()
         {
             InitializeComponent();
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            ThreadPool.SetMinThreads(500, 500);
-#if DEBUG
-            button1.Enabled = true;
-            button1.Visible = true;
-#endif
-
-        }
-
-        public async Task Connect()
-        {
-            if (Client != null)
+            var options = new GuiDesignOptions
             {
-                Client.Connected -= OnConnected;
-                Client.Disconnected -= OnDisconnected;
-            }
-            ePSXeClient client = new ePSXeClient();
-            var ePSXeConnected = client.Connect();
-            if (!ePSXeConnected)
-            {
-                WriteLine("ePSXE not running, open ePSXe and launch the game before connecting!");
-                return;
-            }
-            Client = new ArchipelagoClient(client);
-
-
-            Client.Connected += OnConnected;
-            Client.Disconnected += OnDisconnected;
-
-            await Client.Connect(hostTextbox.Text, "Digimon World");
-
-            await Client.Login(slotTextbox.Text, !string.IsNullOrWhiteSpace(passwordTextbox.Text) ? passwordTextbox.Text : null);
-            var locations = Helpers.GetProsperityLocations();
-            locations.AddRange(Helpers.GetDigimonCards());
-            Client.PopulateLocations(locations);
-            timer1.Start();
-            if (Client.Options != null)
-            {
-                ConfigureOptions(Client.Options);
-            }
-            Client.ItemReceived += (e, args) =>
-            {
-                WriteLine($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
-                if (Items.Any(x => x.Id == args.Item.Id))
-                {
-                    var item = Items.First(x => x.Id == args.Item.Id);
-                    if (item.Type == ItemType.Soul)
-                    {
-                        var soulName = item.Name.Split(" ")[0];
-                        var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
-                        Client.MonitorLocations(digimonRecruit);
-                    }
-                    if (item.Type == ItemType.Consumable)
-                    {
-                        AddDigimonItem(item.Id);
-                    }
-                    else if (item.Name == "1000 Bits")
-                    {
-                        AddMoney(1000);
-                    }
-                    else if (item.Name == "5000 Bits")
-                    {
-                        AddMoney(5000);
-                    }
-                    else if (item.Name == "Progressive Stat Cap")
-                    {
-                        var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
-                        if (boostsReceived >= 9)
-                        {
-                            StatCap = 999;
-                        }
-                        else StatCap = (boostsReceived * 100) + 100;
-                    }
-                }
+                BackgroundColor = Color.FromArgb("FF2070AD"),
+                ButtonColor = Color.FromArgb("FF878787"),
+                ButtonTextColor = Color.FromArgb("FF000000"),
+                Title = "DWAP - Digimon World Archipelago",
+                TextColor = Color.FromArgb("FF000000")                
             };
-
-            if (!Client.GameState.CompletedLocations.Any(x => x.Id == 69003000))
+            _timer1.Elapsed += TimerTick;
+            Context = new MainPageViewModel(options);
+            Context.ConnectClicked += Context_ConnectClicked;
+            Context.CommandReceived += (e, a) =>
             {
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        await WaitForJijimonIntro();
-                        var startGameLocation = new Archipelago.Core.Models.Location() { Id = 69003000, Name = "Start Game" };
-                        Client.SendLocation(startGameLocation);
-                        Client.GameState.CompletedLocations.Add(startGameLocation);
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLine(ex.Message);
-                    }
-                }).ConfigureAwait(false);
-            }
-            var soulLocations = new List<Location>();
-            var acquiredSouls = Helpers.GetAcquiredSouls(Client);
-            if (acquiredSouls.Any())
-            {
-                var recruitLocations = Helpers.GetLocations();
-                foreach (var soul in acquiredSouls)
-                {
-                    var digimonName = soul.Name.Split(" ")[0];
-                    var recruitLocation = recruitLocations.FirstOrDefault(x => x.Name == digimonName);
-                    var recruitEvent = recruitLocations.FirstOrDefault(x => x.Name == $"{digimonName} Recruited");
-                    soulLocations.Add(recruitLocation);
-                    soulLocations.Add(recruitEvent);
-                }
-                if (soulLocations.Any())
-                {
-                    Client.MonitorLocations(soulLocations);
-                }
-            }
+                Client?.SendMessage(a.Command);
+            };
+            MainPage = new MainPage(Context);
+            Context.ConnectButtonEnabled = true;
 
-        }
-        private void OnConnected(object sender, EventArgs args)
-        {
-            WriteLine("Connected to Archipelago");
-            WriteLine($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
-            Invoke(() =>
-            {
-                connectBtn.Text = "Disconnect";
-            });
+            Log.Logger.Information("Initialising collections...");
+            Log.Logger.Information("Loading Items");
+            APItems = Helpers.GetAPItems();
+            Log.Logger.Information("Loading Souls");
+            DigimonSouls = Helpers.GetDigimonSouls();
+            DigimonItems = Helpers.GetConsumables();
+            DigimonTechniques = ReadTechniques();
+            Log.Logger.Information("Ready to connect!");
 
-        }
-
-        private void OnDisconnected(object sender, EventArgs args)
-        {
-            WriteLine("Disconnected from Archipelago");
-            Invoke(() =>
-            {
-                connectBtn.Text = "Connect";
-            });
         }
         private void AddDigimonItem(int id)
         {
@@ -200,7 +98,6 @@ namespace DWAP
                 Memory.WriteByte(itemBankAddress, (byte)(Memory.ReadByte(itemBankAddress) + 1));
             }
         }
-
         private Tuple<uint, uint> GetEmptyInventorySlot()
         {
             var inventorySize = (uint)Memory.ReadByte(Addresses.InventorySize);
@@ -231,7 +128,7 @@ namespace DWAP
             randomSeed += Client.CurrentSession.ConnectionInfo.Slot;
             var randomOptions = new RandomiserOptions(randomSeed);
             RandomSettings = new Randomiser(randomOptions);
-            WriteLine("Running Randomisation");
+            Log.Logger.Information("Running Randomisation");
             if (options.ContainsKey("random_starter"))
             {
                 var starterOption = Convert.ToInt32(options["random_starter"]);
@@ -281,11 +178,11 @@ namespace DWAP
             //}
             if (options.ContainsKey("random_starter"))
             {
-                WriteLine("Writing new Starters");
+                Log.Logger.Information("Writing new Starters");
                 Memory.WriteByte(Addresses.Starter1, RandomSettings.Starter);
                 Memory.WriteByte(Addresses.Starter2, RandomSettings.Starter);
 
-                WriteLine("Checking for existing moveset");
+                Log.Logger.Information("Checking for existing moveset");
                 if (!CheckForMoves())
                 {
                     _ = Task.Run(async () =>
@@ -297,7 +194,7 @@ namespace DWAP
                         }
                         catch (Exception ex)
                         {
-                            WriteLine(ex.Message);
+                            Log.Logger.Error(ex.Message);
                         }
                     }).ConfigureAwait(false);
                 }
@@ -332,14 +229,14 @@ namespace DWAP
                 && Memory.ReadByte(0x00BAD1A6) == 0);
             if (hasMoves)
             {
-                WriteLine("Moves detected");
+                Log.Logger.Information("Moves detected");
             }
-            else WriteLine("No moves");
+            else Log.Logger.Warning("No moves");
             return hasMoves;
         }
         private void WriteStarterMove(byte starter)
         {
-            WriteLine("Setting Starter Technique");
+            Log.Logger.Information("Setting Starter Technique");
             var move = GetStarterMove(starter);
 
             Memory.WriteBit(move.Address, move.AddressBit, true);
@@ -348,7 +245,7 @@ namespace DWAP
         }
         private List<DigimonTechniqueData> ReadTechniques()
         {
-            WriteLine("Reading Technique Data");
+            Log.Logger.Information("Reading Technique Data");
             List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
             uint currentAddress = Addresses.TechniqueStartAddress;
             uint learningChanceAddress = Addresses.LearningChanceStartAddress;
@@ -393,7 +290,7 @@ namespace DWAP
                 tech = tech.PopulateTechData();
                 techniques.Add(tech);
             }
-            WriteLine("Techniques Loaded");
+            Log.Logger.Information("Techniques Loaded");
             return techniques;
         }
         private DigimonTechniqueData GetStarterMove(byte starter)
@@ -401,7 +298,7 @@ namespace DWAP
             var stage = GetDigimonStage(starter);
             if (stage == DigimonStage.baby || stage == DigimonStage.intraining)
             {
-                WriteLine("Teaching Bubble");
+                Log.Logger.Information("Teaching Bubble");
                 return DigimonTechniques.First(x => x.Name == "Bubble");
             }
 
@@ -415,48 +312,48 @@ namespace DWAP
             if (starter == 52)
             {
                 //Mojyamon gets Dynamite Kick
-                WriteLine("Teaching Dynamite Kick");
+                Log.Logger.Information("Teaching Dynamite Kick");
                 return DigimonTechniques.First(x => x.Name == "Dynamite Kick");
             }
             if (starter == 62)
             {
-                WriteLine("Teaching Fire Tower");
+                Log.Logger.Information("Teaching Fire Tower");
                 //Weregarurumon only knows Fire Tower
                 return DigimonTechniques.First(x => x.Name == "Fire Tower");
             }
             if (spitFireStarters.Contains(starter))
             {
-                WriteLine("Teaching Spit Fire");
+                Log.Logger.Information("Teaching Spit Fire");
                 return DigimonTechniques.First(x => x.Name == "Spit Fire");
             }
             if (sonicJabStarters.Contains(starter))
             {
-                WriteLine("Teaching Sonic Jab");
+                Log.Logger.Information("Teaching Sonic Jab");
                 return DigimonTechniques.First(x => x.Name == "Sonic Jab");
             }
             if (staticElectStarters.Contains(starter))
             {
-                WriteLine("Teaching Static Elect");
+                Log.Logger.Information("Teaching Static Elect");
                 return DigimonTechniques.First(x => x.Name == "Static Elect");
             }
             if (metalSprintStarters.Contains(starter))
             {
-                WriteLine("Teaching Metal Sprinter");
+                Log.Logger.Information("Teaching Metal Sprinter");
                 return DigimonTechniques.First(x => x.Name == "Metal Sprinter");
             }
             if (horizontalKickStarters.Contains(starter))
             {
-                WriteLine("Teaching Horizontal Kick");
+                Log.Logger.Information("Teaching Horizontal Kick");
                 return DigimonTechniques.First(x => x.Name == "Horizontal Kick");
             }
             if (teardropStarters.Contains(starter))
             {
-                WriteLine("Teaching Tear Drop");
+                Log.Logger.Information("Teaching Tear Drop");
                 return DigimonTechniques.First(x => x.Name == "Tear Drop");
             }
             if (poisonClawStarters.Contains(starter))
             {
-                WriteLine("Teaching Poison Claw");
+                Log.Logger.Information("Teaching Poison Claw");
                 return DigimonTechniques.First(x => x.Name == "Poison Claw");
             }
             return DigimonTechniques.First(x => x.Name == "Spit Fire");
@@ -516,38 +413,14 @@ namespace DWAP
             Memory.Write(Addresses.CurrentSpeed, (short)Math.Min(currSpd, StatCap));
             Memory.Write(Addresses.CurrentBrains, (short)Math.Min(currBrn, StatCap));
         }
-        public void WriteLine(string output)
+        private void TimerTick(object? sender, ElapsedEventArgs e)
         {
-            Invoke(() =>
+            if (ExpMultiplier > 1)
             {
-                outputTextbox.Text += output;
-                outputTextbox.Text += System.Environment.NewLine;
-
-                System.Diagnostics.Debug.WriteLine(output + System.Environment.NewLine);
-            });
-        }
-        private async void connectbtn_Click(object sender, EventArgs e)
-        {
-            if (Client == null || !(Client?.IsConnected ?? false))
-            {
-                var valid = ValidateSettings();
-                if (!valid)
-                {
-                    WriteLine("Invalid settings, please check your input and try again.");
-                    return;
-                }
-                Connect().ConfigureAwait(false);
+                SetExpMultiplier(ExpMultiplier);
             }
-            else if (Client != null)
-            {
-                WriteLine("Disconnecting...");
-                Client.Disconnect();
-            }
-        }
-        private bool ValidateSettings()
-        {
-            var valid = !string.IsNullOrWhiteSpace(hostTextbox.Text) && !string.IsNullOrWhiteSpace(slotTextbox.Text);
-            return valid;
+            EnsureStatCap();
+            EnsureSouls();
         }
         private async void EnsureSouls()
         {
@@ -560,91 +433,188 @@ namespace DWAP
                 Memory.WriteBit(recruitLocation.Address, recruitLocation.AddressBit, false);
             }
         }
-        private void timer1_Tick(object sender, EventArgs e)
+        public async Task Connect(ConnectClickedEventArgs args)
         {
-            if (ExpMultiplier > 1)
+            if (Client != null)
             {
-                SetExpMultiplier(ExpMultiplier);
+                Client.Connected -= OnConnected;
+                Client.Disconnected -= OnDisconnected;
             }
-            EnsureStatCap();
-            EnsureSouls();
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            using (Stream imgStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DWAP.Resources.DWAP.png"))
+            ePSXeClient client = new ePSXeClient();
+            var ePSXeConnected = client.Connect();
+            if (!ePSXeConnected)
             {
-                var image = new Bitmap(imgStream);
-                pictureBox1.Image = image;
+                Log.Logger.Warning("ePSXE not running, open ePSXe and launch the game before connecting!");
+                return;
             }
+            Client = new ArchipelagoClient(client);
 
-            WriteLine("DWAP - Digimon world Archipelago Randomiser");
-            WriteLine("-- By ArsonAssassin --");
-            WriteLine("Initialising collections...");
-            WriteLine("Loading Items");
-            Items = Helpers.GetItems();
-            WriteLine("Loading Souls");
-            DigimonSouls = Helpers.GetDigimonSouls();
-            DigimonItems = Helpers.GetConsumables();
-            DigimonTechniques = ReadTechniques();
-            WriteLine("Ready to connect!");
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Invoke(() =>
+            Client.Connected += OnConnected;
+            Client.Disconnected += OnDisconnected;
+
+            await Client.Connect(args.Host, "Digimon World");
+
+            await Client.Login(args.Slot, !string.IsNullOrWhiteSpace(args.Password) ? args.Password : null);
+            var locations = Helpers.GetProsperityLocations();
+            locations.AddRange(Helpers.GetDigimonCards());
+            Client.PopulateLocations(locations);
+            _timer1.Start();
+            if (Client.Options != null)
             {
-
-                var dlg = new OpenFileDialog();
-                dlg.Filter = "Disc Image Files|*.bin";
-                var result = dlg.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    var file = dlg.FileName;
-                    RomManager mgr = new RomManager();
-                    var output = mgr.ReadRom(file);
-
-                    mgr.WriteRom(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "digimonWorldClone.bin"), output);
-                    WriteLine("Finished patching ROM");
-                }
-            });
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            Point clickPosition = pictureBox1.PointToClient(Cursor.Position);
-            float relativeX = (float)clickPosition.X / pictureBox1.Width;
-            float relativeY = (float)clickPosition.Y / pictureBox1.Height;
-            Rectangle agumonRegion = new Rectangle(5, 10, 50, 40);
-            Rectangle elecmonRegion = new Rectangle(55, 0, 40, 50);
-            Rectangle betamonRegion = new Rectangle(75, 20, 50, 40);
-            Rectangle gabumonRegion = new Rectangle(5, 50, 50, 50);
-            Rectangle patamonRegion = new Rectangle(40, 80, 50, 50);
-            Rectangle biyomonRegion = new Rectangle(70, 55, 50, 50);
-
-            string soundFile = "";
-
-            if (agumonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.agumon.wav";
-            else if (elecmonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.elecmon.wav";
-            else if (betamonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.betamon.wav";
-            else if (gabumonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.gabumon.wav";
-            else if (patamonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.patamon.wav";
-            else if (biyomonRegion.Contains(clickPosition))
-                soundFile = "DWAP.Resources.biyomon.wav";
-            if (!string.IsNullOrWhiteSpace(soundFile))
+                ConfigureOptions(Client.Options);
+            }
+            Client.ItemReceived += (e, args) =>
             {
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(soundFile))
+                Log.Logger.Information($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
+                if (APItems.Any(x => x.Id == args.Item.Id))
                 {
-                    using (SoundPlayer player = new SoundPlayer(stream))
+                    var item = APItems.First(x => x.Id == args.Item.Id);
+                    if (item.Type == ItemType.Soul)
                     {
-                        player.Play();
+                        var soulName = item.Name.Split(" ")[0];
+                        var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
+                        Client.MonitorLocations(digimonRecruit);
+                    }
+                    if (item.Type == ItemType.Consumable)
+                    {
+                        AddDigimonItem(item.Id);
+                    }
+                    else if (item.Name == "1000 Bits")
+                    {
+                        AddMoney(1000);
+                    }
+                    else if (item.Name == "5000 Bits")
+                    {
+                        AddMoney(5000);
+                    }
+                    else if (item.Name == "Progressive Stat Cap")
+                    {
+                        var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
+                        if (boostsReceived >= 9)
+                        {
+                            StatCap = 999;
+                        }
+                        else StatCap = (boostsReceived * 100) + 100;
                     }
                 }
+            };
+
+            if (!Client.GameState.CompletedLocations.Any(x => x.Id == 69003000))
+            {
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await WaitForJijimonIntro();
+                        var startGameLocation = new Archipelago.Core.Models.Location() { Id = 69003000, Name = "Start Game" };
+                        Client.SendLocation(startGameLocation);
+                        Client.GameState.CompletedLocations.Add(startGameLocation);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Logger.Error(ex.Message);
+                    }
+                }).ConfigureAwait(false);
             }
+            var soulLocations = new List<Archipelago.Core.Models.Location>();
+            var acquiredSouls = Helpers.GetAcquiredSouls(Client);
+            if (acquiredSouls.Any())
+            {
+                var recruitLocations = Helpers.GetLocations();
+                foreach (var soul in acquiredSouls)
+                {
+                    var digimonName = soul.Name.Split(" ")[0];
+                    var recruitLocation = recruitLocations.FirstOrDefault(x => x.Name == digimonName);
+                    var recruitEvent = recruitLocations.FirstOrDefault(x => x.Name == $"{digimonName} Recruited");
+                    soulLocations.Add(recruitLocation);
+                    soulLocations.Add(recruitEvent);
+                }
+                if (soulLocations.Any())
+                {
+                    Client.MonitorLocations(soulLocations);
+                }
+            }
+
+        }
+        private void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
+        {
+            if (Client == null || !(Client?.IsConnected ?? false))
+            {
+                Connect(e).ConfigureAwait(false);
+            }
+            else if (Client != null)
+            {
+                Log.Logger.Information("Disconnecting...");
+                Client.Disconnect();
+            }
+        }
+        private static void LogItem(Item item)
+        {
+            var messageToLog = new LogListItem(new List<TextSpan>()
+            {
+                new TextSpan(){Text = $"[{item.Id.ToString()}] -", TextColor = Color.FromRgb(255, 255, 255)},
+                new TextSpan(){Text = $"{item.Name}", TextColor = Color.FromRgb(200, 255, 200)},
+                new TextSpan(){Text = $"x{item.Quantity.ToString()}", TextColor = Color.FromRgb(200, 255, 200)}
+            });
+            lock (_lockObject)
+            {
+                Microsoft.Maui.Controls.Application.Current.Dispatcher.DispatchAsync(() =>
+                {
+                    Context.ItemList.Add(messageToLog);
+                });
+            }
+        }
+
+        private void Client_MessageReceived(object? sender, Archipelago.Core.Models.MessageReceivedEventArgs e)
+        {
+            if (e.Message.Parts.Any(x => x.Text == "[Hint]: "))
+            {
+                LogHint(e.Message);
+            }
+            Log.Logger.Information(JsonConvert.SerializeObject(e.Message));
+        }
+        private static void LogHint(LogMessage message)
+        {
+            var newMessage = message.Parts.Select(x => x.Text);
+
+            if (Context.HintList.Any(x => x.TextSpans.Select(y => y.Text) == newMessage))
+            {
+                return; //Hint already in list
+            }
+            List<TextSpan> spans = new List<TextSpan>();
+            foreach (var part in message.Parts)
+            {
+                spans.Add(new TextSpan() { Text = part.Text, TextColor = Color.FromRgb(part.Color.R, part.Color.G, part.Color.B) });
+            }
+            lock (_lockObject)
+            {
+                Microsoft.Maui.Controls.Application.Current.Dispatcher.DispatchAsync(() =>
+                {
+                    Context.HintList.Add(new LogListItem(spans));
+                });
+            }
+        }
+        private static void OnConnected(object sender, EventArgs args)
+        {
+            Log.Logger.Information("Connected to Archipelago");
+            Log.Logger.Information($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
+        }
+
+        private static void OnDisconnected(object sender, EventArgs args)
+        {
+            Log.Logger.Information("Disconnected from Archipelago");
+        }
+        protected override Microsoft.Maui.Controls.Window CreateWindow(IActivationState activationState)
+        {
+            var window = base.CreateWindow(activationState);
+            if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+            {
+                window.Title = "DWAP - Digimon World Archipelago Randomizer";                
+            }
+            window.Width = 600;
+
+            return window;
         }
     }
 }

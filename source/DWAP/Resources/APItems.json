@@ -2,892 +2,892 @@
   {
     "Id": 691000,
     "Name": "Agumon",
-    "Type": 0
+    "Type": 3
   },
   {
     "Id": 691001,
     "Name": "Betamon",
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Greymon",
     "Id": 691002,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Devimon",
     "Id": 691003,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Airdramon",
     "Id": 691004,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Tyrannomon",
     "Id": 691005,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Meramon",
     "Id": 691006,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Seadramon",
     "Id": 691007,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Numemon",
     "Id": 691008,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "MetalGreymon",
     "Id": 691009,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Mamemon",
     "Id": 691010,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Monzaemon",
     "Id": 691011,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Gabumon",
     "Id": 691012,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Elecmon",
     "Id": 691013,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Kabuterimon",
     "Id": 691014,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Angemon",
     "Id": 691015,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Birdramon",
     "Id": 691016,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Garurumon",
     "Id": 691017,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Frigimon",
     "Id": 691018,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Whamon",
     "Id": 691019,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Vegimon",
     "Id": 691020,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "SkullGreymon",
     "Id": 691021,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "MetalMamemon",
     "Id": 691022,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Vademon",
     "Id": 691023,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Patamon",
     "Id": 691024,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Kunemon",
     "Id": 691025,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Unimon",
     "Id": 691026,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Ogremon",
     "Id": 691027,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Shellmon",
     "Id": 691028,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Centarumon",
     "Id": 691029,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Bakemon",
     "Id": 691030,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Drimogemon",
     "Id": 691031,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Sukamon",
     "Id": 691032,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Andromon",
     "Id": 691033,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Giromon",
     "Id": 691034,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Etemon",
     "Id": 691035,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Biyomon",
     "Id": 691036,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Palmon",
     "Id": 691037,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Monochromon",
     "Id": 691038,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Leomon",
     "Id": 691039,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Coelamon",
     "Id": 691040,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Kokatorimon",
     "Id": 691041,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Kuwagamon",
     "Id": 691042,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Mojyamon",
     "Id": 691043,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Nanimon",
     "Id": 691044,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Megadramon",
     "Id": 691045,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Piximon",
     "Id": 691046,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Digitamamon",
     "Id": 691047,
-    "Type": 0
+    "Type": 3 
   },
   {
     "Name": "Penguinmon",
     "Id": 691048,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "Ninjamon",
     "Id": 691049,
-    "Type": 0
+    "Type": 3
   },
   {
     "Name": "SM Recovery",
     "Id": 692000,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Med Recovery",
     "Id": 692001,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Lrg Recovery",
     "Id": 692002,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Sup Recovery",
     "Id": 692003,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "MP Floppy",
     "Id": 692004,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Medium MP",
     "Id": 692005,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Large MP",
     "Id": 692006,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Double flop",
     "Id": 692007,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Various",
     "Id": 692008,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Omnipotent",
     "Id": 692009,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Protection",
     "Id": 692010,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Restore",
     "Id": 692011,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Sup.restore",
     "Id": 692012,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Bandage",
     "Id": 692013,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Medicine",
     "Id": 692014,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Off. Disk",
     "Id": 692015,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Def. Disk",
     "Id": 692016,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Hispeed dsk",
     "Id": 692017,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Omni Disk",
     "Id": 692018,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "S.Off.disk",
     "Id": 692019,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "S.Def.disk",
     "Id": 692020,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "S.speed.disk",
     "Id": 692021,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Auto Pilot",
     "Id": 692022,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Off. Chip",
     "Id": 692023,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Def. Chip",
     "Id": 692024,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Brain Chip",
     "Id": 692025,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Quick Chip",
     "Id": 692026,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "HP Chip",
     "Id": 692027,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "MP Chip",
     "Id": 692028,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "DV Chip A",
     "Id": 692029,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "DV Chip D",
     "Id": 692030,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "DV Chip E",
     "Id": 692031,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Port. potty",
     "Id": 692032,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Trn. manual",
     "Id": 692033,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Rest pillow",
     "Id": 692034,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Enemy repel",
     "Id": 692035,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Enemy bell",
     "Id": 692036,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Health shoe",
     "Id": 692037,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Meat",
     "Id": 692038,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Giant Meat",
     "Id": 692039,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Sirloin",
     "Id": 692040,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Supercarrot",
     "Id": 692041,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Hawk radish",
     "Id": 692042,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Spiny green",
     "Id": 692043,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digimushrm",
     "Id": 692044,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Ice mushrm",
     "Id": 692045,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Deluxmushrm",
     "Id": 692046,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digipine",
     "Id": 692047,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Blue apple",
     "Id": 692048,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Red Berry",
     "Id": 692049,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Gold Acorn",
     "Id": 692050,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Big Berry",
     "Id": 692051,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Sweet Nut",
     "Id": 692052,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Super veggy",
     "Id": 692053,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Pricklypear",
     "Id": 692054,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Orange bana",
     "Id": 692055,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Power fruit",
     "Id": 692056,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Power Ice",
     "Id": 692057,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Speed Leaf",
     "Id": 692058,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Sage Fruit",
     "Id": 692059,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Muscle Yam",
     "Id": 692060,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Calm berry",
     "Id": 692061,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digianchovy",
     "Id": 692062,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digisnapper",
     "Id": 692063,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "DigiTrout",
     "Id": 692064,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Black trout",
     "Id": 692065,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digicatfish",
     "Id": 692066,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Digiseabass",
     "Id": 692067,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Moldy Meat",
     "Id": 692068,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Happymushrm",
     "Id": 692069,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Chain melon",
     "Id": 692070,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Grey Claws",
     "Id": 692071,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Fireball",
     "Id": 692072,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Flamingwing",
     "Id": 692073,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Iron Hoof",
     "Id": 692074,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Mono Stone",
     "Id": 692075,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Steel drill",
     "Id": 692076,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "White Fang",
     "Id": 692077,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Black Wing",
     "Id": 692078,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Spike Club",
     "Id": 692079,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Flamingmane",
     "Id": 692080,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "White Wing",
     "Id": 692081,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Torn tatter",
     "Id": 692082,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Electo ring",
     "Id": 692083,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Rainbowhorn",
     "Id": 692084,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Rooster",
     "Id": 692085,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Unihorn",
     "Id": 692086,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Horn helmet",
     "Id": 692087,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Scissor jaw",
     "Id": 692088,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Fertilizer",
     "Id": 692089,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Koga laws",
     "Id": 692090,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Waterbottle",
     "Id": 692091,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "North Star",
     "Id": 692092,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Red Shell",
     "Id": 692093,
-    "Type": 2
+    "Type":5
   },
   {
     "Name": "Hard Scale",
     "Id": 692094,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Bluecrystal",
     "Id": 692095,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Ice crystal",
     "Id": 692096,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Hair grower",
     "Id": 692097,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Sunglasses",
     "Id": 692098,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Metal part",
     "Id": 692099,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Fatal Bone",
     "Id": 692100,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Cyber part",
     "Id": 692101,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Mega Hand",
     "Id": 692102,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Silver ball",
     "Id": 692103,
-    "Type": 2
+    "Type":5
   },
   {
     "Name": "Metal armor",
     "Id": 692104,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Chainsaw",
     "Id": 692105,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Small spear",
     "Id": 692106,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "X Bandage",
     "Id": 692107,
-    "Type": 2
+    "Type":5
   },
   {
     "Name": "Ray Gun",
     "Id": 692108,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Gold banana",
     "Id": 692109,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Mysty Egg",
     "Id": 692110,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Red Ruby",
     "Id": 692111,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Beetlepearl",
     "Id": 692112,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Coral charm",
     "Id": 692113,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Moon mirror",
     "Id": 692114,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Blue Flute",
     "Id": 692115,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "old fishrod",
     "Id": 692116,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Amazing rod",
     "Id": 692117,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Leomonstone",
     "Id": 692118,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Mansion key",
     "Id": 692119,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Gear",
     "Id": 692120,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Rain Plant",
     "Id": 692121,
-    "Type": 2
+    "Type": 0
   },
   {
     "Name": "Steak",
     "Id": 692122,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Frig Key",
     "Id": 692123,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "AS Decoder",
     "Id": 692124,
-    "Type": 2
+    "Type": 1
   },
   {
     "Name": "Giga Hand",
     "Id": 692125,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Noble Mane",
     "Id": 692126,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "Metalbanana",
     "Id": 692127,
-    "Type": 2
+    "Type": 5
   },
   {
     "Name": "1000 Bits",

@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DWAP", "DWAP.csproj", "{BF600BF3-6F16-4163-92FD-70107A265BE8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Archipelago.ePSXe", "..\..\..\Archipelago.ePSXe\Archipelago.ePSXe.csproj", "{232250C8-9585-4F39-ADD0-FC20802F7A2A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DWAP.RomPatcher", "..\DWAP.RomPatcher\DWAP.RomPatcher.csproj", "{47218A12-1662-49D3-A809-DCD232DA0D5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Archipelago.Core", "..\..\..\Archipelago.Core\Archipelago.Core.csproj", "{927E5466-171E-4D46-83B6-AB1F727E4C95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWAP", "DWAP.csproj", "{AE1876BD-A9FA-4E07-A224-D5D793739FC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BF600BF3-6F16-4163-92FD-70107A265BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF600BF3-6F16-4163-92FD-70107A265BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF600BF3-6F16-4163-92FD-70107A265BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF600BF3-6F16-4163-92FD-70107A265BE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{232250C8-9585-4F39-ADD0-FC20802F7A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47218A12-1662-49D3-A809-DCD232DA0D5D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{927E5466-171E-4D46-83B6-AB1F727E4C95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{927E5466-171E-4D46-83B6-AB1F727E4C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{927E5466-171E-4D46-83B6-AB1F727E4C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{927E5466-171E-4D46-83B6-AB1F727E4C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE1876BD-A9FA-4E07-A224-D5D793739FC0}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+using Location = Archipelago.Core.Models.Location;
 namespace DWAP
 {
     public static class Helpers
@@ -25,10 +26,14 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
             return list;
         }
-        public static List<DigimonItem> GetDigimonSouls()
+        public static List<DigimonWorldItem> GetDigimonSouls()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.DigimonSouls.json");
-            var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
+            var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
+            foreach(var item in list)
+            {
+                item.Type = ItemType.Soul;
+            }
             return list;
         }
         public static List<Location> GetDigimonCards()
@@ -43,7 +48,7 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<Location>>(json);
             return list;
         }
-        public static List<DigimonWorldItem> GetItems()
+        public static List<DigimonWorldItem> GetAPItems()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.APItems.json");
             var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
@@ -60,16 +65,16 @@ namespace DWAP
             }
         }
 
-        public static List<DigimonItem> GetAcquiredSouls(ArchipelagoClient client)
+        public static List<DigimonWorldItem> GetAcquiredSouls(ArchipelagoClient client)
         {
             var list = client.GameState.ReceivedItems.Where(x => x.Id >= 694000 && x.Id <= 694999).Select(x => x.Id).ToList();
-            if (!list.Any()) return new List<DigimonItem>();
+            if (!list.Any()) return new List<DigimonWorldItem>();
             var soulLookup = GetDigimonSouls();
             var results = soulLookup.Where(x => list.Contains(x.Id)).ToList();
-            if (!results.Any()) return new List<DigimonItem>();
+            if (!results.Any()) return new List<DigimonWorldItem>();
             return results;
         }
-        public static List<DigimonItem> GetMissingSouls(ArchipelagoClient client)
+        public static List<DigimonWorldItem> GetMissingSouls(ArchipelagoClient client)
         {
             var list = client.GameState.ReceivedItems.Where(x => x.Id >= 694000 && x.Id <= 694999).Select(x => x.Id).ToList();
             var soulLookup = GetDigimonSouls();
