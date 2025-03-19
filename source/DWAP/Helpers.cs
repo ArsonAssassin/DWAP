@@ -1,5 +1,6 @@
 ﻿using Archipelago.Core;
 using Archipelago.Core.Models;
+using Archipelago.Core.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,12 @@ namespace DWAP
                 return jsonFile;
             }
         }
-
+        public static ulong GetDuckstationOffset()
+        {
+            var baseAddress = Memory.GetBaseAddress("duckstation-qt-x64-ReleaseLTCG");
+            var offset = Memory.ReadULong(baseAddress + 0x008A93D8);
+            return offset;
+        }
         public static List<DigimonWorldItem> GetAcquiredSouls(ArchipelagoClient client)
         {
             var list = client.GameState.ReceivedItems.Where(x => x.Id >= 694000 && x.Id <= 694999).Select(x => x.Id).ToList();
@@ -97,229 +103,229 @@ namespace DWAP
             switch (slot)
             {
                 case 0:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 0;
                     break;
                 case 1:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 1;
                     break;
                 case 2:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 2;
                     break;
                 case 3:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 3;
                     break;
                 case 4:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 4;
                     break;
                 case 5:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 5;
                     break;
                 case 6:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 6;
                     break;
                 case 7:
-                    address = 0x00BAD1A0;
+                    address = 0x00155800;
                     bit = 7;
                     break;
                 case 8:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 0;
                     break;
                 case 9:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 1;
                     break;
                 case 10:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 2;
                     break;
                 case 11:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 3;
                     break;
                 case 12:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 4;
                     break;
                 case 13:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 5;
                     break;
                 case 14:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 6;
                     break;
                 case 15:
-                    address = 0x00BAD1A1;
+                    address = 0x00155801;
                     bit = 7;
                     break;
                 case 16:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 0;
                     break; 
                 case 17:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 1;
                     break; 
                 case 18:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 2;
                     break; 
                 case 19:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 3;
                     break; 
                 case 20:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 4;
                     break; 
                 case 21:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 5;
                     break; 
                 case 22:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 6;
                     break; 
                 case 23:
-                    address = 0x00BAD1A2;
+                    address = 0x00155802;
                     bit = 7;
                     break; 
                 case 24:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 0;
                     break; 
                 case 25:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 1;
                     break;
                 case 26:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 2;
                     break;
                 case 27:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 3;
                     break;
                 case 28:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 4;
                     break;
                 case 29:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 5;
                     break;
                 case 30:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 6;
                     break;
                 case 31:
-                    address = 0x00BAD1A3;
+                    address = 0x00155803;
                     bit = 7;
                     break;
                 case 32:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 0;
                     break;
                 case 33:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 1;
                     break;
                 case 34:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 2;
                     break;
                 case 35:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 3;
                     break;
                 case 36:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 4;
                     break;
                 case 37:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 5;
                     break;
                 case 38:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 6;
                     break;
                 case 39:
-                    address = 0x00BAD1A4;
+                    address = 0x00155804;
                     bit = 7;
                     break;
                 case 40:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 0;
                     break;
                 case 41:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 1;
                     break;
                 case 42:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 2;
                     break;
                 case 43:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 3;
                     break;
                 case 44:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 4;
                     break;
                 case 45:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 5;
                     break;
                 case 46:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 6;
                     break;
                 case 47:
-                    address = 0x00BAD1A5;
+                    address = 0x00155805;
                     bit = 7;
                     break;
                 case 48:
                     break;
                 case 49:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 1;
                     break;
                 case 50:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 2;
                     break;
                 case 51:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 3;
                     break;
                 case 52:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 4;
                     break;
                 case 53:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 5;
                     break;
                 case 54:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 6;
                     break;
                 case 55:
-                    address = 0x00BAD1A6;
+                    address = 0x00155806;
                     bit = 7;
                     break;
                 case 56:
-                    address = 0x00BAD1A7;
+                    address = 0x00155807;
                     bit = 0;
                     break;
                 default:

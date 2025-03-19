@@ -2,601 +2,601 @@
   {
     "Name": "Agumon",
     "Id": 69005000,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 3
   },
   {
     "Name": "Agumon Recruited",
     "Id": 69005001,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 3
   },
   {
     "Name": "Betamon",
     "Id": 69006000,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 4
   },
   {
     "Name": "Betamon Recruited",
     "Id": 69006001,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 4
   },
   {
     "Name": "Greymon",
     "Id": 69007000,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 5
   },
   {
     "Name": "Greymon Recruited",
     "Id": 69007001,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 5
   },
   {
     "Name": "Devimon",
     "Id": 69008000,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 6
   },
   {
     "Name": "Devimon Recruited",
     "Id": 69008001,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 6
   },
   {
     "Name": "Airdramon",
     "Id": 69009000,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 7
   },
   {
     "Name": "Airdramon Recruited",
     "Id": 69009001,
-    "Address": "0x00C15986",
+    "Address": "0x001bdfe6",
     "AddressBit": 7
   },
   {
     "Name": "Tyrannomon",
     "Id": 69010000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 0
   },
   {
     "Name": "Tyrannomon Recruited",
     "Id": 69010001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 0
   },
   {
     "Name": "Meramon",
     "Id": 69011000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 1
   },
   {
     "Name": "Meramon Recruited",
     "Id": 69011001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 1
   },
   {
     "Name": "Seadramon",
     "Id": 69012000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 2
   },
   {
     "Name": "Seadramon Recruited",
     "Id": 69012001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 2
   },
   {
     "Name": "Numemon",
     "Id": 69013000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 3
   },
   {
     "Name": "Numemon Recruited",
     "Id": 69013001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 3
   },
   {
     "Name": "MetalGreymon",
     "Id": 69014000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 4
   },
   {
     "Name": "MetalGreymon Recruited",
     "Id": 69014001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 4
   },
   {
     "Name": "Mamemon",
     "Id": 69015000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 5
   },
   {
     "Name": "Mamemon Recruited",
     "Id": 69015001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 5
   },
   {
     "Name": "Monzaemon",
     "Id": 69016000,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 6
   },
   {
     "Name": "Monzaemon Recruited",
     "Id": 69016001,
-    "Address": "0x00C15987",
+    "Address": "0x001bdfe7",
     "AddressBit": 6
   },
   {
     "Name": "Gabumon",
     "Id": 69017000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 1
   },
   {
     "Name": "Gabumon Recruited",
     "Id": 69017001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 1
   },
   {
     "Name": "Elecmon",
     "Id": 69018000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 2
   },
   {
     "Name": "Elecmon Recruited",
     "Id": 69018001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 2
   },
   {
     "Name": "Kabuterimon",
     "Id": 69019000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 3
   },
   {
     "Name": "Kabuterimon Recruited",
     "Id": 69019001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 3
   },
   {
     "Name": "Angemon",
     "Id": 69020000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 4
   },
   {
     "Name": "Angemon Recruited",
     "Id": 69020001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 4
   },
   {
     "Name": "Birdramon",
     "Id": 69021000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 5
   },
   {
     "Name": "Birdramon Recruited",
     "Id": 69021001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 5
   },
   {
     "Name": "Garurumon",
     "Id": 69022000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 6
   },
   {
     "Name": "Garurumon Recruited",
     "Id": 69022001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 6
   },
   {
     "Name": "Frigimon",
     "Id": 69023000,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 7
   },
   {
     "Name": "Frigimon Recruited",
     "Id": 69023001,
-    "Address": "0x00C15988",
+    "Address": "0x001bdfe8",
     "AddressBit": 7
   },
   {
     "Name": "Whamon",
     "Id": 69024000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 0
   },
   {
     "Name": "Whamon Recruited",
     "Id": 69024001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 0
   },
   {
     "Name": "Vegiemon",
     "Id": 69025000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 1
   },
   {
     "Name": "Vegiemon Recruited",
     "Id": 69025001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 1
   },
   {
     "Name": "SkullGreymon",
     "Id": 69026000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 2
   },
   {
     "Name": "SkullGreymon Recruited",
     "Id": 69026001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 2
   },
   {
     "Name": "MetalMamemon",
     "Id": 69027000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 3
   },
   {
     "Name": "MetalMamemon Recruited",
     "Id": 69027001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 3
   },
   {
     "Name": "Vademon",
     "Id": 69028000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 4
   },
   {
     "Name": "Vademon Recruited",
     "Id": 69028001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 4
   },
   {
     "Name": "Patamon",
     "Id": 69029000,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 7
   },
   {
     "Name": "Patamon Recruited",
     "Id": 69029001,
-    "Address": "0x00C15989",
+    "Address": "0x001bdfe9",
     "AddressBit": 7
   },
   {
     "Name": "Kunemon",
     "Id": 69030000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 0
   },
   {
     "Name": "Kunemon Recruited",
     "Id": 69030001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 0
   },
   {
     "Name": "Unimon",
     "Id": 69031000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 1
   },
   {
     "Name": "Unimon Recruited",
     "Id": 69031001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 1
   },
   {
     "Name": "Ogremon",
     "Id": 69032000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 2
   },
   {
     "Name": "Ogremon Recruited",
     "Id": 69032001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 2
   },
   {
     "Name": "Shellmon",
     "Id": 69033000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 3
   },
   {
     "Name": "Shellmon Recruited",
     "Id": 69033001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 3
   },
   {
     "Name": "Centarumon",
     "Id": 69034000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 4
   },
   {
     "Name": "Centarumon Recruited",
     "Id": 69034001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 4
   },
   {
     "Name": "Bakemon",
     "Id": 69035000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 5
   },
   {
     "Name": "Bakemon Recruited",
     "Id": 69035001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 5
   },
   {
     "Name": "Drimogemon",
     "Id": 69036000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 6
   },
   {
     "Name": "Drimogemon Recruited",
     "Id": 69036001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 6
   },
   {
     "Name": "Sukamon",
     "Id": 69037000,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 7
   },
   {
     "Name": "Sukamon Recruited",
     "Id": 69037001,
-    "Address": "0x00C1598A",
+    "Address": "0x001bdfea",
     "AddressBit": 7
   },
   {
     "Name": "Andromon",
     "Id": 69038000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 0
   },
   {
     "Name": "Andromon Recruited",
     "Id": 69038001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 0
   },
   {
     "Name": "Giromon",
     "Id": 69039000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 1
   },
   {
     "Name": "Giromon Recruited",
     "Id": 69039001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 1
   },
   {
     "Name": "Etemon",
     "Id": 69040000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 2
   },
   {
     "Name": "Etemon Recruited",
     "Id": 69040001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 2
   },
   {
     "Name": "Biyomon",
     "Id": 69041000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 5
   },
   {
     "Name": "Biyomon Recruited",
     "Id": 69041001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 5
   },
   {
     "Name": "Palmon",
     "Id": 69042000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 6
   },
   {
     "Name": "Palmon Recruited",
     "Id": 69042001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 6
   },
   {
     "Name": "Monochromon",
     "Id": 69043000,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 7
   },
   {
     "Name": "Monochromon Recruited",
     "Id": 69043001,
-    "Address": "0x00C1598B",
+    "Address": "0x001bdfeb",
     "AddressBit": 7
   },
   {
     "Name": "Leomon",
     "Id": 69044000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 0
   },
   {
     "Name": "Leomon Recruited",
     "Id": 69044001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 0
   },
   {
     "Name": "Coelamon",
     "Id": 69045000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 1
   },
   {
     "Name": "Coelamon Recruited",
     "Id": 69045001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 1
   },
   {
     "Name": "Kokatorimon",
     "Id": 69046000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 2
   },
   {
     "Name": "Kokatorimon Recruited",
     "Id": 69046001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 2
   },
   {
     "Name": "Kuwagamon",
     "Id": 69047000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 3
   },
   {
     "Name": "Kuwagamon Recruited",
     "Id": 69047001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 3
   },
   {
     "Name": "Mojyamon",
     "Id": 69048000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 4
   },
   {
     "Name": "Mojyamon Recruited",
     "Id": 69048001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 4
   },
   {
     "Name": "Nanimon",
     "Id": 69049000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 5
   },
   {
     "Name": "Nanimon Recruited",
     "Id": 69049001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 5
   },
   {
     "Name": "Megadramon",
     "Id": 69050000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 6
   },
   {
     "Name": "Megadramon Recruited",
     "Id": 69050001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 6
   },
   {
     "Name": "Piximon",
     "Id": 69051000,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 7
   },
   {
     "Name": "Piximon Recruited",
     "Id": 69051001,
-    "Address": "0x00C1598C",
+    "Address": "0x001bdfec",
     "AddressBit": 7
   },
   {
     "Name": "Digitamamon",
     "Id": 69052000,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 0
   },
   {
     "Name": "Digitamamon Recruited",
     "Id": 69052001,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 0
   },
   {
     "Name": "Penguinmon",
     "Id": 69053000,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 1
   },
   {
     "Name": "Penguinmon Recruited",
     "Id": 69053001,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 1
   },
   {
     "Name": "Ninjamon",
     "Id": 69054000,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 2
   },
   {
     "Name": "Ninjamon Recruited",
     "Id": 69054001,
-    "Address": "0x00C1598D",
+    "Address": "0x001bdfed",
     "AddressBit": 2
   }
 ]

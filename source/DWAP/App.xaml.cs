@@ -30,16 +30,8 @@ namespace DWAP
         public App()
         {
             InitializeComponent();
-            var options = new GuiDesignOptions
-            {
-                BackgroundColor = Color.FromArgb("FF2070AD"),
-                ButtonColor = Color.FromArgb("FF878787"),
-                ButtonTextColor = Color.FromArgb("FF000000"),
-                Title = "DWAP - Digimon World Archipelago",
-                TextColor = Color.FromArgb("FF000000")                
-            };
             _timer1.Elapsed += TimerTick;
-            Context = new MainPageViewModel(options);
+            Context = new MainPageViewModel();
             Context.ConnectClicked += Context_ConnectClicked;
             Context.CommandReceived += (e, a) =>
             {
@@ -64,10 +56,10 @@ namespace DWAP
             var consumable = DigimonItems.First(x => x.Id == localId);
             var inventorySize = (int)Memory.ReadByte(Addresses.InventorySize);
             //Get matching item pile in inventory
-            for (int i = 0; i < inventorySize; i++)
+            for (int i = 0; i < 10; i++)
             {
-                uint slotAddress = (uint)(0x00B94E14 + i);
-                uint amountAddress = (uint)(0x00B94E32 + i);
+                ulong slotAddress = (ulong)(0x0013D474 + i);
+                ulong amountAddress = (ulong)(0x0013D492 + i);
                 var currentItemInSlot = Memory.ReadByte(slotAddress);
                 if (currentItemInSlot == consumable.Id)
                 {
@@ -87,7 +79,7 @@ namespace DWAP
             }
 
             //add to item bank
-            uint itemBankAddress = (uint)(Addresses.ItemBankBaseAddress + localId);
+            ulong itemBankAddress = Addresses.ItemBankBaseAddress + (ulong)localId;
             var storedItemCount = Memory.ReadByte(itemBankAddress);
             if (storedItemCount == 255)
             {
@@ -98,16 +90,16 @@ namespace DWAP
                 Memory.WriteByte(itemBankAddress, (byte)(Memory.ReadByte(itemBankAddress) + 1));
             }
         }
-        private Tuple<uint, uint> GetEmptyInventorySlot()
+        private Tuple<ulong, ulong> GetEmptyInventorySlot()
         {
-            var inventorySize = (uint)Memory.ReadByte(Addresses.InventorySize);
-            for (int i = 0; i < inventorySize; i++)
+            var inventorySize = (ulong)Memory.ReadByte(Addresses.InventorySize);
+            for (int i = 0; i < 10; i++)
             {
-                uint slotAddress = (uint)(0x00B94E14 + i);
-                uint amountAddress = (uint)(0x00B94E32 + i);
+                ulong slotAddress = (ulong)(0x0013D474 + i);
+                ulong amountAddress = (ulong)(0x0013D492 + i);
                 if (Memory.ReadByte(slotAddress) == 255)
                 {
-                    return new Tuple<uint, uint>(slotAddress, amountAddress);
+                    return new Tuple<ulong, ulong>(slotAddress, amountAddress);
                 }
             }
             return null;
@@ -131,7 +123,7 @@ namespace DWAP
             Log.Logger.Information("Running Randomisation");
             if (options.ContainsKey("random_starter"))
             {
-                var starterOption = Convert.ToInt32(options["random_starter"]);
+                var starterOption = Convert.ToInt32(options["random_starter"].ToString());
                 if (starterOption == 0)
                 {
                     randomOptions.StarterRandomisation = StarterRandomisation.Vanilla;
@@ -148,7 +140,7 @@ namespace DWAP
             RandomSettings.Generate();
             if (options.ContainsKey("exp_multiplier"))
             {
-                ExpMultiplier = Convert.ToInt32(options["exp_multiplier"]);
+                ExpMultiplier = Convert.ToInt32(options["exp_multiplier"].ToString());
             }
             if (options.ContainsKey("progressive_stats"))
             {
@@ -209,7 +201,7 @@ namespace DWAP
             bool finished = false;
             while (!finished)
             {
-                var currentTime = Memory.ReadByte(0x00B8C85C) + Memory.ReadByte(0x00B8C85E) + Memory.ReadByte(0x00B8C8A2) + Memory.ReadByte(0x00B8C8A3);
+                var currentTime = Memory.ReadLong(0x00134f00);
                 if (currentTime > 8)
                 {
                     finished = true;
@@ -220,13 +212,13 @@ namespace DWAP
         }
         public bool CheckForMoves()
         {
-            bool hasMoves = !(Memory.ReadByte(0x00BAD1A0) == 0
-                && Memory.ReadByte(0x00BAD1A5) == 0
-                && Memory.ReadByte(0x00BAD1A1) == 0
-                && Memory.ReadByte(0x00BAD1A4) == 0
-                && Memory.ReadByte(0x00BAD1A2) == 0
-                && Memory.ReadByte(0x00BAD1A3) == 0
-                && Memory.ReadByte(0x00BAD1A6) == 0);
+            bool hasMoves = !(Memory.ReadByte(0x00155800) == 0
+                && Memory.ReadByte(0x00155805) == 0
+                && Memory.ReadByte(0x00155801) == 0
+                && Memory.ReadByte(0x00155804) == 0
+                && Memory.ReadByte(0x00155802) == 0
+                && Memory.ReadByte(0x00155803) == 0
+                && Memory.ReadByte(0x00155806) == 0);
             if (hasMoves)
             {
                 Log.Logger.Information("Moves detected");
@@ -247,8 +239,8 @@ namespace DWAP
         {
             Log.Logger.Information("Reading Technique Data");
             List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
-            uint currentAddress = Addresses.TechniqueStartAddress;
-            uint learningChanceAddress = Addresses.LearningChanceStartAddress;
+            ulong currentAddress = Addresses.TechniqueStartAddress;
+            ulong learningChanceAddress = Addresses.LearningChanceStartAddress;
             for (int i = 0; i < 120; i++)
             {
                 DigimonTechniqueData tech = new DigimonTechniqueData();
@@ -377,10 +369,10 @@ namespace DWAP
         private void SetExpMultiplier(int multiplier)
         {
             var multVal = multiplier * 10;
-            Memory.Write(0x00B8FE4E, multVal);
+            Memory.Write(0x001384AE, multVal);
 
-            Memory.WriteByte(0x00B8FE4C, 63);
-            Memory.Write(0x00B8FE50, 9999);
+            Memory.WriteByte(0x001384AC, 63);
+            Memory.Write(0x001384B0, (short)9999);
         }
 
         private void EnsureStatCap()
@@ -440,15 +432,17 @@ namespace DWAP
                 Client.Connected -= OnConnected;
                 Client.Disconnected -= OnDisconnected;
             }
-            ePSXeClient client = new ePSXeClient();
-            var ePSXeConnected = client.Connect();
-            if (!ePSXeConnected)
+            DuckstationClient client = new DuckstationClient();
+            var duckstationConnected = client.Connect();
+            if (!duckstationConnected)
             {
-                Log.Logger.Warning("ePSXE not running, open ePSXe and launch the game before connecting!");
+                Log.Logger.Warning("duckstation not running, open duckstation and launch the game before connecting!");
                 return;
             }
             Client = new ArchipelagoClient(client);
 
+            Addresses.DuckstationOffset = Helpers.GetDuckstationOffset();
+            Memory.GlobalOffset = Addresses.DuckstationOffset;
 
             Client.Connected += OnConnected;
             Client.Disconnected += OnDisconnected;
@@ -457,7 +451,8 @@ namespace DWAP
 
             await Client.Login(args.Slot, !string.IsNullOrWhiteSpace(args.Password) ? args.Password : null);
             var locations = Helpers.GetProsperityLocations();
-            locations.AddRange(Helpers.GetDigimonCards());
+          //  locations.AddRange(Helpers.GetDigimonCards());
+
             Client.PopulateLocations(locations);
             _timer1.Start();
             if (Client.Options != null)
