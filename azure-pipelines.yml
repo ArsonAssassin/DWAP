@@ -101,10 +101,10 @@ stages:
           
           # Read current version
           [xml]$csproj = Get-Content $csprojPath.FullName
-          $currentVersion = $csproj.Project.PropertyGroup.ApplicationVersion
+          $currentVersion = $csproj.Project.PropertyGroup.ApplicationDisplayVersion
           
           if ([string]::IsNullOrEmpty($currentVersion)) {
-              Write-Error "Could not find ApplicationVersion in csproj file"
+              Write-Error "Could not find ApplicationDisplayVersion in csproj file"
               exit 1
           }
           
