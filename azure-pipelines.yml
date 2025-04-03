@@ -148,6 +148,7 @@ stages:
         solution: '$(solution)'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+        msbuildArgs: "/t:DWAP;Rebuild"
 
     - task: PowerShell@2
       name: CommitVersionUpdate
