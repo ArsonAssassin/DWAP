@@ -18,7 +18,7 @@ parameters:
     default: false
 
 variables:
-  solution: '**/source/DWAP/*.sln'
+  solution: '**/source/DWAP/DWAP.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
