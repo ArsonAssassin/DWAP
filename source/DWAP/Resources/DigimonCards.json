@@ -2,397 +2,397 @@
 	{
 		"Name": "Player Card",
 		"Id": 69002000,
-		"Address": "0x001BE00C",
+		"Address": "0x001BDFAC",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Phoenixmon Card",
 		"Id": 69002001,
-		"Address": "0x001BE00C",
+		"Address": "0x001BDFAC",
 		"AddressBit": 7
 	},
 	{
 		"Name": "H-Kabuterimon Card",
 		"Id": 69002002,
-		"Address": "0x001BE00D",
+		"Address": "0x001BDFAD",
 		"AddressBit": 3
 	},
 	{
 		"Name": "MegaSeadramon Card",
 		"Id": 69002003,
-		"Address": "0x001BE00D",
+		"Address": "0x001BDFAD",
 		"AddressBit": 7
 	},
 	{
 		"Name": "ShogunGekomon Card",
 		"Id": 69002004,
-		"Address": "0x001BE00E",
+		"Address": "0x001BDFAE",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Myotismon Card",
 		"Id": 69002005,
-		"Address": "0x001BE00E",
+		"Address": "0x001BDFAE",
 		"AddressBit": 7
 	},
 	{
 		"Name": "MetalGreymon Card",
 		"Id": 69002006,
-		"Address": "0x001BE00F",
+		"Address": "0x001BDFAF",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Mamemon Card",
 		"Id": 69002007,
-		"Address": "0x001BE00F",
+		"Address": "0x001BDFAF",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Monzaemon Card",
 		"Id": 69002008,
-		"Address": "0x001BE010",
+		"Address": "0x001BDFB0",
 		"AddressBit": 3
 	},
 	{
 		"Name": "SkullGreymon Card",
 		"Id": 69002009,
-		"Address": "0x001BE010",
+		"Address": "0x001BDFB0",
 		"AddressBit": 7
 	},
 	{
 		"Name": "MetalMamemon Card",
 		"Id": 69002010,
-		"Address": "0x001BE011",
+		"Address": "0x001BDFB1",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Vademon Card",
 		"Id": 69002011,
-		"Address": "0x001BE011",
+		"Address": "0x001BDFB1",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Andromon Card",
 		"Id": 69002012,
-		"Address": "0x001BE012",
+		"Address": "0x001BDFB2",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Giromon Card",
 		"Id": 69002013,
-		"Address": "0x001BE012",
+		"Address": "0x001BDFB2",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Etemon Card",
 		"Id": 69002014,
-		"Address": "0x001BE013",
+		"Address": "0x001BDFB3",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Megadramon Card",
 		"Id": 69002015,
-		"Address": "0x001BE013",
+		"Address": "0x001BDFB3",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Piximon Card",
 		"Id": 69002016,
-		"Address": "0x001BE014",
+		"Address": "0x001BDFB4",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Digitamamon Card",
 		"Id": 69002017,
-		"Address": "0x001BE014",
+		"Address": "0x001BDFB4",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Gekomon Card",
 		"Id": 69002018,
-		"Address": "0x001BE015",
+		"Address": "0x001BDFB5",
 		"AddressBit": 3
 	},
 	{
 		"Name": "WaruMonzaemon Card",
 		"Id": 69002019,
-		"Address": "0x001BE015",
+		"Address": "0x001BDFB5",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Jijimon Card",
 		"Id": 69002020,
-		"Address": "0x001BE016",
+		"Address": "0x001BDFB6",
 		"AddressBit": 3
 	},
 	{
 		"Name": "King of Sukamon Card",
 		"Id": 69002021,
-		"Address": "0x001BE016",
+		"Address": "0x001BDFB6",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Cherrymon Card",
 		"Id": 69002022,
-		"Address": "0x001BE017",
+		"Address": "0x001BDFB7",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Guardromon Card",
 		"Id": 69002023,
-		"Address": "0x001BE017",
+		"Address": "0x001BDFB7",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Hagurumon Card",
 		"Id": 69002024,
-		"Address": "0x001BE018",
+		"Address": "0x001BDFB8",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Brachiomon Card",
 		"Id": 69002025,
-		"Address": "0x001BE018",
+		"Address": "0x001BDFB8",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Greymon Card",
 		"Id": 69002026,
-		"Address": "0x001BE019",
+		"Address": "0x001BDFB9",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Devimon Card",
 		"Id": 69002027,
-		"Address": "0x001BE019",
+		"Address": "0x001BDFB9",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Airdramon Card",
 		"Id": 69002028,
-		"Address": "0x001BE01A",
+		"Address": "0x001BDFBA",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Tyrannomon Card",
 		"Id": 69002029,
-		"Address": "0x001BE01A",
+		"Address": "0x001BDFBA",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Meramon Card",
 		"Id": 69002030,
-		"Address": "0x001BE01B",
+		"Address": "0x001BDFBB",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Seadramon Card",
 		"Id": 69002031,
-		"Address": "0x001BE01B",
+		"Address": "0x001BDFBB",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Kabuterimon Card",
 		"Id": 69002032,
-		"Address": "0x001BE01C",
+		"Address": "0x001BDFBC",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Angemon Card",
 		"Id": 69002033,
-		"Address": "0x001BE01C",
+		"Address": "0x001BDFBC",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Birdramon Card",
 		"Id": 69002034,
-		"Address": "0x001BE01D",
+		"Address": "0x001BDFBD",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Garurumon Card",
 		"Id": 69002035,
-		"Address": "0x001BE01D",
+		"Address": "0x001BDFBD",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Frigimon Card",
 		"Id": 69002036,
-		"Address": "0x001BE01E",
+		"Address": "0x001BDFBE",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Whamon Card",
 		"Id": 69002037,
-		"Address": "0x001BE01E",
+		"Address": "0x001BDFBE",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Unimon Card",
 		"Id": 69002038,
-		"Address": "0x001BE01F",
+		"Address": "0x001BDFBF",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Ogremon Card",
 		"Id": 69002039,
-		"Address": "0x001BE01F",
+		"Address": "0x001BDFBF",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Shellmon Card",
 		"Id": 69002040,
-		"Address": "0x001BE020",
+		"Address": "0x001BDFC0",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Centarumon Card",
 		"Id": 69002041,
-		"Address": "0x001BE020",
+		"Address": "0x001BDFC0",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Bakemon Card",
 		"Id": 69002042,
-		"Address": "0x001BE021",
+		"Address": "0x001BDFC1",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Drimogemon Card",
 		"Id": 69002043,
-		"Address": "0x001BE021",
+		"Address": "0x001BDFC1",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Monochromon Card",
 		"Id": 69002044,
-		"Address": "0x001BE022",
+		"Address": "0x001BDFC2",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Leomon Card",
 		"Id": 69002045,
-		"Address": "0x001BE022",
+		"Address": "0x001BDFC2",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Coelamon Card",
 		"Id": 69002046,
-		"Address": "0x001BE023",
+		"Address": "0x001BDFC3",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Kokatorimon Card",
 		"Id": 69002047,
-		"Address": "0x001BE023",
+		"Address": "0x001BDFC3",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Kuwagamon Card",
 		"Id": 69002048,
-		"Address": "0x001BE024",
+		"Address": "0x001BDFC4",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Mojyamon Card",
 		"Id": 69002049,
-		"Address": "0x001BE024",
+		"Address": "0x001BDFC4",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Ninjamon Card",
 		"Id": 69002050,
-		"Address": "0x001BE025",
+		"Address": "0x001BDFC5",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Penguinmon Card",
 		"Id": 69002051,
-		"Address": "0x001BE025",
+		"Address": "0x001BDFC5",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Otamamon Card",
 		"Id": 69002052,
-		"Address": "0x001BE026",
+		"Address": "0x001BDFC6",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Tentomon Card",
 		"Id": 69002053,
-		"Address": "0x001BE026",
+		"Address": "0x001BDFC6",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Yanmamon Card",
 		"Id": 69002054,
-		"Address": "0x001BE027",
+		"Address": "0x001BDFC7",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Gotsumon Card",
 		"Id": 69002055,
-		"Address": "0x001BE027",
+		"Address": "0x001BDFC7",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Darkrizamon Card",
 		"Id": 69002056,
-		"Address": "0x001BE028",
+		"Address": "0x001BDFC8",
 		"AddressBit": 3
 	},
 	{
 		"Name": "ToyAgumon Card",
 		"Id": 69002057,
-		"Address": "0x001BE028",
+		"Address": "0x001BDFC8",
 		"AddressBit": 7
 	},
 	{
 		"Name": "DemiMeramon Card",
 		"Id": 69002058,
-		"Address": "0x001BE029",
+		"Address": "0x001BDFC9",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Tankmon Card",
 		"Id": 69002059,
-		"Address": "0x001BE029",
+		"Address": "0x001BDFC9",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Goburimon Card",
 		"Id": 69002060,
-		"Address": "0x001BE02A",
+		"Address": "0x001BDFCA",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Numemon Card",
 		"Id": 69002061,
-		"Address": "0x001BE02A",
+		"Address": "0x001BDFCA",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Vegiemon Card",
 		"Id": 69002062,
-		"Address": "0x001BE02B",
+		"Address": "0x001BDFCB",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Sukamon Card",
 		"Id": 69002063,
-		"Address": "0x001BE02B",
+		"Address": "0x001BDFCB",
 		"AddressBit": 7
 	},
 	{
 		"Name": "Nanimon Card",
 		"Id": 69002064,
-		"Address": "0x001BE02C",
+		"Address": "0x001BDFCC",
 		"AddressBit": 3
 	},
 	{
 		"Name": "Machinedramon Card",
 		"Id": 69002065,
-		"Address": "0x001BE02C",
+		"Address": "0x001BDFCC",
 		"AddressBit": 7
 	}
 ]
