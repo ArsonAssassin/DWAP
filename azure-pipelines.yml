@@ -136,7 +136,7 @@ stages:
           Write-Host "New version: $newVersion"
           
           # Update both version properties
-          $csproj.Project.PropertyGroup.ApplicationVersion = $newVersion
+          #$csproj.Project.PropertyGroup.ApplicationVersion = $newVersion
           $csproj.Project.PropertyGroup.ApplicationDisplayVersion = $newVersion
           $csproj.Save($csprojPath.FullName)
           
