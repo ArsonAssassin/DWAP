@@ -19,6 +19,7 @@ parameters:
 
 variables:
   solution: '**/source/DWAP/DWAP.sln'
+  project: '**/source/DWAP/DWAP.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -222,7 +223,7 @@ stages:
       inputs:
         command: 'publish'
         publishWebProjects: false
-        projects: '$(solution)/DWAP/DWAP.csproj'
+        projects: '$(project)'
         arguments: '-f net8.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:EnableCompressionInSingleFile=true /p:PublishAppxPackage=false'
         zipAfterPublish: false
 
