@@ -190,7 +190,7 @@ class DigimonWorldWorld(World):
             
         
         print(f"Itempool size after adding souls: {itempoolSize}")
-        filler_pool = BuildItemPool(itempoolSize, self.options)
+        filler_pool = BuildItemPool(self.multiworld, itempoolSize, self.options)
         for item in filler_pool:
             itempool.append(self.create_item(self.get_filler_item_name()))
             itempool.append(self.create_item(item.name))
@@ -475,10 +475,7 @@ class DigimonWorldWorld(World):
                 prosperity_value = int(prosperity_location.name.split(" ")[0])
                 current_prosperity = lambda state, player: sum(digimon.prosperity_value for digimon in recruit_digimon_list if self.multiworld.get_location(digimon.name, player).can_reach(state))                
                 set_rule(prosperity_location, lambda state: current_prosperity(state, self.player) >= prosperity_value and state.has("Agumon Recruited", self.player))
-        #completionLocation = self.multiworld.get_location("Digitamamon", self.player)    
 
-            #completionLocation.can_reach(state)
-        #    calculate_prosperity(self, state) >= 1#self.options.required_prosperity.value 
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
 
@@ -517,7 +514,9 @@ class DigimonWorldWorld(World):
                 "progressive_stats": self.options.progressive_stats.value,
                 "random_starter": self.options.random_starter.value,
                 "early_statcap": self.options.early_statcap.value,
-                "random_techniques": self.options.random_techniques.value
+                "random_techniques": self.options.random_techniques.value,
+                "easy_monochromon": self.options.easy_monochromon.value,
+                "fast_drimogemon": self.options.fast_drimogemon.value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server

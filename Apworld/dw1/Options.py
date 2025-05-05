@@ -39,6 +39,14 @@ class ProgressiveStatOption(DefaultOnToggle):
     """Enables Progressive Stat gain caps"""
     display_name = "Progressive Stat Caps"
 
+class EasyMonochromonOption(DefaultOnToggle):
+    """Always win the Monochromon Minigame"""
+    display_name = "Easy Monochromon"
+    
+class FastDrimogemonOption(DefaultOnToggle):
+    """Makes Drimogen dig in 1 day instead of 10"""
+    display_name = "Fast Drimogemon"
+    
 class RandomStarterOption(Choice):
     """Randomise the 2 starter digimon options
     Vanilla = Agumon and Gabumon are the starters
@@ -69,3 +77,5 @@ class DigimonWorldOption(PerGameCommonOptions):
     progressive_stats: ProgressiveStatOption
     random_starter: RandomStarterOption
     random_techniques: RandomTechniqueOption
+    fast_drimogemon: FastDrimogemonOption
+    easy_monochromon: EasyMonochromonOption
