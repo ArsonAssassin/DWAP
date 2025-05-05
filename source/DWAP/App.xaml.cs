@@ -451,9 +451,9 @@ namespace DWAP
 
             await Client.Login(args.Slot, !string.IsNullOrWhiteSpace(args.Password) ? args.Password : null);
             var locations = Helpers.GetProsperityLocations();
-          //  locations.AddRange(Helpers.GetDigimonCards());
+            locations.AddRange(Helpers.GetDigimonCards());
 
-            Client.PopulateLocations(locations);
+            Client.MonitorLocations(locations);
             _timer1.Start();
             if (Client.Options != null)
             {
@@ -465,12 +465,6 @@ namespace DWAP
                 if (APItems.Any(x => x.Id == args.Item.Id))
                 {
                     var item = APItems.First(x => x.Id == args.Item.Id);
-                    if (item.Type == ItemType.Soul)
-                    {
-                        var soulName = item.Name.Split(" ")[0];
-                        var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
-                        Client.MonitorLocations(digimonRecruit);
-                    }
                     if (item.Type == ItemType.Consumable)
                     {
                         AddDigimonItem(item.Id);
@@ -491,6 +485,16 @@ namespace DWAP
                             StatCap = 999;
                         }
                         else StatCap = (boostsReceived * 100) + 100;
+                    }
+                }
+                else if(DigimonSouls.Any(x => x.Id == args.Item.Id))
+                {
+                    var item = DigimonSouls.First(x => x.Id == args.Item.Id);
+                    if (item.Type == ItemType.Soul)
+                    {
+                        var soulName = item.Name.Split(" ")[0];
+                        var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
+                        Client.MonitorLocations(digimonRecruit);
                     }
                 }
             };

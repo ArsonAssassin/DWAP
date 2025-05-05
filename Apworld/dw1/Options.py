@@ -25,7 +25,7 @@ class GoalOption(Choice):
     display_name = "Goal"
     default = 0
     option_prosperity = 0
-    #option_machinedramon = 1    
+    option_digitamamon = 1   
 
 class RequiredProsperityOption(Range):
     """Sets the required prosperity points to complete the game"""
@@ -61,7 +61,7 @@ class RandomTechniqueOption(Choice):
 
 @dataclass
 class DigimonWorldOption(PerGameCommonOptions):
-    #goal: GoalOption
+    goal: GoalOption
     early_statcap: EnsureEarlyStatCapOption
     required_prosperity: RequiredProsperityOption
     guaranteed_items: GuaranteedItemsOption

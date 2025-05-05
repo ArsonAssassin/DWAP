@@ -2,14 +2,14 @@
 
 ## Required Software
 
-- [ePSXe version 1.9.0](https://www.epsxe.com/download.php)
+- [Duckstation](https://github.com/stenzek/duckstation/releases/tag/latest)
 - [DWAP Client](https://github.com/ArsonAssassin/DWAP/releases)
 - [Digimon World APWorld] (https://github.com/ArsonAssassin/DWAP/releases)
 - Digimon World US ROM. The Archipelago community cannot provide this.
 
 ## Optional Software
 
-- [Digimon World Poptracker Pack](https://github.com/ArsonAssassin/DigimonWorldAPTracker/releases), for use with [Poptracker](https://github.com/black-sliver/PopTracker/releases)
+- [Digimon World Poptracker Pack](https://github.com/seto10987/Digimon-World-AP-PopTracker-Pack), for use with [Poptracker](https://github.com/black-sliver/PopTracker/releases)
 
 ## General Concept
 
@@ -17,7 +17,7 @@ The DWAP Client is a C# client which reads memory addresses from ePSXe and commu
 
 ## Joining a MultiWorld Game
 
-1. Run ePSXe 1.9.0. It MUST be this version.
+1. Run Duckstation.
 2. Load the Digimon World (USA) rom
 3. Open the DWAP Client
 4. Enter your host (including port), slot name and password (if set)

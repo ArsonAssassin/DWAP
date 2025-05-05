@@ -71,7 +71,8 @@ class DigimonWorldWorld(World):
         regions: Dict[str, Region] = {}      
         regions["Menu"] = self.create_region("Menu", [])  
         regions.update({region_name: self.create_region(region_name, location_tables[region_name]) for region_name in [
-            "Start Game","Consumable", "Cards", "Prosperity",
+            "Start Game","Consumable", "Cards",
+            "Prosperity",
             "Agumon", "Betamon","Greymon","Devimon","Airdramon","Tyrannomon","Meramon","Seadramon","Numemon","MetalGreymon","Mamemon","Monzaemon",
             "Gabumon","Elecmon","Kabuterimon","Angemon","Birdramon","Garurumon","Frigimon","Whamon","Vegiemon","SkullGreymon","MetalMamemon","Vademon",
             "Patamon","Kunemon","Unimon","Ogremon","Shellmon","Centarumon","Bakemon","Drimogemon","Sukamon","Andromon", "Giromon", "Etemon", "Biyomon",
@@ -208,9 +209,7 @@ class DigimonWorldWorld(World):
         location.place_locked_item(self.create_item("Agumon Soul"))
         # Add regular items to itempool
         self.multiworld.itempool += itempool
-
         
-
     def create_item(self, name: str) -> Item:
         useful_categories = {
            # DigimonWorldItemCategory.CONSUMABLE,
@@ -255,8 +254,10 @@ class DigimonWorldWorld(World):
                     return True            
                 has_soul = state.has(digimon.name + " Soul", self.player)
                 return has_soul
-  
-        self.multiworld.completion_condition[self.player] = lambda state: state.has("Digitamamon Recruited", self.player)
+        if self.options.goal.value == 0:
+            self.multiworld.completion_condition[self.player] = lambda state: calculate_prosperity(self, state) >= self.options.required_prosperity.value
+        else:        
+            self.multiworld.completion_condition[self.player] = lambda state: state.has("Digitamamon Recruited", self.player)
 
         #for region in self.multiworld.get_regions(self.player):
         #    for location in region.locations:
@@ -303,9 +304,9 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_location(f"Monochromon", self.player), lambda state: state.has("Monochromon Soul", self.player) and calculate_prosperity(self, state) >= 6 and state.has("Agumon Recruited", self.player))
         set_rule(self.multiworld.get_location(f"Monochromon Recruited", self.player), lambda state: state.has("Monochromon Soul", self.player) and calculate_prosperity(self, state) >= 6 and state.has("Agumon Recruited", self.player))   
 
-        set_rule(self.multiworld.get_entrance(f"Agumon -> Meramon", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player))
-        set_rule(self.multiworld.get_location(f"Meramon", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player))
-        set_rule(self.multiworld.get_location(f"Meramon Recruited", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player))
+        set_rule(self.multiworld.get_entrance(f"Agumon -> Meramon", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player) and (state.has("Coelamon Recruited", self.player) or state.has("Betamon Recruited", self.player)))
+        set_rule(self.multiworld.get_location(f"Meramon", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player) and (state.has("Coelamon Recruited", self.player) or state.has("Betamon Recruited", self.player)))
+        set_rule(self.multiworld.get_location(f"Meramon Recruited", self.player), lambda state: state.has("Meramon Soul", self.player) and state.has("Agumon Recruited", self.player) and (state.has("Coelamon Recruited", self.player) or state.has("Betamon Recruited", self.player)))
 
         set_rule(self.multiworld.get_entrance(f"Agumon -> Elecmon", self.player), lambda state: state.has("Elecmon Soul", self.player) and state.has("Agumon Recruited", self.player))
         set_rule(self.multiworld.get_location(f"Elecmon", self.player), lambda state: state.has("Elecmon Soul", self.player) and state.has("Agumon Recruited", self.player))
@@ -510,7 +511,7 @@ class DigimonWorldWorld(World):
 
         slot_data = {
             "options": {
-                #"goal": self.options.goal.value,
+                "goal": self.options.goal.value,
                 "required_prosperity": self.options.required_prosperity.value,
                 "guaranteed_items": self.options.guaranteed_items.value,
                 "exp_multiplier": self.options.exp_multiplier.value,
