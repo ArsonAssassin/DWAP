@@ -11,7 +11,6 @@ from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, 
 from .Locations import DigimonWorldLocation, DigimonWorldLocationCategory, location_tables, location_dictionary
 from .Options import DigimonWorldOption
 from .RecruitDigimon import recruit_digimon_list
-import random
 
 class DigimonWorldWeb(WebWorld):
     bug_report_page = ""

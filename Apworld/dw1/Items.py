@@ -1,6 +1,5 @@
 from enum import IntEnum
 from typing import NamedTuple
-import random
 from BaseClasses import Item
 
 
@@ -290,7 +289,7 @@ def BuildItemPool(count, options):
             remaining_count = remaining_count - 9
     consumable_count = round(remaining_count * 0.6)
     remaining_count = remaining_count - consumable_count
-    dv_count = random.randint(1, remaining_count)
+    dv_count = world.random.randint(1, remaining_count)
     remaining_count = remaining_count - dv_count
     bit_count = remaining_count
     
@@ -310,15 +309,15 @@ def BuildItemPool(count, options):
                 item_pool.append(item_dictionary["Progressive Stat Cap"])
     for i in range(consumable_count):
         consumables = [item for item in _all_items if item.category == DigimonWorldItemCategory.CONSUMABLE]
-        item = random.choice(consumables)
+        item = world.random.choice(consumables)
         item_pool.append(item)
     for i in range(dv_count):
         dv = [item for item in _all_items if item.category == DigimonWorldItemCategory.DV]
-        item = random.choice(dv)
+        item = world.random.choice(dv)
         item_pool.append(item)
     for i in range(bit_count):    
         bit = [item for item in _all_items if "Bits" in item.name]
-        item = random.choice(bit)
+        item = world.random.choice(bit)
         item_pool.append(item)    
-    random.shuffle(item_pool)
+    world.random.shuffle(item_pool)
     return item_pool
