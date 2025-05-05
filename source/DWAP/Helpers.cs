@@ -95,6 +95,42 @@ namespace DWAP
             technique.AddressBit = addressData.Item2;
             return technique;
         }
+        public static int CalculateProsperityPoints(GameState state)
+        {
+            var completedLocations = state.CompletedLocations.Where(x => x.Name.ToLower().Contains("recruited"));
+
+            var digimonNames = completedLocations.Select(x => x.Name.Replace(" Recruited", ""));
+            int result = 0;
+            var rookieList = new List<string>()
+            {
+                "Agumon", "Betamon", "Kunemon", "Palmon", "Gabumon", "Elecmon", "Patamon", "Palmon", "Biyomon", "Sukamon", "Penguinmon", "Nanimon", "Numemon"
+            };
+            var championList = new List<string>()
+            {
+                "Bakemon", "Centarumon", "Coelamon", "Greymon", "Monochromon", "Meramon", "Tyrannomon", "Birdramon", "Unimon", "Mojyamon", "Angemon", "Vegiemon",
+                "Shellmon", "Whamon", "Frigimon", "Seadramon", "Garurumon", "Kokatorimon", "Ogremon", "Kuwagamon", "Kabuterimon", "Drimogemon", "Ninjamon", "Devimon", "Leomon", "Airdramon" 
+            };
+            var ultimateList = new List<string>()
+            {
+                "Piximon", "Giromon", "Andromon", "Monzaemon", "Vademon", "MetalMamemon", "SkullGreymon", "Mamemon", "MetalGreymon", "Etemon", "Megadramon", "Digitmamon"
+            };
+            foreach (var digimon in digimonNames)
+            {
+                if (rookieList.Contains(digimon))
+                {
+                    result += 1;
+                }
+                else if (championList.Contains(digimon))
+                {
+                    result += 2;
+                }
+                else if(ultimateList.Contains(digimon))
+                {
+                    result += 3;
+                }
+            }
+            return result;
+        }
         private static Tuple<uint, int> GetTechAddress(int slot)
         {
             uint address = 0;

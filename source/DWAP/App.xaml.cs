@@ -27,6 +27,8 @@ namespace DWAP
         private System.Timers.Timer _timer1 { get; set; } = new System.Timers.Timer(1000);
         bool firstConnect = true;
         private static readonly object _lockObject = new object();
+        private bool _fastDrimogemon = false;
+        private bool _easyMonochromon = false;
         public App()
         {
             InitializeComponent();
@@ -121,6 +123,14 @@ namespace DWAP
             var randomOptions = new RandomiserOptions(randomSeed);
             RandomSettings = new Randomiser(randomOptions);
             Log.Logger.Information("Running Randomisation");
+            if (options.ContainsKey("easy_monochromon"))
+            {
+                _easyMonochromon = Convert.ToBoolean(options["easy_monochromon"].ToString());
+            }
+            if (options.ContainsKey("fast_drimogemon"))
+            {
+                _fastDrimogemon = Convert.ToBoolean(options["fast_drimogemon"].ToString());
+            }
             if (options.ContainsKey("random_starter"))
             {
                 var starterOption = Convert.ToInt32(options["random_starter"].ToString());
@@ -413,7 +423,28 @@ namespace DWAP
             }
             EnsureStatCap();
             EnsureSouls();
+            EnsureWorldFlags();
+            EnsureProsperity();
         }
+
+        private void EnsureProsperity()
+        {
+            var prosperity = Helpers.CalculateProsperityPoints(Client.GameState);
+            Memory.Write(Addresses.ProsperityPoints, prosperity);
+        }
+
+        private void EnsureWorldFlags()
+        {
+            if (_easyMonochromon)
+            {
+                Memory.Write(Addresses.MonochromeProfitAddress, 4000);
+            }
+            if (_fastDrimogemon)
+            {
+                if (Memory.ReadByte(Addresses.DrimogemonDays) < 9) Memory.WriteByte(Addresses.DrimogemonDays, 9);
+            }
+        }
+
         private async void EnsureSouls()
         {
             var locations = Helpers.GetLocations();
