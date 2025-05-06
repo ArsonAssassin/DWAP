@@ -125,11 +125,11 @@ namespace DWAP
             Log.Logger.Information("Running Randomisation");
             if (options.ContainsKey("easy_monochromon"))
             {
-                _easyMonochromon = Convert.ToBoolean(options["easy_monochromon"].ToString());
+                _easyMonochromon = Convert.ToInt32(options["easy_monochromon"].ToString()) > 0;
             }
             if (options.ContainsKey("fast_drimogemon"))
             {
-                _fastDrimogemon = Convert.ToBoolean(options["fast_drimogemon"].ToString());
+                _fastDrimogemon = Convert.ToInt32(options["fast_drimogemon"].ToString()) > 0;
             }
             if (options.ContainsKey("random_starter"))
             {
