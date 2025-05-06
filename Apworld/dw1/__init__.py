@@ -192,12 +192,8 @@ class DigimonWorldWorld(World):
         print(f"Itempool size after adding souls: {itempoolSize}")
         filler_pool = BuildItemPool(self.multiworld, itempoolSize, self.options)
         for item in filler_pool:
-            itempool.append(self.create_item(self.get_filler_item_name()))
             itempool.append(self.create_item(item.name))
             itempoolSize -= 1
-        # for i in range(itempoolSize):
-        #     itempool.append(self.create_item(self.get_filler_item_name()))
-        #     itempoolSize -= 1
         print(f"Itempool size after adding fillers: {itempoolSize}")
 
         if self.options.early_statcap.value:
