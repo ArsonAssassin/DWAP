@@ -33,7 +33,7 @@ namespace DWAP
         {
             InitializeComponent();
             _timer1.Elapsed += TimerTick;
-            Context = new MainPageViewModel();
+            Context = new MainPageViewModel("0.6.1");
             Context.ConnectClicked += Context_ConnectClicked;
             Context.CommandReceived += (e, a) =>
             {
@@ -48,7 +48,6 @@ namespace DWAP
             Log.Logger.Information("Loading Souls");
             DigimonSouls = Helpers.GetDigimonSouls();
             DigimonItems = Helpers.GetConsumables();
-            DigimonTechniques = ReadTechniques();
             Log.Logger.Information("Ready to connect!");
 
         }
@@ -481,6 +480,8 @@ namespace DWAP
             await Client.Connect(args.Host, "Digimon World");
 
             await Client.Login(args.Slot, !string.IsNullOrWhiteSpace(args.Password) ? args.Password : null);
+
+            DigimonTechniques = ReadTechniques();
             var locations = Helpers.GetProsperityLocations();
             locations.AddRange(Helpers.GetDigimonCards());
 
