@@ -1,6 +1,7 @@
 ﻿using Archipelago.Core;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
+using DWAP.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,60 @@ namespace DWAP
                 item.Type = ItemType.Soul;
             }
             return list;
+        }
+        public static DWLocation GetCurrentLocation()
+        {
+            var currentMapId = Memory.ReadShort(0x00134ffe);
+            var dict = DigimonMapDictionary();
+            var currentMap = dict.TryGetValue(currentMapId, out var map) ? map : "Unknown map";
+            var currentX = Memory.ReadByte(0x000134d56);
+            var currentY = Memory.ReadByte(0x000134d55);
+            return new DWLocation() { MapId = currentMapId,  MapName = currentMap, X = currentX, Y = currentY };
+        }
+        public static Dictionary<short, string> DigimonMapDictionary()
+        {
+            return new Dictionary<short, string>
+            {
+                {0, "Native Forest Toilet" },
+                {1, "Kunemon's Bed" },
+                {2, "Palmon's Garden" },
+                {3, "Etemon's House" },
+                {4, "Path to beach" },
+                {5, "Coela Point" },
+                {6, "Dragon Eye Lake South" },
+                {7, "Drill Tunnel Entrance" },
+                {8, "Dragon Eye Lake North" },
+                {9, "Digimon Bridge" },
+                {10, "Bridge Path" },
+                {11, "Jungle Bridge" },
+                {12, "Jungle Beach" },
+                {13, "Jungle Toilet" },
+                {14, "Central Jungle" },
+                {15, "Betamon's Mangrove" },
+                {16, "Amida Entrance" },
+                {17, "Amida Forest" },
+                {18, "Path thru Mt Panorama" },
+                {19, "Mamemon Field" },
+                {20, "Path thru Mt Panorama" },
+                {21, "Unused" },
+                {22, "Mt Panorama Toilet" },
+                {23, "Mt Panorama Toilet" },
+                {24, "Drill Tunnel Room 1" },
+                {25, "Drill Tunnel Center" },
+                {26, "Drill Tunnel Long path" },
+                {27, "Drimogemon's Kitchen" },
+                {28, "Underground Pond" },
+                {29, "Lava Tunnel" },
+                {30, "Lava Cave Path" },
+                {31, "Meramon's Lair" },
+                {32, "Lava Cave Exit" },
+                {33, "Lava Cave Chamber" },
+                {34, "Overdell" },
+                {35, "Cemetary" },
+                {36, "Invisible Bridge" },
+
+                {49, "Monochrome Shop" }
+            };
         }
         public static List<Location> GetDigimonCards()
         {

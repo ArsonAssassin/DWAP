@@ -6,6 +6,7 @@ using Archipelago.Core.MauiGUI.ViewModels;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using DWAP.Models;
 using Newtonsoft.Json;
 using Serilog;
 using System.Timers;
@@ -20,6 +21,7 @@ namespace DWAP
         public static List<DigimonWorldItem> DigimonSouls { get; set; }
         public static List<DigimonItem> DigimonItems { get; set; }
         public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
+        public static DWLocation CurrentLocation { get; set; } = new DWLocation();
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
@@ -41,7 +43,12 @@ namespace DWAP
             };
             MainPage = new MainPage(Context);
             Context.ConnectButtonEnabled = true;
-
+            Context.UnstuckClicked += (o, e) =>
+            {
+                Log.Verbose("Current Position: ");
+                Log.Verbose(JsonConvert.SerializeObject(CurrentLocation));
+            };
+            Context.UnstuckVisible = true;
             Log.Logger.Information("Initialising collections...");
             Log.Logger.Information("Loading Items");
             APItems = Helpers.GetAPItems();
@@ -420,6 +427,7 @@ namespace DWAP
             {
                 SetExpMultiplier(ExpMultiplier);
             }
+            CurrentLocation = Helpers.GetCurrentLocation();
             EnsureStatCap();
             EnsureSouls();
             EnsureWorldFlags();
@@ -434,7 +442,7 @@ namespace DWAP
 
         private void EnsureWorldFlags()
         {
-            if (_easyMonochromon)
+            if (_easyMonochromon && CurrentLocation.MapId == 49)
             {
                 Memory.Write(Addresses.MonochromeProfitAddress, 4000);
             }
