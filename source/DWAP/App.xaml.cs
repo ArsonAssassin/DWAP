@@ -5,6 +5,7 @@ using Archipelago.Core.MauiGUI.Models;
 using Archipelago.Core.MauiGUI.ViewModels;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
+using Archipelago.Core.Util.GPS;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using DWAP.Models;
 using Newtonsoft.Json;
@@ -21,13 +22,12 @@ namespace DWAP
         public static List<DigimonWorldItem> DigimonSouls { get; set; }
         public static List<DigimonItem> DigimonItems { get; set; }
         public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
-        public static DWLocation CurrentLocation { get; set; } = new DWLocation();
+        public static PositionData CurrentLocation { get; set; }
         public static int StatCap { get; set; }
         public static int ExpMultiplier { get; set; }
         public static bool StatCapEnabled { get; set; }
         public static Randomiser RandomSettings { get; set; }
         private System.Timers.Timer _timer1 { get; set; } = new System.Timers.Timer(1000);
-        bool firstConnect = true;
         private static readonly object _lockObject = new object();
         private bool _fastDrimogemon = false;
         private bool _easyMonochromon = false;
@@ -35,7 +35,7 @@ namespace DWAP
         {
             InitializeComponent();
             _timer1.Elapsed += TimerTick;
-            Context = new MainPageViewModel("0.6.1");
+            Context = new MainPageViewModel("0.6.2");
             Context.ConnectClicked += Context_ConnectClicked;
             Context.CommandReceived += (e, a) =>
             {
@@ -49,13 +49,13 @@ namespace DWAP
                 Log.Verbose(JsonConvert.SerializeObject(CurrentLocation));
             };
             Context.UnstuckVisible = true;
-            Log.Logger.Information("Initialising collections...");
-            Log.Logger.Information("Loading Items");
+            Log.Information("Initialising collections...");
+            Log.Information("Loading Items");
             APItems = Helpers.GetAPItems();
-            Log.Logger.Information("Loading Souls");
+            Log.Information("Loading Souls");
             DigimonSouls = Helpers.GetDigimonSouls();
             DigimonItems = Helpers.GetConsumables();
-            Log.Logger.Information("Ready to connect!");
+            Log.Information("Ready to connect!");
 
         }
         private void AddDigimonItem(int id)
@@ -186,11 +186,11 @@ namespace DWAP
             //}
             if (options.ContainsKey("random_starter"))
             {
-                Log.Logger.Information("Writing new Starters");
+                Log.Information("Writing new Starters");
                 Memory.WriteByte(Addresses.Starter1, RandomSettings.Starter);
                 Memory.WriteByte(Addresses.Starter2, RandomSettings.Starter);
 
-                Log.Logger.Information("Checking for existing moveset");
+                Log.Information("Checking for existing moveset");
                 if (!CheckForMoves())
                 {
                     _ = Task.Run(async () =>
@@ -237,14 +237,14 @@ namespace DWAP
                 && Memory.ReadByte(0x00155806) == 0);
             if (hasMoves)
             {
-                Log.Logger.Information("Moves detected");
+                Log.Information("Moves detected");
             }
-            else Log.Logger.Warning("No moves");
+            else Log.Warning("No moves");
             return hasMoves;
         }
         private void WriteStarterMove(byte starter)
         {
-            Log.Logger.Information("Setting Starter Technique");
+            Log.Information("Setting Starter Technique");
             var move = GetStarterMove(starter);
 
             Memory.WriteBit(move.Address, move.AddressBit, true);
@@ -253,7 +253,7 @@ namespace DWAP
         }
         private List<DigimonTechniqueData> ReadTechniques()
         {
-            Log.Logger.Information("Reading Technique Data");
+            Log.Information("Reading Technique Data");
             List<DigimonTechniqueData> techniques = new List<DigimonTechniqueData>();
             ulong currentAddress = Addresses.TechniqueStartAddress;
             ulong learningChanceAddress = Addresses.LearningChanceStartAddress;
@@ -298,7 +298,7 @@ namespace DWAP
                 tech = tech.PopulateTechData();
                 techniques.Add(tech);
             }
-            Log.Logger.Information("Techniques Loaded");
+            Log.Information("Techniques Loaded");
             return techniques;
         }
         private DigimonTechniqueData GetStarterMove(byte starter)
@@ -306,7 +306,7 @@ namespace DWAP
             var stage = GetDigimonStage(starter);
             if (stage == DigimonStage.baby || stage == DigimonStage.intraining)
             {
-                Log.Logger.Information("Teaching Bubble");
+                Log.Information("Teaching Bubble");
                 return DigimonTechniques.First(x => x.Name == "Bubble");
             }
 
@@ -320,48 +320,48 @@ namespace DWAP
             if (starter == 52)
             {
                 //Mojyamon gets Dynamite Kick
-                Log.Logger.Information("Teaching Dynamite Kick");
+                Log.Information("Teaching Dynamite Kick");
                 return DigimonTechniques.First(x => x.Name == "Dynamite Kick");
             }
             if (starter == 62)
             {
-                Log.Logger.Information("Teaching Fire Tower");
+                Log.Information("Teaching Fire Tower");
                 //Weregarurumon only knows Fire Tower
                 return DigimonTechniques.First(x => x.Name == "Fire Tower");
             }
             if (spitFireStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Spit Fire");
+                Log.Information("Teaching Spit Fire");
                 return DigimonTechniques.First(x => x.Name == "Spit Fire");
             }
             if (sonicJabStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Sonic Jab");
+                Log.Information("Teaching Sonic Jab");
                 return DigimonTechniques.First(x => x.Name == "Sonic Jab");
             }
             if (staticElectStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Static Elect");
+                Log.Information("Teaching Static Elect");
                 return DigimonTechniques.First(x => x.Name == "Static Elect");
             }
             if (metalSprintStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Metal Sprinter");
+                Log.Information("Teaching Metal Sprinter");
                 return DigimonTechniques.First(x => x.Name == "Metal Sprinter");
             }
             if (horizontalKickStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Horizontal Kick");
+                Log.Information("Teaching Horizontal Kick");
                 return DigimonTechniques.First(x => x.Name == "Horizontal Kick");
             }
             if (teardropStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Tear Drop");
+                Log.Information("Teaching Tear Drop");
                 return DigimonTechniques.First(x => x.Name == "Tear Drop");
             }
             if (poisonClawStarters.Contains(starter))
             {
-                Log.Logger.Information("Teaching Poison Claw");
+                Log.Information("Teaching Poison Claw");
                 return DigimonTechniques.First(x => x.Name == "Poison Claw");
             }
             return DigimonTechniques.First(x => x.Name == "Spit Fire");
@@ -474,12 +474,12 @@ namespace DWAP
             var duckstationConnected = client.Connect();
             if (!duckstationConnected)
             {
-                Log.Logger.Warning("duckstation not running, open duckstation and launch the game before connecting!");
+                Log.Warning("Duckstation not running, open Duckstation and launch the game before connecting!");
                 return;
             }
             Client = new ArchipelagoClient(client);
 
-            Addresses.DuckstationOffset = Helpers.GetDuckstationOffset();
+            Addresses.DuckstationOffset = Memory.GetDuckstationOffset();
             Memory.GlobalOffset = Addresses.DuckstationOffset;
 
             Client.Connected += OnConnected;
@@ -494,6 +494,15 @@ namespace DWAP
             locations.AddRange(Helpers.GetDigimonCards());
 
             Client.MonitorLocations(locations);
+            Client.GPSHandler = new Archipelago.Core.Util.GPS.GPSHandler(() => Helpers.GetCurrentLocation());
+            Client.GPSHandler.PositionChanged += (o, e) => 
+            {
+                Log.Verbose($"Position: {e.NewX} {e.NewY}");
+            };
+            Client.GPSHandler.MapChanged += (o, e) =>
+            {
+                Log.Debug($"Map Changed: {Client.GPSHandler.Region}: {e.NewMapName}");
+            };
             _timer1.Start();
             if (Client.Options != null)
             {
@@ -501,7 +510,7 @@ namespace DWAP
             }
             Client.ItemReceived += (e, args) =>
             {
-                Log.Logger.Information($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
+                Log.Information($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
                 if (APItems.Any(x => x.Id == args.Item.Id))
                 {
                     var item = APItems.First(x => x.Id == args.Item.Id);
@@ -584,7 +593,7 @@ namespace DWAP
             }
             else if (Client != null)
             {
-                Log.Logger.Information("Disconnecting...");
+                Log.Information("Disconnecting...");
                 Client.Disconnect();
             }
         }
@@ -594,7 +603,6 @@ namespace DWAP
             {
                 new TextSpan(){Text = $"[{item.Id.ToString()}] -", TextColor = Color.FromRgb(255, 255, 255)},
                 new TextSpan(){Text = $"{item.Name}", TextColor = Color.FromRgb(200, 255, 200)},
-                new TextSpan(){Text = $"x{item.Quantity.ToString()}", TextColor = Color.FromRgb(200, 255, 200)}
             });
             lock (_lockObject)
             {
@@ -611,7 +619,7 @@ namespace DWAP
             {
                 LogHint(e.Message);
             }
-            Log.Logger.Information(JsonConvert.SerializeObject(e.Message));
+            Log.Information(JsonConvert.SerializeObject(e.Message));
         }
         private static void LogHint(LogMessage message)
         {
@@ -636,13 +644,13 @@ namespace DWAP
         }
         private static void OnConnected(object sender, EventArgs args)
         {
-            Log.Logger.Information("Connected to Archipelago");
-            Log.Logger.Information($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
+            Log.Information("Connected to Archipelago");
+            Log.Information($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
         }
 
         private static void OnDisconnected(object sender, EventArgs args)
         {
-            Log.Logger.Information("Disconnected from Archipelago");
+            Log.Information("Disconnected from Archipelago");
         }
         protected override Microsoft.Maui.Controls.Window CreateWindow(IActivationState activationState)
         {

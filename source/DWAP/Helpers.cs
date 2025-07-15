@@ -1,6 +1,7 @@
 ﻿using Archipelago.Core;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
+using Archipelago.Core.Util.GPS;
 using DWAP.Models;
 using Newtonsoft.Json;
 using System;
@@ -32,65 +33,156 @@ namespace DWAP
         {
             var json = OpenEmbeddedResource("DWAP.Resources.DigimonSouls.json");
             var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 item.Type = ItemType.Soul;
             }
             return list;
         }
-        public static DWLocation GetCurrentLocation()
+        public static PositionData GetCurrentLocation()
         {
             var currentMapId = Memory.ReadShort(0x00134ffe);
-            var dict = DigimonMapDictionary();
-            var currentMap = dict.TryGetValue(currentMapId, out var map) ? map : "Unknown map";
+            var dict = DigimonMap();
+            var currentMap = dict.SingleOrDefault(x => x.MapId == currentMapId);
             var currentX = Memory.ReadByte(0x000134d56);
             var currentY = Memory.ReadByte(0x000134d55);
-            return new DWLocation() { MapId = currentMapId,  MapName = currentMap, X = currentX, Y = currentY };
+            return new PositionData() { MapId = currentMapId, MapName = currentMap.DisplayName, Region = currentMap.Region, X = currentX, Y = currentY };
         }
-        public static Dictionary<short, string> DigimonMapDictionary()
-        {
-            return new Dictionary<short, string>
-            {
-                {0, "Native Forest Toilet" },
-                {1, "Kunemon's Bed" },
-                {2, "Palmon's Garden" },
-                {3, "Etemon's House" },
-                {4, "Path to beach" },
-                {5, "Coela Point" },
-                {6, "Dragon Eye Lake South" },
-                {7, "Drill Tunnel Entrance" },
-                {8, "Dragon Eye Lake North" },
-                {9, "Digimon Bridge" },
-                {10, "Bridge Path" },
-                {11, "Jungle Bridge" },
-                {12, "Jungle Beach" },
-                {13, "Jungle Toilet" },
-                {14, "Central Jungle" },
-                {15, "Betamon's Mangrove" },
-                {16, "Amida Entrance" },
-                {17, "Amida Forest" },
-                {18, "Path thru Mt Panorama" },
-                {19, "Mamemon Field" },
-                {20, "Path thru Mt Panorama" },
-                {21, "Unused" },
-                {22, "Mt Panorama Toilet" },
-                {23, "Mt Panorama Toilet" },
-                {24, "Drill Tunnel Room 1" },
-                {25, "Drill Tunnel Center" },
-                {26, "Drill Tunnel Long path" },
-                {27, "Drimogemon's Kitchen" },
-                {28, "Underground Pond" },
-                {29, "Lava Tunnel" },
-                {30, "Lava Cave Path" },
-                {31, "Meramon's Lair" },
-                {32, "Lava Cave Exit" },
-                {33, "Lava Cave Chamber" },
-                {34, "Overdell" },
-                {35, "Cemetary" },
-                {36, "Invisible Bridge" },
 
-                {49, "Monochrome Shop" }
-            };
+        public static List<DigimonMap> DigimonMap()
+        {
+            return new List<DigimonMap>
+    {
+        new DigimonMap(0, "Toilet", "Native Forest"),
+        new DigimonMap(1, "Kunemon's Bed", "Native Forest"),
+        new DigimonMap(2, "Palmon's Garden", "Native Forest"),
+        new DigimonMap(3, "Etemon's House", "Native Forest"),
+        new DigimonMap(4, "Path to beach", "Native Forest"),
+        new DigimonMap(5, "Coela Point", "Native Forest"),
+        new DigimonMap(6, "Dragon Eye Lake South", "Native Forest"),
+        new DigimonMap(7, "Drill Tunnel Entrance", "Native Forest"),
+        new DigimonMap(8, "Dragon Eye Lake North", "Native Forest"),
+        new DigimonMap(9, "Digimon Bridge", "Native Forest"),
+        new DigimonMap(10, "Bridge Path", "Native Forest"),
+        new DigimonMap(11, "Bridge", "Jungle"),
+        new DigimonMap(12, "Beach", "Jungle"),
+        new DigimonMap(13, "Toilet", "Jungle"),
+        new DigimonMap(14, "Central Jungle", "Jungle"),
+        new DigimonMap(15, "Betamon's Mangrove", "Jungle"),
+        new DigimonMap(16, "Amida Entrance", "Jungle"),
+        new DigimonMap(17, "Amida Forest", "Jungle"),
+        new DigimonMap(18, "Path thru Mt Panorama", "Mt Panorama"),
+        new DigimonMap(19, "Mamemon Field", "Mt Panorama"),
+        new DigimonMap(20, "Path thru Mt Panorama", "Mt Panorama"),
+        new DigimonMap(21, "Unused", "Unknown"),
+        new DigimonMap(22, "Toilet", "Mt Panorama"),
+        new DigimonMap(23, "Toilet", "Mt Panorama"),
+        new DigimonMap(24, "Room 1", "Drill Tunnel"),
+        new DigimonMap(25, "Center", "Drill Tunnel"),
+        new DigimonMap(26, "Long path", "Drill Tunnel"),
+        new DigimonMap(27, "Drimogemon's Kitchen", "Drill Tunnel"),
+        new DigimonMap(28, "Underground Pond", "Drill Tunnel"),
+        new DigimonMap(29, "Lava Tunnel", "Lava Cave"),
+        new DigimonMap(30, "Path", "Lava Cave"),
+        new DigimonMap(31, "Meramon's Lair", "Lava Cave"),
+        new DigimonMap(32, "Exit", "Lava Cave"),
+        new DigimonMap(33, "Chamber", "Lava Cave"),
+        new DigimonMap(34, "Overdell", "Great Canyon"),
+        new DigimonMap(35, "Cemetary", "Great Canyon"),
+        new DigimonMap(36, "Invisible Bridge", "Great Canyon"),
+        new DigimonMap(37, "Outside Ogremon Elevator", "Great Canyon"),
+        new DigimonMap(38, "Birdramon Elevator", "Great Canyon"),
+        new DigimonMap(39, "Shellmon's Island (UP)", "Great Canyon"),
+        new DigimonMap(40, "Entrance", "Ogre Fortress"),
+        new DigimonMap(41, "Birdramon Elevator (Lower)", "Great Canyon"),
+        new DigimonMap(42, "Bottom of Cliff", "Great Canyon"),
+        new DigimonMap(43, "Split Path", "Great Canyon"),
+        new DigimonMap(44, "Monocrhome Shop Entrance", "Great Canyon"),
+        new DigimonMap(45, "Room 1", "Ogre Fortress"),
+        new DigimonMap(46, "Room 2", "Ogre Fortress"),
+        new DigimonMap(47, "Room 3", "Ogre Fortress"),
+        new DigimonMap(48, "Ogremon's Room", "Ogre Fortress"),
+        new DigimonMap(49, "Monochrome Shop", "Great Canyon"),
+        new DigimonMap(50, "Unused", "Unknown"),
+        new DigimonMap(51, "Attic", "Grey Lord Mansion"),
+        new DigimonMap(52, "Hall", "Grey Lord Mansion"),
+        new DigimonMap(53, "Landing", "Grey Lord Mansion"),
+        new DigimonMap(54, "Hallway", "Grey Lord Mansion"),
+        new DigimonMap(55, "Dining Room", "Grey Lord Mansion"),
+        new DigimonMap(56, "Kitchen", "Grey Lord Mansion"),
+        new DigimonMap(57, "Toilet", "Grey Lord Mansion"),
+        new DigimonMap(58, "Stairs", "Grey Lord Mansion"),
+        new DigimonMap(59, "Chest Room", "Grey Lord Mansion"),
+        new DigimonMap(60, "Lab Entrance", "Grey Lord Mansion"),
+        new DigimonMap(61, "Unused", "Unknown"),
+        new DigimonMap(62, "Bedroom", "Grey Lord Mansion"),
+        new DigimonMap(63, "Office", "Grey Lord Mansion"),
+        new DigimonMap(64, "Library", "Grey Lord Mansion"),
+        new DigimonMap(65, "Unused", "Unknown"),
+        new DigimonMap(66, "Basement", "Grey Lord Mansion"),
+        new DigimonMap(67, "Lab Passage", "Grey Lord Mansion"),
+        new DigimonMap(68, "Lab Entrance", "Grey Lord Mansion"),
+        new DigimonMap(69, "Entrance", "Gear Savanna"),
+        new DigimonMap(70, "Factorial Approach", "Gear Savanna"),
+        new DigimonMap(71, "Factorial Door", "Gear Savanna"),
+        new DigimonMap(72, "Patamon Clearing", "Gear Savanna"),
+        new DigimonMap(73, "Hide n Seek", "Gear Savanna"),
+        new DigimonMap(74, "Vending Machine", "Gear Savanna"),
+        new DigimonMap(75, "Recycling Shop", "Gear Savanna"),
+        new DigimonMap(76, "Leomon Cutscene", "Gear Savanna"),
+        new DigimonMap(77, "Toilet", "Gear Savanna"),
+        new DigimonMap(78, "Leomon's Gym", "Gear Savanna"),
+        new DigimonMap(79, "Toilet", "Glacial Region"),
+        new DigimonMap(80, "Entrance", "Glacial Region"),
+        new DigimonMap(81, "Vending Machine", "Glacial Region"),
+        new DigimonMap(82, "Doorway", "Glacial Region"),
+        new DigimonMap(83, "Entrance", "Speedy Region"),
+        new DigimonMap(84, "Bone Tunnel", "Speedy Region"),
+        new DigimonMap(85, "Hint Area", "Speedy Region"),
+        new DigimonMap(86, "Landing Site", "Speedy Region"),
+        new DigimonMap(87, "Secret Passage", "Speedy Region"),
+        new DigimonMap(88, "Entrance", "Freezeland"),
+        new DigimonMap(89, "Approach", "Freezeland"),
+        new DigimonMap(90, "Toilet", "Freezeland"),
+        new DigimonMap(91, "Ice Sanctuary Path", "Freezeland"),
+        new DigimonMap(92, "Outside Ice Sanctuary", "Freezeland"),
+        new DigimonMap(93, "Center", "Freezeland"),
+        new DigimonMap(94, "Igloo", "Freezeland"),
+        new DigimonMap(95, "Garurumon Clearing", "Freezeland"),
+        new DigimonMap(96, "Beach", "Freezeland"),
+        new DigimonMap(97, "Entrance", "Ice Sanctuary"),
+        new DigimonMap(98, "Hallway", "Ice Sanctuary"),
+        new DigimonMap(99, "Gym", "Ice Sanctuary"),
+        new DigimonMap(100, "Path", "Ice Sanctuary"),
+        new DigimonMap(101, "Teleporter Room 1", "Ice Sanctuary"),
+        new DigimonMap(102, "Unknown", "Ice Sanctuary"),
+        new DigimonMap(103, "Teleporter Room 2", "Ice Sanctuary"),
+        new DigimonMap(104, "Machinedramon", "Back Dimension"),
+        new DigimonMap(105, "Entrance", "Beetle Land"),
+        new DigimonMap(106, "Center", "Beetle Land"),
+        new DigimonMap(107, "Kabuterimon Gym", "Beetle Land"),
+        new DigimonMap(108, "Kuwagamon Gym", "Beetle Land"),
+        new DigimonMap(109, "Entrance", "Native Forest"),
+        new DigimonMap(110, "Panorama Approach (Blocked)", "Native Forest"),
+        new DigimonMap(111, "Panorama Approach (Open)", "Native Forest"),
+        new DigimonMap(112, "Green Gym", "Native Forest"),
+        new DigimonMap(113, "Statue Room", "Leomon Ancestor Cave"),
+        new DigimonMap(114, "Entrance", "Leomon Ancestor Cave"),
+        new DigimonMap(115, "Entrance", "Misty Trees"),
+        new DigimonMap(116, "Shellmon", "Misty Trees"),
+        new DigimonMap(117, "Kokatorimon", "Misty Trees"),
+        new DigimonMap(118, "Passage", "Misty Trees"),
+        new DigimonMap(119, "Cherrymon", "Misty Trees"),
+        new DigimonMap(120, "Gabumon", "Misty Trees"),
+        new DigimonMap(121, "Freezeland Exit", "Misty Trees"),
+        new DigimonMap(122, "Path (cooled)", "Lava Cave"),
+        new DigimonMap(123, "Lower (cooled)", "Lava Cave"),
+        new DigimonMap(124, "Meramon (cooled)", "Lava Cave"),
+        new DigimonMap(125, "Demimeramon (cooled)", "Lava Cave"),
+        new DigimonMap(126, "Long Corridor", "Drill Tunnel"),
+        new DigimonMap(127, "Shellmon Island (DOWN)", "Great Canyon"),
+        new DigimonMap(128, "Split Path (Ogremon Defeated)", "Great Canyon")
+    };
         }
         public static List<Location> GetDigimonCards()
         {
@@ -119,13 +211,6 @@ namespace DWAP
                 string jsonFile = reader.ReadToEnd();
                 return jsonFile;
             }
-        }
-        public static ulong GetDuckstationOffset()
-        {
-            return Memory.GetDuckstationOffset();
-            var baseAddress = Memory.GetBaseAddress("duckstation-qt-x64-ReleaseLTCG");
-            var offset = Memory.ReadULong(baseAddress + 0x008C4FA8);
-            return offset;
         }
         public static List<DigimonWorldItem> GetAcquiredSouls(ArchipelagoClient client)
         {
@@ -164,7 +249,7 @@ namespace DWAP
             var championList = new List<string>()
             {
                 "Bakemon", "Centarumon", "Coelamon", "Greymon", "Monochromon", "Meramon", "Tyrannomon", "Birdramon", "Unimon", "Mojyamon", "Angemon", "Vegiemon",
-                "Shellmon", "Whamon", "Frigimon", "Seadramon", "Garurumon", "Kokatorimon", "Ogremon", "Kuwagamon", "Kabuterimon", "Drimogemon", "Ninjamon", "Devimon", "Leomon", "Airdramon" 
+                "Shellmon", "Whamon", "Frigimon", "Seadramon", "Garurumon", "Kokatorimon", "Ogremon", "Kuwagamon", "Kabuterimon", "Drimogemon", "Ninjamon", "Devimon", "Leomon", "Airdramon"
             };
             var ultimateList = new List<string>()
             {
@@ -180,7 +265,7 @@ namespace DWAP
                 {
                     result += 2;
                 }
-                else if(ultimateList.Contains(digimon))
+                else if (ultimateList.Contains(digimon))
                 {
                     result += 3;
                 }
@@ -261,39 +346,39 @@ namespace DWAP
                 case 16:
                     address = 0x00155802;
                     bit = 0;
-                    break; 
+                    break;
                 case 17:
                     address = 0x00155802;
                     bit = 1;
-                    break; 
+                    break;
                 case 18:
                     address = 0x00155802;
                     bit = 2;
-                    break; 
+                    break;
                 case 19:
                     address = 0x00155802;
                     bit = 3;
-                    break; 
+                    break;
                 case 20:
                     address = 0x00155802;
                     bit = 4;
-                    break; 
+                    break;
                 case 21:
                     address = 0x00155802;
                     bit = 5;
-                    break; 
+                    break;
                 case 22:
                     address = 0x00155802;
                     bit = 6;
-                    break; 
+                    break;
                 case 23:
                     address = 0x00155802;
                     bit = 7;
-                    break; 
+                    break;
                 case 24:
                     address = 0x00155803;
                     bit = 0;
-                    break; 
+                    break;
                 case 25:
                     address = 0x00155803;
                     bit = 1;
