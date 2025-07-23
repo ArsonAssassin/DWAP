@@ -238,9 +238,6 @@ namespace DWAP
         }
         public static int CalculateProsperityPoints(GameState state)
         {
-            var completedLocations = state.CompletedLocations.Where(x => x.Name.ToLower().Contains("recruited"));
-
-            var digimonNames = completedLocations.Select(x => x.Name.Replace(" Recruited", ""));
             int result = 0;
             var rookieList = new List<string>()
             {
@@ -255,17 +252,17 @@ namespace DWAP
             {
                 "Piximon", "Giromon", "Andromon", "Monzaemon", "Vademon", "MetalMamemon", "SkullGreymon", "Mamemon", "MetalGreymon", "Etemon", "Megadramon", "Digitmamon"
             };
-            foreach (var digimon in digimonNames)
+            foreach (var location in state.CompletedLocations)
             {
-                if (rookieList.Contains(digimon))
+                if (rookieList.Contains(location.Name))
                 {
                     result += 1;
                 }
-                else if (championList.Contains(digimon))
+                else if (championList.Contains(location.Name))
                 {
                     result += 2;
                 }
-                else if (ultimateList.Contains(digimon))
+                else if (ultimateList.Contains(location.Name))
                 {
                     result += 3;
                 }

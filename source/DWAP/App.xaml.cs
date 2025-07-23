@@ -214,6 +214,7 @@ namespace DWAP
 
         public async Task WaitForJijimonIntro()
         {
+            Log.Information("Game has not started yet, waiting for intro to finish.");
             bool finished = false;
             while (!finished)
             {
@@ -224,6 +225,7 @@ namespace DWAP
                 }
                 await Task.Delay(100);
             }
+            Log.Information("Detected intro finish.");
             return;
         }
         public bool CheckForMoves()
@@ -574,9 +576,7 @@ namespace DWAP
                 {
                     var digimonName = soul.Name.Split(" ")[0];
                     var recruitLocation = recruitLocations.FirstOrDefault(x => x.Name == digimonName);
-                    var recruitEvent = recruitLocations.FirstOrDefault(x => x.Name == $"{digimonName} Recruited");
                     soulLocations.Add(recruitLocation);
-                    soulLocations.Add(recruitEvent);
                 }
                 if (soulLocations.Any())
                 {
