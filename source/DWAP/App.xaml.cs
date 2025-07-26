@@ -461,7 +461,8 @@ namespace DWAP
             foreach (var soul in souls)
             {
                 var digimonName = soul.Name.Split(" ")[0];
-                var recruitLocation = locations.FirstOrDefault(x => x.Name == digimonName);
+                var recruitLocation =(Location) locations.FirstOrDefault(x => x.Name == digimonName);
+                
                 Memory.WriteBit(recruitLocation.Address, recruitLocation.AddressBit, false);
             }
         }
@@ -567,7 +568,7 @@ namespace DWAP
                     }
                 }).ConfigureAwait(false);
             }
-            var soulLocations = new List<Archipelago.Core.Models.Location>();
+            var soulLocations = new List<Archipelago.Core.Models.ILocation>();
             var acquiredSouls = Helpers.GetAcquiredSouls(Client);
             if (acquiredSouls.Any())
             {
@@ -584,6 +585,11 @@ namespace DWAP
                 }
             }
 
+            var goalLocation = Helpers.GetLocations().Single(x => x.Name == "Digitamamon");
+            if (goalLocation.Check())
+            {
+                Client.SendGoalCompletion();
+            }
         }
         private void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using Archipelago.Core;
+using Archipelago.Core.Json;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
 using Archipelago.Core.Util.GPS;
@@ -17,10 +18,10 @@ namespace DWAP
 {
     public static class Helpers
     {
-        public static List<Location> GetLocations()
+        public static List<ILocation> GetLocations()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.Locations.json");
-            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
         public static List<DigimonItem> GetConsumables()
@@ -184,16 +185,16 @@ namespace DWAP
         new DigimonMap(128, "Split Path (Ogremon Defeated)", "Great Canyon")
     };
         }
-        public static List<Location> GetDigimonCards()
+        public static List<ILocation> GetDigimonCards()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.DigimonCards.json");
-            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
-        public static List<Location> GetProsperityLocations()
+        public static List<ILocation> GetProsperityLocations()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.Prosperity.json");
-            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
         public static List<DigimonWorldItem> GetAPItems()
@@ -252,7 +253,7 @@ namespace DWAP
             {
                 "Piximon", "Giromon", "Andromon", "Monzaemon", "Vademon", "MetalMamemon", "SkullGreymon", "Mamemon", "MetalGreymon", "Etemon", "Megadramon", "Digitmamon"
             };
-            foreach (var location in state.CompletedLocations)
+            foreach (var location in state.CompletedLocations.Distinct())
             {
                 if (rookieList.Contains(location.Name))
                 {
