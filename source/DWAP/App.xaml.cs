@@ -516,7 +516,7 @@ namespace DWAP
                 if (APItems.Any(x => x.Id == args.Item.Id))
                 {
                     var item = APItems.First(x => x.Id == args.Item.Id);
-                    if (item.Type == ItemType.Consumable)
+                    if (item.Type == ItemType.Consumable || item.Type == ItemType.DV)
                     {
                         AddDigimonItem(item.Id);
                     }
