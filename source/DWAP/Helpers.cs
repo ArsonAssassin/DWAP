@@ -47,6 +47,8 @@ namespace DWAP
             var currentMap = dict.SingleOrDefault(x => x.MapId == currentMapId);
             var currentX = Memory.ReadByte(0x000134d56);
             var currentY = Memory.ReadByte(0x000134d55);
+            if (currentMap == null)
+                return new PositionData() { MapId = currentMapId, MapName = "???", Region = "???", X = currentX, Y = currentY };
             return new PositionData() { MapId = currentMapId, MapName = currentMap.DisplayName, Region = currentMap.Region, X = currentX, Y = currentY };
         }
 
