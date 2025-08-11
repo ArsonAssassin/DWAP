@@ -450,7 +450,12 @@ namespace DWAP
             }
             if (_fastDrimogemon)
             {
-                if (Memory.ReadByte(Addresses.DrimogemonDays) < 9) Memory.WriteByte(Addresses.DrimogemonDays, 9);
+                if (Memory.ReadByte(Addresses.HasBeatenDrimogemon) == 1 && Memory.ReadByte(Addresses.MeramonTunnel_DiggingState) == 11)
+                {
+                    Memory.WriteByte(Addresses.MeramonTunnel_DrimogemonState, 2);
+                    Memory.WriteByte(Addresses.MeramonTunnel_State, 10);
+                    Memory.WriteByte(Addresses.MeramonTunnel_DiggingState, 5);
+                }
             }
         }
 
