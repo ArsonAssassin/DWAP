@@ -33,7 +33,7 @@ namespace DWAP
         public static ulong LearningChanceStartAddress = 0x00125FA4;
 
         public static ulong MonochromeProfitAddress = 0x0013500C;
-        public static ulong DrimogemonDays = 0x001BE04F;
+        public static ulong DrimogemonDays = 0x001BE04E;
 
         public static ulong CardStartAddress = 0x001bdfac;
 
