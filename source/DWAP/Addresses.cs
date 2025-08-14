@@ -42,6 +42,5 @@ namespace DWAP
 
         public static ulong ChartStartAddress = 0x001be00d;
         public static ulong ProsperityPoints = 0x001BE032;
-        public static ulong DuckstationOffset;
     }
 }
