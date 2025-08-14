@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 
+
 namespace DWAP;
 
 public partial class App : Application
@@ -49,7 +50,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Context = new MainWindowViewModel("0.6.2");
+        Start();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -66,12 +67,10 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-
-        InitalizeApp();
     }
-
-    private void InitalizeApp()
+    private void Start()
     {
+        Context = new MainWindowViewModel("0.6.2");
         Context.ClientVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
         _timer1.Elapsed += TimerTick;
         Context.ConnectClicked += Context_ConnectClicked;
@@ -86,7 +85,7 @@ public partial class App : Application
             Log.Verbose("Current Position: ");
             Log.Verbose(JsonConvert.SerializeObject(CurrentLocation));
         };
-        Context.UnstuckButtonEnabled = true;        
+        Context.UnstuckButtonEnabled = true;
         Log.Information("Initialising collections...");
         Log.Information("Loading Items");
         APItems = Helpers.GetAPItems();
@@ -492,7 +491,12 @@ public partial class App : Application
         }
         if (_fastDrimogemon)
         {
-            if (Memory.ReadByte(Addresses.DrimogemonDays) < 9) Memory.WriteByte(Addresses.DrimogemonDays, 9);
+            if (Memory.ReadByte(Addresses.HasBeatenDrimogemon) == 1 && Memory.ReadByte(Addresses.MeramonTunnel_DiggingState) == 11)
+            {
+                Memory.WriteByte(Addresses.MeramonTunnel_DrimogemonState, 2); // set Drimogemon to already talked to
+                Memory.WriteByte(Addresses.MeramonTunnel_State, 10);          // set tunnel as already dug
+                Memory.WriteByte(Addresses.MeramonTunnel_DiggingState, 5);    // set pile as empty
+            }
         }
     }
 
@@ -524,8 +528,7 @@ public partial class App : Application
         }
         Client = new ArchipelagoClient(client);
 
-        Addresses.DuckstationOffset = Memory.GetDuckstationOffset();
-        Memory.GlobalOffset = Addresses.DuckstationOffset;
+        Memory.GlobalOffset = Memory.GetDuckstationOffset();
 
         Client.Connected += OnConnected;
         Client.Disconnected += OnDisconnected;
@@ -680,11 +683,11 @@ public partial class App : Application
         List<TextSpan> spans = new List<TextSpan>();
         foreach (var part in message.Parts)
         {
-            spans.Add(new TextSpan() { Text = part.Text, TextColor = new SolidColorBrush(Color.FromRgb(part.Color.R, part.Color.G, part.Color.B) )});
+            spans.Add(new TextSpan() { Text = part.Text, TextColor = new SolidColorBrush(Color.FromRgb(part.Color.R, part.Color.G, part.Color.B)) });
         }
         lock (_lockObject)
         {
-            RxApp.MainThreadScheduler.Schedule(()=>
+            RxApp.MainThreadScheduler.Schedule(() =>
             {
                 Context.HintList.Add(new LogListItem(spans));
             });
