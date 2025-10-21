@@ -62,6 +62,7 @@ class DigimonWorldWorld(World):
         self.enabled_location_categories.add(DigimonWorldLocationCategory.EVENT)
         self.enabled_location_categories.add(DigimonWorldLocationCategory.RECRUIT)
         self.enabled_location_categories.add(DigimonWorldLocationCategory.CARD)
+        self.enabled_location_categories.add(DigimonWorldLocationCategory.CHEST)
         
 
 
@@ -72,7 +73,7 @@ class DigimonWorldWorld(World):
         regions.update({region_name: self.create_region(region_name, location_tables[region_name]) for region_name in [
             "Start Game","Consumable", "Cards",
             "Prosperity",
-            "Digimon"
+            "Digimon", "Chests"
         ]})
         
 
@@ -86,6 +87,7 @@ class DigimonWorldWorld(World):
         create_connection("Start Game", "Cards") 
         create_connection("Start Game", "Digimon") 
         create_connection("Start Game", "Prosperity") 
+        create_connection("Start Game", "Chests") 
 
 
         
@@ -267,7 +269,7 @@ class DigimonWorldWorld(World):
         set_indirect_rule(self, f"Bakemon", lambda state: state.has("Bakemon Soul", self.player) and calculate_prosperity(self, state, "Bakemon") >= 6 and state.can_reach_location("Agumon", self.player))
         set_indirect_rule(self, f"Centarumon", lambda state: state.has("Centarumon Soul", self.player) and state.can_reach_location("Agumon", self.player))
         set_indirect_rule(self, f"Coelamon", lambda state: state.has("Coelamon Soul", self.player) and state.can_reach_location("Agumon", self.player))
-        set_indirect_rule(self, f"Gabumon", lambda state: state.has("Gabumon Soul", self.player) and state.can_reach_location("Agumon", self.player))
+        set_indirect_rule(self, f"Gabumon", lambda state: state.has("Gabumon Soul", self.player) and state.can_reach_location("Agumon", self.player) and (calculate_prosperity(self, state) >= 6 or tate.can_reach_location("Meramon", self.player)))
         set_indirect_rule(self, f"Greymon", lambda state: state.has("Greymon Soul", self.player) and calculate_prosperity(self, state) >= 15 and state.can_reach_location("Agumon", self.player))
         set_indirect_rule(self, f"Monochromon", lambda state: state.has("Monochromon Soul", self.player) and calculate_prosperity(self, state, "Monochromon") >= 6 and state.can_reach_location("Agumon", self.player))  
         set_indirect_rule(self, f"Meramon", lambda state: has_minimum_statcap(self, state, 1) and (state.has("Meramon Soul", self.player) and state.can_reach_location("Agumon", self.player) and (state.can_reach_location("Coelamon", self.player) or state.can_reach_location("Betamon", self.player))))

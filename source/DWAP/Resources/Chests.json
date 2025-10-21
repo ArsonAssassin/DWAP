@@ -1,0 +1,457 @@
+[
+  {
+    "Name": "Chest 1",
+    "Id": 69001000,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 2",
+    "Id": 69001001,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 3",
+    "Id": 69001002,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 4",
+    "Id": 69001003,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 5",
+    "Id": 69001004,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 6",
+    "Id": 69001005,
+    "Address": "0x001BE01E",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 7",
+    "Id": 69001006,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 8",
+    "Id": 69001007,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 9",
+    "Id": 69001008,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 10",
+    "Id": 69001009,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 11",
+    "Id": 69001010,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 12",
+    "Id": 69001011,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 13",
+    "Id": 69001012,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 14",
+    "Id": 69001013,
+    "Address": "0x001BE01F",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 15",
+    "Id": 69001014,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 16",
+    "Id": 69001015,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 17",
+    "Id": 69001016,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 18",
+    "Id": 69001017,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 19",
+    "Id": 69001018,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 20",
+    "Id": 69001019,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 21",
+    "Id": 69001020,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 22",
+    "Id": 69001021,
+    "Address": "0x001BE020",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 23",
+    "Id": 69001022,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 24",
+    "Id": 69001023,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 25",
+    "Id": 69001024,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 26",
+    "Id": 69001025,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 27",
+    "Id": 69001026,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 28",
+    "Id": 69001027,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 29",
+    "Id": 69001028,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 30",
+    "Id": 69001029,
+    "Address": "0x001BE021",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 31",
+    "Id": 69001030,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 32",
+    "Id": 69001031,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 33",
+    "Id": 69001032,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 34",
+    "Id": 69001033,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 35",
+    "Id": 69001034,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 36",
+    "Id": 69001035,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 37",
+    "Id": 69001036,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 38",
+    "Id": 69001037,
+    "Address": "0x001BE022",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 39",
+    "Id": 69001038,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 40",
+    "Id": 69001039,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 41",
+    "Id": 69001040,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 42",
+    "Id": 69001041,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 43",
+    "Id": 69001042,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 44",
+    "Id": 69001043,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 45",
+    "Id": 69001044,
+    "Address": "0x001BE023",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 46",
+    "Id": 69001045,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 47",
+    "Id": 69001046,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 48",
+    "Id": 69001047,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 49",
+    "Id": 69001048,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 50",
+    "Id": 69001049,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 51",
+    "Id": 69001050,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 52",
+    "Id": 69001051,
+    "Address": "0x001BE024",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 53",
+    "Id": 69001052,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 54",
+    "Id": 69001053,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest: Dragon Eye Lake",
+    "Id": 69001054,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 56",
+    "Id": 69001055,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 57",
+    "Id": 69001056,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  },
+  {
+    "Name": "Chest 58",
+    "Id": 69001057,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 5
+  },
+  {
+    "Name": "Chest 59",
+    "Id": 69001058,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 6
+  },
+  {
+    "Name": "Chest 60",
+    "Id": 69001059,
+    "Address": "0x001BE025",
+    "CheckType": "Bit",
+    "AddressBit": 7
+  },
+  {
+    "Name": "Chest 61",
+    "Id": 69001060,
+    "Address": "0x001BE026",
+    "CheckType": "Bit",
+    "AddressBit": 0
+  },
+  {
+    "Name": "Chest 62",
+    "Id": 69001061,
+    "Address": "0x001BE026",
+    "CheckType": "Bit",
+    "AddressBit": 1
+  },
+  {
+    "Name": "Chest 63",
+    "Id": 69001062,
+    "Address": "0x001BE026",
+    "CheckType": "Bit",
+    "AddressBit": 2
+  },
+  {
+    "Name": "Chest 64",
+    "Id": 69001063,
+    "Address": "0x001BE026",
+    "CheckType": "Bit",
+    "AddressBit": 3
+  },
+  {
+    "Name": "Chest 65",
+    "Id": 69001064,
+    "Address": "0x001BE026",
+    "CheckType": "Bit",
+    "AddressBit": 4
+  }
+]

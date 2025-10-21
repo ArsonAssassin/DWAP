@@ -31,6 +31,12 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
             return list;
         }
+        public static List<ILocation> GetChests()
+        {
+            var json = OpenEmbeddedResource("DWAP.Resources.Chests.json");
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
+            return list;
+        }
         public static List<DigimonWorldItem> GetDigimonSouls()
         {
             var json = OpenEmbeddedResource("DWAP.Resources.DigimonSouls.json");
@@ -185,7 +191,119 @@ namespace DWAP
         new DigimonMap(125, "Demimeramon (cooled)", "Lava Cave"),
         new DigimonMap(126, "Long Corridor", "Drill Tunnel"),
         new DigimonMap(127, "Shellmon Island (DOWN)", "Great Canyon"),
-        new DigimonMap(128, "Split Path (Ogremon Defeated)", "Great Canyon")
+        new DigimonMap(128, "Split Path (Ogremon Defeated)", "Great Canyon"),
+        new DigimonMap(129, "Birdramon's Nest", "Great Canyon"),
+        new DigimonMap(130, "Storage Room", "Ogre Fortress"),
+        new DigimonMap(131, "Recycle Shop (With Shop)", "Gear Savanna"),
+        new DigimonMap(132, "Path to Mojya/Penguinmon", "Freezeland"),
+        new DigimonMap(133, "Two Mojyamon", "Freezeland"),
+        new DigimonMap(134, "Mojya/Penguinmon Screen", "Freezeland"),
+        new DigimonMap(135, "Whamon's Screen", "Freezeland"),
+        new DigimonMap(136, "Curling Screen", "Freezeland"),
+        new DigimonMap(137, "Frigimon's Igloo", "Freezeland"),
+        new DigimonMap(138, "Entrance (Gear Savanna)", "Geko Swamp"),
+        new DigimonMap(139, "Toilet", "Geko Swamp"),
+        new DigimonMap(140, "Outside", "Volume Villa"),
+        new DigimonMap(141, "Inside", "Volume Villa"),
+        new DigimonMap(142, "Entrance", "Secret Beach Cave"),
+        new DigimonMap(143, "Ogremon Screen", "Secret Beach Cave"),
+        new DigimonMap(144, "Main HUB", "Toy Town"),
+        new DigimonMap(145, "Monzaemon's Costume", "Custume House"),
+        new DigimonMap(146, "Tinmon's House", "Robot House"),
+        new DigimonMap(147, "Entrance", "Toy Mansion"),
+        new DigimonMap(148, "Second Floor", "Toy Mansion"),
+        new DigimonMap(149, "Third Floor", "Toy Mansion"),
+        new DigimonMap(150, "Fourth Floor", "Toy Mansion"),
+        new DigimonMap(151, "WaruMonzaemon Screen", "Toy Mansion"),
+        new DigimonMap(152, "Entrance (Whamon)", "Factorial Town"),
+        new DigimonMap(153, "MetalMamemon's Screen", "Factorial Town"),
+        new DigimonMap(154, "Main HUB", "Factorial Town"),
+        new DigimonMap(155, "Guard Post", "Factorial Town"),
+        new DigimonMap(156, "Passage (Gear Savanna)", "Factorial Town"),
+        new DigimonMap(157, "Andromon's Room", "Factorial Town"),
+        new DigimonMap(158, "HUB (Behind Guards)", "Factorial Town"),
+        new DigimonMap(159, "Giromon's Screen (Console intact)", "Factorial Town"),
+        new DigimonMap(160, "Giromon's Screen (Console damaged))", "Factorial Town"),
+        new DigimonMap(161, "Main Building Entrance", "Factorial Town"),
+        new DigimonMap(162, "Remodelling Workshop", "Factorial Town"),
+        new DigimonMap(163, "Entrance Screen", "Sewer"),
+        new DigimonMap(164, "Entrance Screen", "Trash Mountain"),
+        new DigimonMap(165, "Sukamon Screen", "Trash Mountain"),
+        new DigimonMap(166, "Level 1", "Mt. Infinity"),
+        new DigimonMap(167, "Level 2", "Mt. Infinity"),
+        new DigimonMap(168, "Agumon Recruited", "File City Top"),
+        new DigimonMap(169, "Palmon Recruited", "File City Top"),
+        new DigimonMap(170, "Vegiemon Recruited", "File City Top"),
+        new DigimonMap(171, "Birdramon Recruited", "File City Top"),
+        new DigimonMap(172, "Birdramon, Palmon Recruited", "File City Top"),
+        new DigimonMap(173, "Birdramon, Vegiemon Recruited", "File City Top"),
+        new DigimonMap(174, "New House", "File City Top"),
+        new DigimonMap(175, "New House, Palmon Recruited", "File City Top"),
+        new DigimonMap(176, "New House, Vegiemon Recruited", "File City Top"),
+        new DigimonMap(177, "New House, Birdramon Recruited", "File City Top"),
+        new DigimonMap(178, "New House, Birdramon, Palmon Recruited", "File City Top"),
+        new DigimonMap(179, "New House + Birdramon + Vegiemon Recruited", "File City Top"),
+        new DigimonMap(180, "No Recruits", "File City Bottom"),
+        new DigimonMap(181, "Shop Unlocked", "File City Bottom"),
+        new DigimonMap(182, "Shop, Restaurant Unlocked", "File City Bottom"),
+        new DigimonMap(183, "Shop, Restaurant, Clinic Unlocked", "File City Bottom"),
+        new DigimonMap(184, "Shop, Restaurant, Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(185, "Shop, Restaurant, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(186, "Shop, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(187, "Shop, Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(188, "Shop, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(189, "Big Shop Unlocked", "File City Bottom"),
+        new DigimonMap(190, "Big Shop, Restaurant Unlocked", "File City Bottom"),
+        new DigimonMap(191, "Big Shop, Restaurant, Clinic Unlocked", "File City Bottom"),
+        new DigimonMap(192, "Big Shop, Restaurant, Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(193, "Big Shop, Restaurant, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(194, "Big Shop, Clinic Unlocked", "File City Bottom"),
+        new DigimonMap(195, "Big Shop, Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(196, "Big Shop, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(197, "Restaurant Unlocked", "File City Bottom"),
+        new DigimonMap(198, "Restaurant, Clinic Unlocked", "File City Bottom"),
+        new DigimonMap(199, "Restaurant, Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(200, "Restaurant, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(201, "Clinic Unlocked", "File City Bottom"),
+        new DigimonMap(202, "Clinic, Arena Unlocked", "File City Bottom"),
+        new DigimonMap(203, "Arena Unlocked", "File City Bottom"),
+        new DigimonMap(204, "No Recruits", "File City Top"),
+        new DigimonMap(205, "Expanded Model", "Jijimon's House"),
+        new DigimonMap(206, "Second Room", "Jijimon's House"),
+        new DigimonMap(207, "Birdra Transport", "Birdra Transport"),
+        new DigimonMap(208, "Lobby w/o MetalGreymon/Airdramon", "Arena Lobby"),
+        new DigimonMap(209, "Treasure Hunt", "Treasure Hunt"),
+        new DigimonMap(210, "Level 3", "Mt. Infinity"),
+        new DigimonMap(211, "Item Keeper", "Item Keeper"),
+        new DigimonMap(212, "Level 4", "Mt. Infinity"),
+        new DigimonMap(213, "Centar Clinic", "Centar Clinic"),
+        new DigimonMap(214, "Without Jukebox", "Restaurant"),
+        new DigimonMap(215, "With Jukebox", "Restaurant"),
+        new DigimonMap(216, "Item Shop", "Item Shop"),
+        new DigimonMap(217, "Secret Shop", "Secret Shop"),
+        new DigimonMap(218, "Base Model", "Jijimon's House"),
+        new DigimonMap(219, "Level 5", "Mt. Infinity"),
+        new DigimonMap(220, "Numemon Screen", "Sewer"),
+        new DigimonMap(221, "Skullgreymon Screen", "Underground Lab"),
+        new DigimonMap(222, "Level 12", "Mt. Infinity"),
+        new DigimonMap(223, "Lobby with MetalGreymon/Airdramon", "Arena Lobby"),
+        new DigimonMap(224, "Fireplace/Dining Room with Food", "Grey Lord's Mansion"),
+        new DigimonMap(225, "Level 13", "Mt. Infinity"),
+        new DigimonMap(226, "Level 1", "Back Dimension"),
+        new DigimonMap(227, "Level 2", "Back Dimension"),
+        new DigimonMap(228, "Level 3", "Back Dimension"),
+        new DigimonMap(232, "Second Fireplace/East Wing", "Grey Lord's Mansion"),
+        new DigimonMap(233, "Unimon Screen", "Mt. Panorama Spore Area"),
+        new DigimonMap(234, "Vademon Screen", "Mt. Panorama Spore Area"),
+        new DigimonMap(235, "Curling (Arena)", "Digimon Curling"),
+        new DigimonMap(236, "Fianl Cutscene (Old House)", "File City Top"),
+        new DigimonMap(237, "Final Cutscene (New House)", "File City Top"),
+        new DigimonMap(238, "Initial Cutscene", "File City Top"),
+        new DigimonMap(247, "Level 6", "Mt. Infinity"),
+        new DigimonMap(248, "Level 7", "Mt. Infinity"),
+        new DigimonMap(249, "Level 8", "Mt. Infinity"),
+        new DigimonMap(253, "Level 9", "Mt. Infinity"),
+        new DigimonMap(254, "Level 10", "Mt. Infinity")
     };
         }
         public static List<ILocation> GetDigimonCards()
@@ -256,7 +374,8 @@ namespace DWAP
             {
                 "Piximon", "Giromon", "Andromon", "Monzaemon", "Vademon", "MetalMamemon", "SkullGreymon", "Mamemon", "MetalGreymon", "Etemon", "Megadramon", "Digitmamon"
             };
-            foreach (var location in state.CompletedLocations.Distinct())
+            var list = state.CompletedLocations.GroupBy(x => x.Id).Select(x => x.FirstOrDefault());
+            foreach (var location in list)
             {
                 if (rookieList.Contains(location.Name))
                 {

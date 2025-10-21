@@ -491,7 +491,10 @@ public partial class App : Application
         }
         if (_fastDrimogemon)
         {
-            if (Memory.ReadByte(Addresses.HasBeatenDrimogemon) == 1 && Memory.ReadByte(Addresses.MeramonTunnel_DiggingState) == 11)
+            var hasBeatenDrimogemon = Memory.ReadByte(Addresses.HasBeatenDrimogemon);
+            var meramonDigState = Memory.ReadByte(Addresses.MeramonTunnel_DiggingState);
+            var meramonTunnelState = Memory.ReadByte(Addresses.MeramonTunnel_State);
+            if (hasBeatenDrimogemon == 1 && ( meramonDigState != 5 && meramonTunnelState != 10))
             {
                 Memory.WriteByte(Addresses.MeramonTunnel_DrimogemonState, 2); // set Drimogemon to already talked to
                 Memory.WriteByte(Addresses.MeramonTunnel_State, 10);          // set tunnel as already dug
@@ -540,7 +543,7 @@ public partial class App : Application
         DigimonTechniques = ReadTechniques();
         var locations = Helpers.GetProsperityLocations();
         locations.AddRange(Helpers.GetDigimonCards());
-
+        locations.AddRange(Helpers.GetChests());
         Client.MonitorLocations(locations);
         Client.GPSHandler = new Archipelago.Core.Util.GPS.GPSHandler(() => Helpers.GetCurrentLocation());
         Client.GPSHandler.PositionChanged += (o, e) =>

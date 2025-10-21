@@ -11,6 +11,7 @@ class DigimonWorldLocationCategory(IntEnum):
     SKIP = 3,
     PROSPERITY = 4,
     CARD = 5,
+    CHEST = 6,
 
 
 class DigimonWorldLocationData(NamedTuple):
@@ -45,7 +46,7 @@ class DigimonWorldLocation(Location):
 
         table_order = [
             "Consumable", "Misc", "Cards", "Start Game", "Prosperity",
-            "Digimon"
+            "Digimon", "Chests"
         ]
 
         output = {}
@@ -293,6 +294,9 @@ location_tables = {
     "Consumable": [],
     "Misc": [        
     ],
+    "Chests": [
+        DigimonWorldLocationData(69001000, "Test Chest", "1000 Bits", DigimonWorldLocationCategory.CHEST),
+    ]
 }
 location_dictionary: Dict[str, DigimonWorldLocationData] = {}
 for location_table in location_tables.values():
