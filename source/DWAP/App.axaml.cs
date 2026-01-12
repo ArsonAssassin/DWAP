@@ -30,19 +30,16 @@ public partial class App : Application
 {
     static MainWindowViewModel Context;
     public static ArchipelagoClient Client { get; set; }
-    public static List<DigimonWorldItem> APItems { get; set; }
-    public static List<DigimonWorldItem> DigimonSouls { get; set; }
-    public static List<DigimonItem> DigimonItems { get; set; }
-    public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
     public static PositionData CurrentLocation { get; set; }
     public static int StatCap { get; set; }
     public static int ExpMultiplier { get; set; }
     public static bool StatCapEnabled { get; set; }
     public static Randomiser RandomSettings { get; set; }
-    private System.Timers.Timer _timer1 { get; set; } = new System.Timers.Timer(1000);
+    private System.Timers.Timer _timer1 { get; set; } = new System.Timers.Timer(TimeSpan.FromSeconds(5));
     private static readonly object _lockObject = new object();
     private bool _fastDrimogemon = false;
     private bool _easyMonochromon = false;
+    private ILocation goalLocation;
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -70,7 +67,7 @@ public partial class App : Application
     }
     private void Start()
     {
-        Context = new MainWindowViewModel("0.6.2");
+        Context = new MainWindowViewModel("0.6.4");
         Context.ClientVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
         _timer1.Elapsed += TimerTick;
         Context.ConnectClicked += Context_ConnectClicked;
@@ -82,22 +79,20 @@ public partial class App : Application
         Context.ConnectButtonEnabled = true;
         Context.UnstuckClicked += (o, e) =>
         {
-            Log.Verbose("Current Position: ");
-            Log.Verbose(JsonConvert.SerializeObject(CurrentLocation));
         };
         Context.UnstuckButtonEnabled = true;
         Log.Information("Initialising collections...");
         Log.Information("Loading Items");
-        APItems = Helpers.GetAPItems();
+        Helpers.APItems = Helpers.GetAPItems();
         Log.Information("Loading Souls");
-        DigimonSouls = Helpers.GetDigimonSouls();
-        DigimonItems = Helpers.GetConsumables();
+        Helpers.DigimonSouls = Helpers.GetDigimonSouls();
+        Helpers.DigimonItems = Helpers.GetConsumables();
         Log.Information("Ready to connect!");
     }
     private void AddDigimonItem(int id)
     {
         var localId = id - 692000;
-        var consumable = DigimonItems.First(x => x.Id == localId);
+        var consumable = Helpers.DigimonItems.First(x => x.Id == localId);
         var inventorySize = (int)Memory.ReadByte(Addresses.InventorySize);
         //Get matching item pile in inventory
         for (int i = 0; i < 10; i++)
@@ -233,7 +228,7 @@ public partial class App : Application
                 {
                     try
                     {
-                        await WaitForJijimonIntro();
+                        await Helpers.WaitForJijimonIntroAsync();
                         WriteStarterMove(RandomSettings.Starter);
                     }
                     catch (Exception ex)
@@ -244,26 +239,35 @@ public partial class App : Application
             }
 
         }
-
-
-    }
-
-    public async Task WaitForJijimonIntro()
-    {
-        Log.Information("Game has not started yet, waiting for intro to finish.");
-        bool finished = false;
-        while (!finished)
+        if (options.ContainsKey("goal"))
         {
-            var currentTime = Memory.ReadLong(0x00134f00);
-            if (currentTime > 8)
+            var goalSetting = Convert.ToInt32(options["goal"].ToString());
+            if (goalSetting == 0)
             {
-                finished = true;
+                if (options.ContainsKey("required_prosperity"))
+                {
+                    var prosperityRequired = Convert.ToInt32(options["required_prosperity"].ToString());
+                    goalLocation = Helpers.GetProsperityLocations().Single(x => x.Name == $"{prosperityRequired} Prosperity");
+                }
+                else goalLocation = Helpers.GetProsperityLocations().Single(x => x.Name == "100 Prosperity");
             }
-            await Task.Delay(100);
+            else if (goalSetting == 1)
+            {
+                goalLocation = Helpers.GetLocations().Single(x => x.Name == "Digitamamon");        
+            }
         }
-        Log.Information("Detected intro finish.");
-        return;
+        else
+        {
+            if (options.ContainsKey("required_prosperity"))
+            {
+                var prosperityRequired = Convert.ToInt32(options["required_prosperity"].ToString());
+                goalLocation = Helpers.GetProsperityLocations().Single(x => x.Name == $"{prosperityRequired} Prosperity");
+            }
+            else goalLocation = Helpers.GetProsperityLocations().Single(x => x.Name == "100 Prosperity");
+        }
+
     }
+
     public bool CheckForMoves()
     {
         bool hasMoves = !(Memory.ReadByte(0x00155800) == 0
@@ -283,7 +287,7 @@ public partial class App : Application
     private void WriteStarterMove(byte starter)
     {
         Log.Information("Setting Starter Technique");
-        var move = GetStarterMove(starter);
+        var move = Helpers.GetStarterMove(starter);
 
         Memory.WriteBit(move.Address, move.AddressBit, true);
 
@@ -339,92 +343,8 @@ public partial class App : Application
         Log.Information("Techniques Loaded");
         return techniques;
     }
-    private DigimonTechniqueData GetStarterMove(byte starter)
-    {
-        var stage = GetDigimonStage(starter);
-        if (stage == DigimonStage.baby || stage == DigimonStage.intraining)
-        {
-            Log.Information("Teaching Bubble");
-            return DigimonTechniques.First(x => x.Name == "Bubble");
-        }
 
-        byte[] spitFireStarters = [3, 5, 7, 8, 9, 10, 19, 21, 22, 34, 36, 45, 47, 56];
-        byte[] sonicJabStarters = [6, 13, 14, 17, 23, 26, 27, 31, 38, 42, 48, 51, 58, 63, 65];
-        byte[] staticElectStarters = [4, 18, 20, 32, 33, 37, 40, 50, 59];
-        byte[] metalSprintStarters = [12, 28, 41, 54, 64];
-        byte[] horizontalKickStarters = [11, 39, 53];
-        byte[] teardropStarters = [24, 35, 49, 61];
-        byte[] poisonClawStarters = [25, 46, 55, 57, 60];
-        if (starter == 52)
-        {
-            //Mojyamon gets Dynamite Kick
-            Log.Information("Teaching Dynamite Kick");
-            return DigimonTechniques.First(x => x.Name == "Dynamite Kick");
-        }
-        if (starter == 62)
-        {
-            Log.Information("Teaching Fire Tower");
-            //Weregarurumon only knows Fire Tower
-            return DigimonTechniques.First(x => x.Name == "Fire Tower");
-        }
-        if (spitFireStarters.Contains(starter))
-        {
-            Log.Information("Teaching Spit Fire");
-            return DigimonTechniques.First(x => x.Name == "Spit Fire");
-        }
-        if (sonicJabStarters.Contains(starter))
-        {
-            Log.Information("Teaching Sonic Jab");
-            return DigimonTechniques.First(x => x.Name == "Sonic Jab");
-        }
-        if (staticElectStarters.Contains(starter))
-        {
-            Log.Information("Teaching Static Elect");
-            return DigimonTechniques.First(x => x.Name == "Static Elect");
-        }
-        if (metalSprintStarters.Contains(starter))
-        {
-            Log.Information("Teaching Metal Sprinter");
-            return DigimonTechniques.First(x => x.Name == "Metal Sprinter");
-        }
-        if (horizontalKickStarters.Contains(starter))
-        {
-            Log.Information("Teaching Horizontal Kick");
-            return DigimonTechniques.First(x => x.Name == "Horizontal Kick");
-        }
-        if (teardropStarters.Contains(starter))
-        {
-            Log.Information("Teaching Tear Drop");
-            return DigimonTechniques.First(x => x.Name == "Tear Drop");
-        }
-        if (poisonClawStarters.Contains(starter))
-        {
-            Log.Information("Teaching Poison Claw");
-            return DigimonTechniques.First(x => x.Name == "Poison Claw");
-        }
-        return DigimonTechniques.First(x => x.Name == "Spit Fire");
 
-    }
-    private DigimonStage GetDigimonStage(byte id)
-    {
-        byte[] babyIds = [1, 15, 29, 43];
-        byte[] inTrainingIds = [2, 16, 30, 44];
-        byte[] rookieIds = [3, 4, 17, 18, 31, 32, 45, 46, 57];
-        byte[] championIds = [5, 6, 7, 8, 9, 10, 11, 19, 20, 21, 22, 23, 24, 25, 33, 34, 35, 36, 37, 38, 39, 47, 48, 49, 50, 51, 52, 53, 58, 63];
-        byte[] ultimateIds = [12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61, 62, 64, 65];
-
-        if (babyIds.Contains(id)) { return DigimonStage.baby; }
-        ;
-        if (inTrainingIds.Contains(id)) { return DigimonStage.intraining; }
-        ;
-        if (rookieIds.Contains(id)) { return DigimonStage.rookie; }
-        ;
-        if (championIds.Contains(id)) { return DigimonStage.champion; }
-        ;
-        if (ultimateIds.Contains(id)) { return DigimonStage.ultimate; }
-        ;
-        return DigimonStage.baby;
-    }
     private void SetExpMultiplier(int multiplier)
     {
         var multVal = multiplier * 10;
@@ -475,11 +395,16 @@ public partial class App : Application
         EnsureSouls();
         EnsureWorldFlags();
         EnsureProsperity();
+
+        if (goalLocation?.Check() ?? false)
+        {
+            Client.SendGoalCompletion();
+        }
     }
 
     private void EnsureProsperity()
     {
-        var prosperity = Helpers.CalculateProsperityPoints(Client.GameState);
+        var prosperity = Helpers.CalculateProsperityPoints();
         Memory.Write(Addresses.ProsperityPoints, prosperity);
     }
 
@@ -540,10 +465,12 @@ public partial class App : Application
 
         await Client.Login(args.Slot, !string.IsNullOrWhiteSpace(args.Password) ? args.Password : null);
 
-        DigimonTechniques = ReadTechniques();
+        Helpers.DigimonTechniques = ReadTechniques();
         var locations = Helpers.GetProsperityLocations();
-        locations.AddRange(Helpers.GetDigimonCards());
-        locations.AddRange(Helpers.GetChests());
+        locations.Concat(Helpers.GetDigimonCards());
+        locations.Concat(Helpers.GetChests());
+        Client.EnableLocationsCondition = ()=> Helpers.IsInGame();
+
         Client.MonitorLocations(locations);
         Client.GPSHandler = new Archipelago.Core.Util.GPS.GPSHandler(() => Helpers.GetCurrentLocation());
         Client.GPSHandler.PositionChanged += (o, e) =>
@@ -559,56 +486,18 @@ public partial class App : Application
         {
             ConfigureOptions(Client.Options);
         }
-        Client.ItemReceived += (e, args) =>
-        {
-            Log.Information($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
-            if (APItems.Any(x => x.Id == args.Item.Id))
-            {
-                var item = APItems.First(x => x.Id == args.Item.Id);
-                if (item.Type == ItemType.Consumable || item.Type == ItemType.DV)
-                {
-                    AddDigimonItem(item.Id);
-                }
-                else if (item.Name == "1000 Bits")
-                {
-                    AddMoney(1000);
-                }
-                else if (item.Name == "5000 Bits")
-                {
-                    AddMoney(5000);
-                }
-                else if (item.Name == "Progressive Stat Cap")
-                {
-                    var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
-                    if (boostsReceived >= 9)
-                    {
-                        StatCap = 999;
-                    }
-                    else StatCap = (boostsReceived * 100) + 100;
-                }
-            }
-            else if (DigimonSouls.Any(x => x.Id == args.Item.Id))
-            {
-                var item = DigimonSouls.First(x => x.Id == args.Item.Id);
-                if (item.Type == ItemType.Soul)
-                {
-                    var soulName = item.Name.Split(" ")[0];
-                    var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
-                    Client.MonitorLocations(digimonRecruit);
-                }
-            }
-        };
+        Client.ItemReceived += OnItemReceived;
 
-        if (!Client.GameState.CompletedLocations.Any(x => x.Id == 69003000))
+        //Is game started yet?
+        if (!Client.LocationState.CompletedLocations.Any(x => x.Id == 69003000))
         {
             _ = Task.Run(async () =>
             {
                 try
                 {
-                    await WaitForJijimonIntro();
+                    await Helpers.WaitForJijimonIntroAsync();
                     var startGameLocation = new Archipelago.Core.Models.Location() { Id = 69003000, Name = "Start Game" };
                     Client.SendLocation(startGameLocation);
-                    Client.GameState.CompletedLocations.Add(startGameLocation);
                 }
                 catch (Exception ex)
                 {
@@ -632,11 +521,45 @@ public partial class App : Application
                 Client.MonitorLocations(soulLocations);
             }
         }
+    }
 
-        var goalLocation = Helpers.GetLocations().Single(x => x.Name == "Digitamamon");
-        if (goalLocation.Check())
+    private void OnItemReceived(object? sender, ItemReceivedEventArgs args)
+    {
+        Log.Information($"Item Received: {JsonConvert.SerializeObject(args.Item)}");
+        if (Helpers.APItems.Any(x => x.Id == args.Item.Id))
         {
-            Client.SendGoalCompletion();
+            var item = Helpers.APItems.First(x => x.Id == args.Item.Id);
+            if (item.Type == ItemType.Consumable || item.Type == ItemType.DV)
+            {
+                AddDigimonItem(item.Id);
+            }
+            else if (item.Name == "1000 Bits")
+            {
+                AddMoney(1000);
+            }
+            else if (item.Name == "5000 Bits")
+            {
+                AddMoney(5000);
+            }
+            else if (item.Name == "Progressive Stat Cap")
+            {
+                var boostsReceived = (Client.CurrentSession.Items.AllItemsReceived.Count(x => x.ItemName.ToLower() == "progressive stat cap"));
+                if (boostsReceived >= 9)
+                {
+                    StatCap = 999;
+                }
+                else StatCap = (boostsReceived * 100) + 100;
+            }
+        }
+        else if (Helpers.DigimonSouls.Any(x => x.Id == args.Item.Id))
+        {
+            var item = Helpers.DigimonSouls.First(x => x.Id == args.Item.Id);
+            if (item.Type == ItemType.Soul)
+            {
+                var soulName = item.Name.Split(" ")[0];
+                var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
+                Client.MonitorLocations(digimonRecruit);
+            }
         }
     }
     private void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
