@@ -41,6 +41,8 @@ public partial class App : Application
     private static readonly object _lockObject = new object();
     private bool _fastDrimogemon = false;
     private bool _easyMonochromon = false;
+    private bool _includeCards = true;
+    private bool _includeChests = true;
     private ILocation goalLocation;
     public override void Initialize()
     {
@@ -88,6 +90,13 @@ public partial class App : Application
         Helpers.DigimonItems = Helpers.GetConsumables();
         Log.Information("Ready to connect!");
     }
+    public void ShowInGameMessage(string message)
+    {
+        var sjisBytes = Helpers.EncodeToSJIS(message);
+        Memory.WriteByteArray(Addresses.TextboxBuffer, sjisBytes);
+        Memory.WriteByte(Addresses.TextboxRequest, 1);
+    }
+
     private void AddDigimonItem(int id)
     {
         var localId = id - 692000;
@@ -96,8 +105,9 @@ public partial class App : Application
         //Get matching item pile in inventory
         for (int i = 0; i < 10; i++)
         {
-            ulong slotAddress = (ulong)(0x0013D474 + i);
-            ulong amountAddress = (ulong)(0x0013D492 + i);
+            ulong slotAddress = (ulong)(0x0013D474 + i); //0x00B94E14?
+            ulong amountAddress = (ulong)(0x0013D492 + i); //0x00B94E32?
+            //Item name = 0x00B94E50?
             var currentItemInSlot = Memory.ReadByte(slotAddress);
             if (currentItemInSlot == consumable.Id)
             {
@@ -119,14 +129,9 @@ public partial class App : Application
         //add to item bank
         ulong itemBankAddress = Addresses.ItemBankBaseAddress + (ulong)localId;
         var storedItemCount = Memory.ReadByte(itemBankAddress);
-        if (storedItemCount == 255)
-        {
-            Memory.WriteByte(itemBankAddress, 1);
-        }
-        else
-        {
-            Memory.WriteByte(itemBankAddress, (byte)(Memory.ReadByte(itemBankAddress) + 1));
-        }
+
+        Memory.WriteByte(itemBankAddress, (byte)(Memory.ReadByte(itemBankAddress) + 1));
+        
     }
     private Tuple<ulong, ulong> GetEmptyInventorySlot()
     {
@@ -166,6 +171,14 @@ public partial class App : Application
         if (options.ContainsKey("fast_drimogemon"))
         {
             _fastDrimogemon = Convert.ToInt32(options["fast_drimogemon"].ToString()) > 0;
+        }
+        if (options.ContainsKey("include_card_locations"))
+        {
+            _includeCards = Convert.ToInt32(options["include_card_locations"].ToString()) > 0;
+        }
+        if (options.ContainsKey("include_chest_locations"))
+        {
+            _includeChests = Convert.ToInt32(options["include_chest_locations"].ToString()) > 0;
         }
         if (options.ContainsKey("random_starter"))
         {
@@ -394,7 +407,7 @@ public partial class App : Application
         EnsureStatCap();
         EnsureRecruits();
         EnsureWorldFlags();
-        EnsureProsperity();
+        EnsureItemReceivedIndex();
 
         if (goalLocation?.Check() ?? false)
         {
@@ -402,10 +415,15 @@ public partial class App : Application
         }
     }
 
-    private void EnsureProsperity()
+    private void EnsureItemReceivedIndex()
     {
-        var prosperity = Helpers.CalculateProsperityPoints();
-        Memory.Write(Addresses.ProsperityPoints, prosperity);
+        Memory.Write(Addresses.ItemReceivedIndex, (ushort)Client.SavedItemIndex);
+    }
+
+    private bool IsOnLavaCaveMap()
+    {
+        var region = CurrentLocation.Region;
+        return region == "Lava Cave";
     }
 
     private void EnsureWorldFlags()
@@ -414,7 +432,7 @@ public partial class App : Application
         {
             Memory.Write(Addresses.MonochromeProfitAddress, 4000);
         }
-        if (_fastDrimogemon)
+        if (_fastDrimogemon && !IsOnLavaCaveMap())
         {
             var hasBeatenDrimogemon = Memory.ReadByte(Addresses.HasBeatenDrimogemon);
             var meramonDigState = Memory.ReadByte(Addresses.MeramonTunnel_DiggingState);
@@ -443,8 +461,10 @@ public partial class App : Application
 
         // Clear town-presence flags (old range) for missing recruits
         var missingRecruits = Helpers.GetMissingRecruits(Client);
+        var onLavaCave = IsOnLavaCaveMap();
         foreach (var recruit in missingRecruits)
         {
+            if (onLavaCave && recruit.Name == "Meramon") continue;
             var recruitLocation = (Location)locations.FirstOrDefault(x => x.Name == recruit.Name);
             var townPresenceAddress = recruitLocation.Address - Addresses.EventToTownFlagOffset;
             Memory.WriteBit(townPresenceAddress, recruitLocation.AddressBit, false);
@@ -457,14 +477,7 @@ public partial class App : Application
             Client.Connected -= OnConnected;
             Client.Disconnected -= OnDisconnected;
         }
-        GameClient client;
-        var processHandler = new ProcessPickerWindow("duckstation");
-        var result = await processHandler.ShowDialog<ProcessInfo?>(MainWindow);
-        if (result != null)
-        {
-            client = new GameClient(result.ProcessName, result.PID);
-        }
-        else client = new GameClient("duckstation");
+        GameClient client = new GameClient("duckstation");
         var duckstationConnected = client.Connect();
         if (!duckstationConnected)
         {
@@ -484,20 +497,11 @@ public partial class App : Application
 
         Helpers.DigimonTechniques = ReadTechniques();
 
-#if DEBUG
-        _ = Task.Run(async () =>
-        {
-            await Helpers.WaitForJijimonIntroAsync();
-            var dumpPath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                "dw1_ram_dump.bin");
-            Helpers.DumpPS1RAM(dumpPath);
-        }).ConfigureAwait(false);
-#endif
-
         var locations = Helpers.GetProsperityLocations();
-        locations.AddRange(Helpers.GetDigimonCards());
-        locations.AddRange(Helpers.GetChests());
+        if (_includeCards) locations.AddRange(Helpers.GetDigimonCards());
+        if (_includeChests) locations.AddRange(Helpers.GetChests());
+        locations.AddRange(Helpers.GetLocations());
+        locations.AddRange(Helpers.GetEventFlags());
         Client.LocationManager.EnableLocationsCondition = ()=> Helpers.IsInGame();
 
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
@@ -517,6 +521,17 @@ public partial class App : Application
         }
         Client.ItemManager.ItemReceived += OnItemReceived;
 
+        // Restore item index from PS1 save data if it's behind the server's index (crash recovery)
+        var savedIndex = Memory.ReadShort(Addresses.ItemReceivedIndex);
+        if (savedIndex > 0 && savedIndex < Client.SavedItemIndex)
+        {
+            Log.Information($"Restoring item index from save data: {savedIndex} (server had {Client.SavedItemIndex})");
+            Client.SavedItemIndex = savedIndex;
+            await Client.SaveGameStateAsync();
+        }
+
+        await Client.ReceiveReady();
+
         //Is game started yet?
         if (!Client.CurrentSession.Locations.AllLocationsChecked.Any(x => x == 69003000))
         {
@@ -533,21 +548,6 @@ public partial class App : Application
                     Log.Logger.Error(ex.Message);
                 }
             }).ConfigureAwait(false);
-        }
-        var recruitedLocations = new List<Archipelago.Core.Models.ILocation>();
-        var acquiredRecruits = Helpers.GetAcquiredRecruits(Client);
-        if (acquiredRecruits.Any())
-        {
-            var allLocations = Helpers.GetLocations();
-            foreach (var recruit in acquiredRecruits)
-            {
-                var recruitLocation = allLocations.FirstOrDefault(x => x.Name == recruit.Name);
-                recruitedLocations.Add(recruitLocation);
-            }
-            if (recruitedLocations.Any())
-            {
-                Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, recruitedLocations);
-            }
         }
     }
 
@@ -578,12 +578,11 @@ public partial class App : Application
                 }
                 else StatCap = (boostsReceived * 100) + 100;
             }
-        }
-        else if (Helpers.DigimonRecruits.Any(x => x.Id == args.Item.Id))
-        {
-            var item = Helpers.DigimonRecruits.First(x => x.Id == args.Item.Id);
-            var digimonRecruit = Helpers.GetLocations().Where(x => x.Name == item.Name).ToList();
-            Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, digimonRecruit);
+
+            if (item.Type == ItemType.Recruit)
+            {
+                ShowInGameMessage($"{item.Name} recruited!");
+            }
         }
     }
     private void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)

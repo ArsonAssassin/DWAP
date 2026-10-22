@@ -46,7 +46,15 @@ class EasyMonochromonOption(DefaultOnToggle):
 class FastDrimogemonOption(DefaultOnToggle):
     """Makes Drimogen dig in 1 day instead of 10"""
     display_name = "Fast Drimogemon"
-    
+
+class IncludeCardLocationsOption(DefaultOnToggle):
+    """Include card locations in the randomization pool"""
+    display_name = "Include Card Locations"
+
+class IncludeChestLocationsOption(DefaultOnToggle):
+    """Include chest locations in the randomization pool"""
+    display_name = "Include Chest Locations"
+
 class RandomStarterOption(Choice):
     """Randomise the 2 starter digimon options
     Vanilla = Agumon and Gabumon are the starters
@@ -79,3 +87,5 @@ class DigimonWorldOption(PerGameCommonOptions):
     random_techniques: RandomTechniqueOption
     fast_drimogemon: FastDrimogemonOption
     easy_monochromon: EasyMonochromonOption
+    include_card_locations: IncludeCardLocationsOption
+    include_chest_locations: IncludeChestLocationsOption

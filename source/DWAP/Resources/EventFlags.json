@@ -1,0 +1,254 @@
+[
+  {
+    "Name": "Inventory is full",
+    "Id": 69099000,
+    "Address": "0x001BDFCD",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Mojyamon #1, Digimushrm traded",
+    "Id": 69099001,
+    "Address": "0x001BDFCD",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Mojyamon #1, Supercarrot traded",
+    "Id": 69099002,
+    "Address": "0x001BDFCD",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Mojyamon #1, Happymushrm traded",
+    "Id": 69099003,
+    "Address": "0x001BDFCD",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Mojyamon #2, Giant Meat traded",
+    "Id": 69099004,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Mojyamon #2, Black trout traded",
+    "Id": 69099005,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Mojyamon #2, Hispeed disk traded",
+    "Id": 69099006,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Mojyamon #3, Omnipotent traded",
+    "Id": 69099007,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Mojyamon #3, med.recovery traded",
+    "Id": 69099008,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Mojyamon #3, Digianchovy traded",
+    "Id": 69099009,
+    "Address": "0x001BDFCE",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Unlocked Old Fishrod",
+    "Id": 69099010,
+    "Address": "0x001BDFD2",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Unlocked Amazing Rod",
+    "Id": 69099011,
+    "Address": "0x001BDFD2",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Unlocked Inventory Addon #1",
+    "Id": 69099012,
+    "Address": "0x001BDFD2",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Unlocked Inventory Addon #2",
+    "Id": 69099013,
+    "Address": "0x001BDFD3",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Intro cutscene did not play yet",
+    "Id": 69099014,
+    "Address": "0x001BDFD3",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Got starting items from Tokomon",
+    "Id": 69099015,
+    "Address": "0x001BDFD4",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Will get ambushed by Greymon in File City",
+    "Id": 69099016,
+    "Address": "0x001BDFD7",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Landslide blocking path to Unimon cleared",
+    "Id": 69099017,
+    "Address": "0x001BDFDA",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Mojyamon #1 despawned",
+    "Id": 69099018,
+    "Address": "0x001BDFDA",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Mojyamon #2 despawned",
+    "Id": 69099019,
+    "Address": "0x001BDFDA",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Mojyamon #3 despawned",
+    "Id": 69099020,
+    "Address": "0x001BDFDA",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Lava Cave opened",
+    "Id": 69099021,
+    "Address": "0x001BDFDC",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Yuramon told you about the Invisible Bridge",
+    "Id": 69099022,
+    "Address": "0x001BDFDC",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Back Exit for Drill Tunnel opened",
+    "Id": 69099023,
+    "Address": "0x001BDFDC",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Misty Trees fog removed",
+    "Id": 69099024,
+    "Address": "0x001BDFDF",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Beaten Ogremon #3",
+    "Id": 69099025,
+    "Address": "0x001BDFDF",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Beat Ogremon #2",
+    "Id": 69099026,
+    "Address": "0x001BDFE2",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Shellmon's island is elevated",
+    "Id": 69099027,
+    "Address": "0x001BDFE3",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Shellmon's island is down again",
+    "Id": 69099028,
+    "Address": "0x001BDFE3",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Talked with Shellmon about the elevator problem",
+    "Id": 69099029,
+    "Address": "0x001BDFE3",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Spotted the repaired bridge",
+    "Id": 69099030,
+    "Address": "0x001BDFE4",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated Ogremon #1",
+    "Id": 69099031,
+    "Address": "0x001BDFE5",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Path to Volume Villa has been opened",
+    "Id": 69099032,
+    "Address": "0x001BDFF4",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Factorial Town (Savanna) entrance opened",
+    "Id": 69099033,
+    "Address": "0x001BDFF6",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Factorial Town entrance open",
+    "Id": 69099034,
+    "Address": "0x001BDFF6",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Toy Mansion unlocked",
+    "Id": 69099035,
+    "Address": "0x001BDFF8",
+    "CheckType": 0,
+    "AddressBit": 5
+  }
+]

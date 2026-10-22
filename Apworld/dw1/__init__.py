@@ -66,35 +66,82 @@ class DigimonWorldWorld(World):
         self.enabled_location_categories.add(DigimonWorldLocationCategory.MISC)
         self.enabled_location_categories.add(DigimonWorldLocationCategory.EVENT)
         self.enabled_location_categories.add(DigimonWorldLocationCategory.RECRUIT)
-        self.enabled_location_categories.add(DigimonWorldLocationCategory.CARD)
-        self.enabled_location_categories.add(DigimonWorldLocationCategory.CHEST)
+        if self.options.include_card_locations.value:
+            self.enabled_location_categories.add(DigimonWorldLocationCategory.CARD)
+        if self.options.include_chest_locations.value:
+            self.enabled_location_categories.add(DigimonWorldLocationCategory.CHEST)
         
 
 
     def create_regions(self):
         # Create Regions
-        regions: Dict[str, Region] = {}      
-        regions["Menu"] = self.create_region("Menu", [])  
+        regions: Dict[str, Region] = {}
+        regions["Menu"] = self.create_region("Menu", [])
         regions.update({region_name: self.create_region(region_name, location_tables[region_name]) for region_name in [
-            "Start Game","Consumable", "Cards",
+            "Start Game", "Cards",
             "Prosperity",
-            "Digimon", "Chests"
+            "File City", "Native Forest", "Drill Tunnel", "Lava Cave - Hot", "Lava Cave - Cooled",
+            "Gear Savanna", "Tropical Jungle", "Ancient Dino Region",
+            "Freezeland", "Great Canyon", "Ogre Fortress", "Grey Lords Mansion",
+            "Underground Lab", "Factorial Town", "Misty Trees", "Toy Town",
+            "Ice Sanctuary", "Mt Infinity", "Back Dimension", "Mt Panorama",
+            "Secret Beach Cave", "Leomon Cave", "Beetle Land", "Nanimon",
         ]})
-        
 
         # Connect Regions
         def create_connection(from_region: str, to_region: str):
-            connection = Entrance(self.player, f"{to_region}", regions[from_region])
+            connection = Entrance(self.player, f"{from_region} -> {to_region}", regions[from_region])
             regions[from_region].exits.append(connection)
             connection.connect(regions[to_region])
-            #print(f"Connecting {from_region} to {to_region} Using entrance: " + connection.name)
-        create_connection("Menu", "Start Game") 
-        create_connection("Start Game", "Cards") 
-        create_connection("Start Game", "Digimon") 
-        create_connection("Start Game", "Prosperity") 
-        create_connection("Start Game", "Chests") 
 
+        create_connection("Menu", "Start Game")
+        create_connection("Start Game", "Prosperity")
 
+        # Geographic regions — flat graph for now (all from File City)
+        create_connection("Start Game", "File City")
+        
+        create_connection("Start Game", "Nanimon")
+        
+        create_connection("File City", "Native Forest")
+        create_connection("File City", "Factorial Town")        
+        create_connection("File City", "Mt Infinity")           
+        create_connection("File City", "Cards")       
+        
+        create_connection("Native Forest", "Tropical Jungle")
+        create_connection("Native Forest", "Drill Tunnel")
+        create_connection("Native Forest", "Mt Panorama")
+        create_connection("Native Forest", "Beetle Land")
+
+        create_connection("Drill Tunnel", "Lava Cave - Hot")
+        create_connection("Drill Tunnel", "Lava Cave - Cooled")
+        create_connection("Drill Tunnel", "Leomon Cave")
+        create_connection("Lava Cave - Cooled", "Mt Panorama")
+
+        create_connection("Tropical Jungle", "Ancient Dino Region")
+        create_connection("Tropical Jungle", "Great Canyon")
+        create_connection("Tropical Jungle", "Grey Lords Mansion")
+        
+        create_connection("Great Canyon", "Ogre Fortress")
+        create_connection("Great Canyon", "Freezeland")
+       
+        create_connection("Mt Panorama", "Gear Savanna")       
+        
+        create_connection("Gear Savanna", "Misty Trees")      
+        create_connection("Gear Savanna", "Cards")       
+        
+        create_connection("Factorial Town", "Gear Savanna")
+        
+        create_connection("Misty Trees", "Freezeland")
+        create_connection("Misty Trees", "Toy Town")
+        
+        create_connection("Freezeland", "Secret Beach Cave")
+        create_connection("Freezeland", "Ice Sanctuary")        
+        
+        create_connection("Grey Lords Mansion", "Underground Lab")
+        
+        create_connection("Grey Lords Mansion", "Back Dimension")
+        create_connection("Ice Sanctuary", "Back Dimension")
+        create_connection("Ogre Fortress", "Back Dimension")
         
     # For each region, add the associated locations retrieved from the corresponding location_table
     def create_region(self, region_name, location_table) -> Region:
@@ -138,8 +185,6 @@ class DigimonWorldWorld(World):
 
         for item in _all_items:
             if item.category == DigimonWorldItemCategory.RECRUIT:
-                if item.name == "Agumon":
-                    continue
                 itempool.append(self.create_item(item.name))
                 itempoolSize -= 1
             
@@ -153,10 +198,8 @@ class DigimonWorldWorld(World):
 
         if self.options.early_statcap.value:
             # print("Adding early stat cap item")
-            location = self.multiworld.get_location("1 Prosperity", self.player)
+            location = self.multiworld.get_location("Start Game", self.player)
             location.place_locked_item(self.create_item("Progressive Stat Cap"))
-        location = self.multiworld.get_location("Start Game", self.player)
-        location.place_locked_item(self.create_item("Agumon"))
         # Add regular items to itempool
         print("Final itempool order:")
         for i, item in enumerate(itempool[:20]):
@@ -165,8 +208,8 @@ class DigimonWorldWorld(World):
         
     def create_item(self, name: str) -> Item:
         useful_categories = {
-           # DigimonWorldItemCategory.CONSUMABLE,
-           # DigimonWorldItemCategory.DV,
+           DigimonWorldItemCategory.CONSUMABLE,
+           DigimonWorldItemCategory.DV,
            # DigimonWorldItemCategory.MISC,
         }
         data = self.item_name_to_id[name]
@@ -186,96 +229,139 @@ class DigimonWorldWorld(World):
     
     def set_rules(self) -> None:
         def calculate_prosperity(self, state, current_digimon = None) -> int:
-            current_prosperity = 1 #agumon always available
-            recruit_confirmed = ["Agumon"]
-            for iteration in range(10):
-                added_this_round = False
-                for digimon in recruit_digimon_list:
-                    requirements_met = True
-                    if digimon.name in recruit_confirmed:
-                        requirements_met = False
-                        continue
-                    if digimon.name == current_digimon:
-                        requirements_met = False
-                        continue
-                    if digimon.requires_recruit:
-                        if not state.has(digimon.name, self.player):
-                            requirements_met = False
-                            continue
-                    if digimon.prosperity_requirement > current_prosperity:
-                        requirements_met = False
-                        continue
-                    for name in digimon.digimon_requirements:
-                        if name not in recruit_confirmed:
-                            requirements_met = False
-                            break
-                    if requirements_met:
-                        recruit_confirmed.append(digimon.name)
-                        current_prosperity += digimon.prosperity_value
-                        added_this_round = True
-                if not added_this_round:
-                    break
+            current_prosperity = 0
+            for digimon in recruit_digimon_list:
+                if state.has(digimon.name, self.player):
+                    current_prosperity += digimon.prosperity_value
             return current_prosperity
 
         def has_minimum_statcap(self, state, count) -> bool:
             return state.has("Progressive Stat Cap", self.player, count)
 
-        def set_indirect_rule(self, regionName, rule):
-            region = self.multiworld.get_region("Digimon", self.player)
-            entrance = self.multiworld.get_entrance("Digimon", self.player)
+        def set_indirect_rule(self, regionName, entrance, rule):
+            region = self.multiworld.get_region(regionName, self.player)
             location = self.multiworld.get_location(regionName, self.player)
             set_rule(location, rule)
             self.multiworld.register_indirect_condition(region, entrance)
 
         def build_digimon_rule(d, world):
             def rule(state):
-                if d.requires_recruit and not state.has(d.name, world.player):
-                    return False
                 if d.min_statcap > 0 and not has_minimum_statcap(world, state, d.min_statcap):
                     return False
                 for req in d.digimon_requirements:
-                    if not state.can_reach_location(req, world.player):
+                    if not state.has(req, self.player):
                         return False
                 if d.or_digimon_requirements:
-                    if not any(state.can_reach_location(req, world.player) for req in d.or_digimon_requirements):
+                    if not any(state.has(req, self.player) for req in d.or_digimon_requirements):
                         return False
-                if d.meramon_gate:
-                    if not (state.can_reach_location("Meramon", world.player) or calculate_prosperity(world, state, d.name) >= 6):
-                        return False
-                    if d.prosperity_requirement > 6:
-                        if calculate_prosperity(world, state, d.name) < d.prosperity_requirement:
-                            return False
-                elif d.prosperity_requirement > 1:
-                    if calculate_prosperity(world, state, d.name) < d.prosperity_requirement:
-                        return False
+                if calculate_prosperity(world, state, d.name) < d.prosperity_requirement:
+                     return False
                 return True
             return rule
-
+        def shop_level(self, state) -> int:
+            shopLevel = 0
+            if state.has("Monochromon", self.player):
+                shopLevel += 1
+            if state.has("Patamon", self.player):
+                shopLevel += 1
+            if state.has("Biyomon", self.player):
+                shopLevel += 1
+            if state.has("Unimon", self.player):
+                shopLevel += 1
+            return shopLevel
+                
         if self.options.goal.value == 0:
-            self.multiworld.completion_condition[self.player] = lambda state: calculate_prosperity(self, state) >= self.options.required_prosperity.value
+            self.multiworld.completion_condition[self.player] = lambda state, s=self: calculate_prosperity(s, state) >= 100
         else:
-            self.multiworld.completion_condition[self.player] = lambda state: state.can_reach_location("Digitamamon", self.player)
+            self.multiworld.completion_condition[self.player] = lambda state, s=self: state.can_reach_location("Digitamamon", s.player)
 
-        set_rule(self.multiworld.get_location("Start Game", self.player), lambda state: True)
-        set_rule(self.multiworld.get_entrance(f"Start Game", self.player), lambda state: True)
-        set_rule(self.multiworld.get_entrance(f"Digimon", self.player), lambda state: state.has("Agumon", self.player))
+        set_rule(self.multiworld.get_location("Start Game", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Menu -> Start Game", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("File City -> Cards", self.player), lambda state, s=self:  shop_level(s, state) >=3)
+        set_rule(self.multiworld.get_entrance("Gear Savanna -> Cards", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Start Game -> Prosperity", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Start Game -> File City", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Start Game -> Nanimon", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("File City -> Native Forest", self.player), lambda state, s=self: state.can_reach_location("Agumon", s.player))
+        set_rule(self.multiworld.get_entrance("File City -> Factorial Town", self.player), lambda state, s=self: state.can_reach_location("Whamon", s.player))
+        set_rule(self.multiworld.get_entrance("File City -> Mt Infinity", self.player), lambda state, s=self: calculate_prosperity(s, state) >= 50)
+        set_rule(self.multiworld.get_entrance("Native Forest -> Tropical Jungle", self.player), lambda state, s=self: state.can_reach_location("Agumon", s.player))
+        set_rule(self.multiworld.get_entrance("Native Forest -> Drill Tunnel", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Native Forest -> Mt Panorama", self.player), lambda state, s=self: state.has("Landslide blocking path to Unimon cleared", s.player))
+        set_rule(self.multiworld.get_entrance("Native Forest -> Beetle Land", self.player), lambda state, s=self: state.can_reach_location("Seadramon", s.player))
+        set_rule(self.multiworld.get_entrance("Drill Tunnel -> Lava Cave - Hot", self.player), lambda state, s=self: state.has("Lava Cave opened", s.player))
+        set_rule(self.multiworld.get_entrance("Drill Tunnel -> Lava Cave - Cooled", self.player), lambda state, s=self: state.can_reach_location("Meramon", s.player))
+        set_rule(self.multiworld.get_entrance("Lava Cave - Cooled -> Mt Panorama", self.player), lambda state, s=self: state.has("Back Exit for Drill Tunnel opened", s.player))
+        set_rule(self.multiworld.get_entrance("Drill Tunnel -> Leomon Cave", self.player), lambda state, s=self: calculate_prosperity(s, state) >= 45)
+        set_rule(self.multiworld.get_entrance("Tropical Jungle -> Ancient Dino Region", self.player), lambda state, s=self: state.can_reach_location("Centarumon", s.player))
+        set_rule(self.multiworld.get_entrance("Tropical Jungle -> Great Canyon", self.player), lambda state, s=self: state.has("Yuramon told you about the Invisible Bridge", s.player))
+        set_rule(self.multiworld.get_entrance("Tropical Jungle -> Grey Lords Mansion", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Great Canyon -> Ogre Fortress", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Great Canyon -> Freezeland", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Mt Panorama -> Gear Savanna", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Gear Savanna -> Misty Trees", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Factorial Town -> Gear Savanna", self.player), lambda state, s=self: state.can_reach_location("Andromon", s.player))
+        set_rule(self.multiworld.get_entrance("Misty Trees -> Freezeland", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Misty Trees -> Toy Town", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Freezeland -> Secret Beach Cave", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Freezeland -> Ice Sanctuary", self.player), lambda state, s=self: True)
+        set_rule(self.multiworld.get_entrance("Grey Lords Mansion -> Underground Lab", self.player), lambda state, s=self: state.has("Shellmon", s.player))
+        set_rule(self.multiworld.get_entrance("Grey Lords Mansion -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
+        set_rule(self.multiworld.get_entrance("Ice Sanctuary -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
+        set_rule(self.multiworld.get_entrance("Ogre Fortress -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
 
         for digimon in recruit_digimon_list:
-            if digimon.name == "Agumon":
-                continue
-            set_indirect_rule(self, digimon.name, build_digimon_rule(digimon, self))
+            location = self.multiworld.get_location(digimon.name, self.player)
+            set_rule(location, build_digimon_rule(digimon, self))
+            region = location.parent_region
+            for entrance in region.entrances:
+                self.multiworld.register_indirect_condition(region, entrance)
 
         for card in [card for card in self.multiworld.get_locations(self.player) if card.category == DigimonWorldLocationCategory.CARD]:            
             if(card.name == "Machinedramon Card"):
-                set_rule(card, lambda state, s=self: state.has("Digitamamon", s.player) and calculate_prosperity(s, state) >= 50 and state.can_reach_location("Agumon", s.player))
+                set_rule(card, lambda state, s=self: state.has("Digitamamon", s.player) and calculate_prosperity(s, state) >= 50)
                 continue
-            set_rule(card, lambda state, s=self: (state.can_reach_location("Meramon", s.player) or calculate_prosperity(s, state) >= 6))
+            set_rule(card, lambda state, s=self: True)
 
-        set_rule(self.multiworld.get_location(f"1 Prosperity", self.player), lambda state, s=self: state.can_reach_location("Agumon", s.player))
-        for prosperity_location in self.multiworld.get_locations(self.player):   
-            if prosperity_location.name.endswith("Prosperity"):                
-                prosperity_value = int(prosperity_location.name.split(" ")[0])                     
-                set_rule(prosperity_location, lambda state, pval=prosperity_value, s=self: calculate_prosperity(s, state) >= pval and state.can_reach_location("Agumon", s.player))
+        # Event flag rules
+        set_rule(self.multiworld.get_location("Will get ambushed by Greymon in File City", self.player),
+            lambda state, s=self: calculate_prosperity(s, state) >= 15)
+        set_rule(self.multiworld.get_location("Yuramon told you about the Invisible Bridge", self.player),
+            lambda state, s=self: calculate_prosperity(s, state) >= 6)
+        set_rule(self.multiworld.get_location("Landslide blocking path to Unimon cleared", self.player),
+            lambda state, s=self: state.can_reach_location("Meramon", s.player))
+        set_rule(self.multiworld.get_location("Lava Cave opened", self.player),
+            lambda state, s=self: True)
+        set_rule(self.multiworld.get_location("Back Exit for Drill Tunnel opened", self.player),
+            lambda state, s=self: state.can_reach_location("Drimogemon", s.player))
+        set_rule(self.multiworld.get_location("Unlocked Amazing Rod", self.player),
+            lambda state, s=self: state.has("Path to Volume Villa has been opened", s.player))
+        set_rule(self.multiworld.get_location("Defeated Ogremon #1", self.player),
+            lambda state, s=self: True)
+        set_rule(self.multiworld.get_location("Beat Ogremon #2", self.player),
+            lambda state, s=self: state.has("Defeated Ogremon #1", s.player))
+        set_rule(self.multiworld.get_location("Beaten Ogremon #3", self.player),
+            lambda state, s=self: state.has("Beat Ogremon #2", s.player))
+        set_rule(self.multiworld.get_location("Shellmon's island is elevated", self.player),
+            lambda state, s=self: state.has("Beat Ogremon #2", s.player))
+        set_rule(self.multiworld.get_location("Shellmon's island is down again", self.player),
+            lambda state, s=self: state.has("Beat Ogremon #2", s.player))
+        set_rule(self.multiworld.get_location("Talked with Shellmon about the elevator problem", self.player),
+            lambda state, s=self: state.has("Beat Ogremon #2", s.player))
+        set_rule(self.multiworld.get_location("Factorial Town (Savanna) entrance opened", self.player),
+            lambda state, s=self: state.can_reach_location("Andromon", s.player))
+        set_rule(self.multiworld.get_location("Factorial Town entrance open", self.player),
+            lambda state, s=self: state.can_reach_location("Andromon", s.player))
+
+        # Additional location rules using events
+        add_rule(self.multiworld.get_location("Greymon", self.player),
+            lambda state, s=self: state.has("Will get ambushed by Greymon in File City", s.player))
+        add_rule(self.multiworld.get_location("Ogremon", self.player),
+            lambda state, s=self: state.has("Beaten Ogremon #3", s.player))
+        add_rule(self.multiworld.get_location("Chest: Secret Beach Cave", self.player),
+            lambda state, s=self: state.has("Beaten Ogremon #3", s.player))
+        add_rule(self.multiworld.get_location("Seadramon", self.player),
+            lambda state, s=self: state.has("Unlocked Amazing Rod", s.player))
 
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
@@ -317,7 +403,9 @@ class DigimonWorldWorld(World):
                 "early_statcap": self.options.early_statcap.value,
                 "random_techniques": self.options.random_techniques.value,
                 "easy_monochromon": self.options.easy_monochromon.value,
-                "fast_drimogemon": self.options.fast_drimogemon.value
+                "fast_drimogemon": self.options.fast_drimogemon.value,
+                "include_card_locations": self.options.include_card_locations.value,
+                "include_chest_locations": self.options.include_chest_locations.value
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server

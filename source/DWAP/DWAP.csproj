@@ -16,6 +16,7 @@
     <None Remove="Resources\DigimonItems.json" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\Prosperity.json" />
+    <None Remove="Resources\EventFlags.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
     <AvaloniaResource Include="Resources\Prosperity.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Resources\EventFlags.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
   </ItemGroup>

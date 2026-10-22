@@ -1,455 +1,455 @@
 [
   {
-    "Name": "Chest 1",
-    "Id": 69001000,
+    "Name": "Chest: Mansion Attic 1",
+    "Id": 69005000,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 2",
-    "Id": 69001001,
+    "Name": "Chest: Mansion Attic 2",
+    "Id": 69005001,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 3",
-    "Id": 69001002,
+    "Name": "Chest: Mansion Attic 3",
+    "Id": 69005002,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 4",
-    "Id": 69001003,
+    "Name": "Chest: Mansion Kitchen",
+    "Id": 69005003,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 5",
-    "Id": 69001004,
+    "Name": "Chest: Mansion Brain Room 1",
+    "Id": 69005004,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 6",
-    "Id": 69001005,
+    "Name": "Chest: Mansion Brain Room 2",
+    "Id": 69005005,
     "Address": "0x001BE01E",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 7",
-    "Id": 69001006,
+    "Name": "Chest: Mansion Office",
+    "Id": 69005006,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 8",
-    "Id": 69001007,
+    "Name": "Chest: Ice Sanctuary B1 1",
+    "Id": 69005007,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 9",
-    "Id": 69001008,
+    "Name": "Chest: Lava Cave Hidden 1",
+    "Id": 69005008,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 10",
-    "Id": 69001009,
+    "Name": "Chest: Lava Cave Hidden 2",
+    "Id": 69005009,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 11",
-    "Id": 69001010,
+    "Name": "Chest: Ice Sanctuary Blue Room 1",
+    "Id": 69005010,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 12",
-    "Id": 69001011,
+    "Name": "Chest: Ice Sanctuary Blue Room 2",
+    "Id": 69005011,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 13",
-    "Id": 69001012,
+    "Name": "Chest: Ice Sanctuary Teleporter 1",
+    "Id": 69005012,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 14",
-    "Id": 69001013,
+    "Name": "Chest: Ice Sanctuary Teleporter 2",
+    "Id": 69005013,
     "Address": "0x001BE01F",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 15",
-    "Id": 69001014,
+    "Name": "Chest: Ice Sanctuary B1 2",
+    "Id": 69005014,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 16",
-    "Id": 69001015,
+    "Name": "Chest: Ice Sanctuary 4-Way",
+    "Id": 69005015,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 17",
-    "Id": 69001016,
+    "Name": "Chest: Great Canyon Bridge",
+    "Id": 69005016,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 18",
-    "Id": 69001017,
+    "Name": "Chest: Leomon's Cave",
+    "Id": 69005017,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 19",
-    "Id": 69001018,
+    "Name": "Chest: Toy Mansion 4F",
+    "Id": 69005018,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 20",
-    "Id": 69001019,
+    "Name": "Chest: Ogre Fortress Entrance",
+    "Id": 69005019,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 21",
-    "Id": 69001020,
+    "Name": "Chest: Ogre Fortress Hall",
+    "Id": 69005020,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 22",
-    "Id": 69001021,
+    "Name": "Chest: Ogre Fortress Living Room",
+    "Id": 69005021,
     "Address": "0x001BE020",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 23",
-    "Id": 69001022,
+    "Name": "Chest: Secret Beach Cave",
+    "Id": 69005022,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 24",
-    "Id": 69001023,
+    "Name": "Chest: Ogre Fortress Storage 1",
+    "Id": 69005023,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 25",
-    "Id": 69001024,
+    "Name": "Chest: Ogre Fortress Storage 2",
+    "Id": 69005024,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 26",
-    "Id": 69001025,
+    "Name": "Chest: Ogre Fortress Storage 3",
+    "Id": 69005025,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 27",
-    "Id": 69001026,
+    "Name": "Chest: Lava Cave Lower",
+    "Id": 69005026,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 28",
-    "Id": 69001027,
+    "Name": "Chest: Factorial Town 1",
+    "Id": 69005027,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 29",
-    "Id": 69001028,
+    "Name": "Chest: Factorial Town 2",
+    "Id": 69005028,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 30",
-    "Id": 69001029,
+    "Name": "Chest: Lava Cave Meramon",
+    "Id": 69005029,
     "Address": "0x001BE021",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 31",
-    "Id": 69001030,
+    "Name": "Chest: Mt. Infinity 1",
+    "Id": 69005030,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 32",
-    "Id": 69001031,
+    "Name": "Chest: Mt. Infinity 2",
+    "Id": 69005031,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 33",
-    "Id": 69001032,
+    "Name": "Chest: Mt. Infinity 3",
+    "Id": 69005032,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 34",
-    "Id": 69001033,
+    "Name": "Chest: Ogre Fortress Storage 4",
+    "Id": 69005033,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 35",
-    "Id": 69001034,
+    "Name": "Chest: Mt. Infinity 4",
+    "Id": 69005034,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 36",
-    "Id": 69001035,
+    "Name": "Chest: Mt. Infinity 5",
+    "Id": 69005035,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 37",
-    "Id": 69001036,
+    "Name": "Chest: Mt. Infinity 6",
+    "Id": 69005036,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 38",
-    "Id": 69001037,
+    "Name": "Chest: Mt. Infinity 7",
+    "Id": 69005037,
     "Address": "0x001BE022",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 39",
-    "Id": 69001038,
+    "Name": "Chest: Mt. Infinity 8",
+    "Id": 69005038,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 40",
-    "Id": 69001039,
+    "Name": "Chest: Mt. Infinity 9",
+    "Id": 69005039,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 41",
-    "Id": 69001040,
+    "Name": "Chest: Mt. Infinity 10a",
+    "Id": 69005040,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 42",
-    "Id": 69001041,
+    "Name": "Chest: Mt. Infinity 10b",
+    "Id": 69005041,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 43",
-    "Id": 69001042,
+    "Name": "Chest: Tropical Jungle Beach",
+    "Id": 69005042,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 44",
-    "Id": 69001043,
+    "Name": "Chest: Post-Meramon South",
+    "Id": 69005043,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 45",
-    "Id": 69001044,
+    "Name": "Chest: Post-Meramon North",
+    "Id": 69005044,
     "Address": "0x001BE023",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 46",
-    "Id": 69001045,
+    "Name": "Chest: Mt. Panorama 1",
+    "Id": 69005045,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 47",
-    "Id": 69001046,
+    "Name": "Chest: Mt. Panorama 2",
+    "Id": 69005046,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 48",
-    "Id": 69001047,
+    "Name": "Chest: Mt. Panorama 3",
+    "Id": 69005047,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 49",
-    "Id": 69001048,
+    "Name": "Chest: Mansion East Wing 1",
+    "Id": 69005048,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 50",
-    "Id": 69001049,
+    "Name": "Chest: Mansion East Wing 2",
+    "Id": 69005049,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 51",
-    "Id": 69001050,
+    "Name": "Chest: Mansion East Wing 3",
+    "Id": 69005050,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 52",
-    "Id": 69001051,
+    "Name": "Chest: Mansion East Wing 4",
+    "Id": 69005051,
     "Address": "0x001BE024",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 53",
-    "Id": 69001052,
+    "Name": "Chest: Mansion Hallway 1",
+    "Id": 69005052,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 54",
-    "Id": 69001053,
+    "Name": "Chest: Mansion Hallway 2",
+    "Id": 69005053,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
     "Name": "Chest: Dragon Eye Lake",
-    "Id": 69001054,
+    "Id": 69005054,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 56",
-    "Id": 69001055,
+    "Name": "Chest: Back Dimension 1",
+    "Id": 69005055,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 57",
-    "Id": 69001056,
+    "Name": "Chest: Back Dimension 2a",
+    "Id": 69005056,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 4
   },
   {
-    "Name": "Chest 58",
-    "Id": 69001057,
+    "Name": "Chest: Back Dimension 2b",
+    "Id": 69005057,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 5
   },
   {
-    "Name": "Chest 59",
-    "Id": 69001058,
+    "Name": "Chest: Back Dimension 2c",
+    "Id": 69005058,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 6
   },
   {
-    "Name": "Chest 60",
-    "Id": 69001059,
+    "Name": "Chest: Back Dimension 2d",
+    "Id": 69005059,
     "Address": "0x001BE025",
     "CheckType": 0,
     "AddressBit": 7
   },
   {
-    "Name": "Chest 61",
-    "Id": 69001060,
+    "Name": "Chest: Back Dimension 3a",
+    "Id": 69005060,
     "Address": "0x001BE026",
     "CheckType": 0,
     "AddressBit": 0
   },
   {
-    "Name": "Chest 62",
-    "Id": 69001061,
+    "Name": "Chest: Back Dimension 3b",
+    "Id": 69005061,
     "Address": "0x001BE026",
     "CheckType": 0,
     "AddressBit": 1
   },
   {
-    "Name": "Chest 63",
-    "Id": 69001062,
+    "Name": "Chest: Factorial Town Guardromon 1",
+    "Id": 69005062,
     "Address": "0x001BE026",
     "CheckType": 0,
     "AddressBit": 2
   },
   {
-    "Name": "Chest 64",
-    "Id": 69001063,
+    "Name": "Chest: Factorial Town Guardromon 2",
+    "Id": 69005063,
     "Address": "0x001BE026",
     "CheckType": 0,
     "AddressBit": 3
   },
   {
-    "Name": "Chest 65",
-    "Id": 69001064,
+    "Name": "Chest: Factorial Town Guardromon 3",
+    "Id": 69005064,
     "Address": "0x001BE026",
     "CheckType": 0,
     "AddressBit": 4

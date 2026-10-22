@@ -20,8 +20,8 @@ namespace DWAP
         public static ulong CurrentDefence = 0x001557E2;
         public static ulong CurrentSpeed = 0x001557E4;
         public static ulong CurrentBrains = 0x001557E6;
-        public static ulong InventorySize = 0x000DD4CE;
-        public static ulong ItemBankBaseAddress = 0x001BDF2C;
+        public static ulong InventorySize = 0x000DD4CE; //0x00B94E6E?
+        public static ulong ItemBankBaseAddress = 0x001BDF2C; //0x00C158CC?
         public static ulong CurrentBits = 0x00134EB8;
 
         public static ulong Starter1 = 0x000EE9D8;
@@ -38,9 +38,9 @@ namespace DWAP
         public static ulong MeramonTunnel_DrimogemonState = 0x001BE042;
         public static ulong MeramonTunnel_DiggingState = 0x001BE04F;
 
-        // Offset between event-completion flags (424+id) and town-presence flags (200+id)
-        // New event flags are 28 bytes (224 triggers / 8) higher in the trigger bitfield
-        public static ulong EventToTownFlagOffset = 0x1C;
+        // Offset between event-completion flags (720+id) and town-presence flags (200+id)
+        // New event flags are 65 bytes (520 triggers / 8) higher in the trigger bitfield
+        public static ulong EventToTownFlagOffset = 0x41;
 
         public static ulong CardStartAddress = 0x001bdfac;
 
@@ -48,5 +48,15 @@ namespace DWAP
         public static ulong ProsperityPoints = 0x001BE032;
 
         public static ulong RecruitmentFunctionAddress = 0x00000000;
+
+        // Stored in PS1 save data, after the event-completion flags (last at 0x001BE02E bit 2)
+        // 2 bytes for a ushort to track item received index for crash recovery
+        public static ulong ItemReceivedIndex = 0x001BE02F;
+
+        // Custom textbox hook (ROM patch: patch_textbox_hook.py)
+        // Write 1 to trigger; routine clears it and sets status to 1 while showing
+        public static ulong TextboxRequest = 0x0007C98C;  // 1 byte: write 1 to trigger
+        public static ulong TextboxStatus  = 0x0007C98D;  // 1 byte: 0=idle, 1=showing
+        public static ulong TextboxBuffer  = 0x0007C990;  // ~364 bytes: SJIS text data
     }
 }

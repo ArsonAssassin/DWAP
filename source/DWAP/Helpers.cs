@@ -319,6 +319,12 @@ namespace DWAP
             var list = LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
+        public static List<ILocation> GetEventFlags()
+        {
+            var json = OpenAvaloniaResource("EventFlags.json");
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
+            return list;
+        }
         public static List<DigimonWorldItem> GetAPItems()
         {
             var json = OpenAvaloniaResource("APItems.json");
@@ -461,46 +467,7 @@ namespace DWAP
             technique.AddressBit = addressData.Item2;
             return technique;
         }
-        public static int CalculateProsperityPoints()
-        {
-            int result = 0;
-            var rookieList = new List<string>()
-            {
-                "Agumon", "Betamon", "Kunemon", "Palmon", "Gabumon", "Elecmon", "Patamon", "Palmon", "Biyomon", "Sukamon", "Penguinmon", "Nanimon", "Numemon"
-            };
-            var championList = new List<string>()
-            {
-                "Bakemon", "Centarumon", "Coelamon", "Greymon", "Monochromon", "Meramon", "Tyrannomon", "Birdramon", "Unimon", "Mojyamon", "Angemon", "Vegiemon",
-                "Shellmon", "Whamon", "Frigimon", "Seadramon", "Garurumon", "Kokatorimon", "Ogremon", "Kuwagamon", "Kabuterimon", "Drimogemon", "Ninjamon", "Devimon", "Leomon", "Airdramon"
-            };
-            var ultimateList = new List<string>()
-            {
-                "Piximon", "Giromon", "Andromon", "Monzaemon", "Vademon", "MetalMamemon", "SkullGreymon", "Mamemon", "MetalGreymon", "Etemon", "Megadramon", "Digitamamon"
-            };
-            var digimonLocations = GetLocations();
-            foreach (var digimonLocation in digimonLocations)
-            {
-                // Check town-presence flag (old range) rather than event-completion flag
-                var location = (Location)digimonLocation;
-                var townPresenceAddress = location.Address - Addresses.EventToTownFlagOffset;
-                if (Memory.ReadBit(townPresenceAddress, location.AddressBit))
-                {
-                    if (rookieList.Contains(digimonLocation.Name))
-                    {
-                        result += 1;
-                    }
-                    else if (championList.Contains(digimonLocation.Name))
-                    {
-                        result += 2;
-                    }
-                    else if (ultimateList.Contains(digimonLocation.Name))
-                    {
-                        result += 3;
-                    }
-                }
-            }
-            return result;
-        }
+
         private static Tuple<uint, int> GetTechAddress(int slot)
         {
             uint address = 0;
@@ -870,6 +837,87 @@ namespace DWAP
                 default:
                     return "";
             }
+        }
+
+        /// <summary>
+        /// Encode an ASCII string to the game's fullwidth Shift-JIS text format,
+        /// including control codes for newlines and end-of-text.
+        /// </summary>
+        public static byte[] EncodeToSJIS(string text)
+        {
+            var result = new List<byte>();
+            foreach (char c in text)
+            {
+                switch (c)
+                {
+                    case '\n':
+                        result.Add(0x0D);
+                        result.Add(0x00);
+                        break;
+                    case >= 'A' and <= 'Z':
+                        result.Add(0x82);
+                        result.Add((byte)(0x60 + (c - 'A')));
+                        break;
+                    case >= 'a' and <= 'z':
+                        result.Add(0x82);
+                        result.Add((byte)(0x81 + (c - 'a')));
+                        break;
+                    case >= '0' and <= '9':
+                        result.Add(0x82);
+                        result.Add((byte)(0x4F + (c - '0')));
+                        break;
+                    case ' ':
+                        result.Add(0x81);
+                        result.Add(0x40);
+                        break;
+                    case '.':
+                        result.Add(0x81);
+                        result.Add(0x44);
+                        break;
+                    case '!':
+                        result.Add(0x81);
+                        result.Add(0x49);
+                        break;
+                    case '?':
+                        result.Add(0x81);
+                        result.Add(0x48);
+                        break;
+                    case '\'':
+                        result.Add(0x81);
+                        result.Add(0x75);
+                        break;
+                    case ',':
+                        result.Add(0x81);
+                        result.Add(0x43);
+                        break;
+                    case '-':
+                        result.Add(0x81);
+                        result.Add(0x7C);
+                        break;
+                    case ':':
+                        result.Add(0x81);
+                        result.Add(0x46);
+                        break;
+                    case '(':
+                        result.Add(0x81);
+                        result.Add(0x69);
+                        break;
+                    case ')':
+                        result.Add(0x81);
+                        result.Add(0x6A);
+                        break;
+                    default:
+                        // Skip unsupported characters
+                        break;
+                }
+            }
+            // End-of-text: newline + null terminator + end opcode
+            result.Add(0x0D);
+            result.Add(0x00);
+            result.Add(0x00);
+            result.Add(0x00);
+            result.Add(0x1A);
+            return result.ToArray();
         }
 
         public static void DumpPS1RAM(string outputPath)
