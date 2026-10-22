@@ -23,7 +23,7 @@ namespace DWAP
     public static class Helpers
     {
         public static List<DigimonWorldItem> APItems { get; set; }
-        public static List<DigimonWorldItem> DigimonSouls { get; set; }
+        public static List<DigimonWorldItem> DigimonRecruits => APItems?.Where(x => x.Type == ItemType.Recruit).ToList() ?? new List<DigimonWorldItem>();
         public static List<DigimonItem> DigimonItems { get; set; }
         public static List<DigimonTechniqueData> DigimonTechniques { get; set; }
         public static List<ILocation> GetLocations()
@@ -44,15 +44,9 @@ namespace DWAP
             var list = LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
-        public static List<DigimonWorldItem> GetDigimonSouls()
+        public static List<DigimonWorldItem> GetDigimonRecruits()
         {
-            var json = OpenAvaloniaResource("DigimonSouls.json");
-            var list = JsonConvert.DeserializeObject<List<DigimonWorldItem>>(json);
-            foreach (var item in list)
-            {
-                item.Type = ItemType.Soul;
-            }
-            return list;
+            return APItems?.Where(x => x.Type == ItemType.Recruit).ToList() ?? new List<DigimonWorldItem>();
         }
         public static PositionData GetCurrentLocation()
         {
@@ -443,20 +437,20 @@ namespace DWAP
             Log.Information("Detected game start.");
             return;
         }
-        public static List<DigimonWorldItem> GetAcquiredSouls(ArchipelagoClient client)
+        public static List<DigimonWorldItem> GetAcquiredRecruits(ArchipelagoClient client)
         {
-            var list = client.CurrentSession.Items.AllItemsReceived.Where(x => x.ItemId >= 694000 && x.ItemId <= 694999).Select(x => x.ItemId).ToList();
-            if (!list.Any()) return new List<DigimonWorldItem>();
-            var soulLookup = GetDigimonSouls();
-            var results = soulLookup.Where(x => list.Contains(x.Id)).ToList();
+            var receivedIds = client.CurrentSession.Items.AllItemsReceived.Where(x => x.ItemId >= 691000 && x.ItemId <= 691049).Select(x => x.ItemId).ToList();
+            if (!receivedIds.Any()) return new List<DigimonWorldItem>();
+            var recruitLookup = GetDigimonRecruits();
+            var results = recruitLookup.Where(x => receivedIds.Contains(x.Id)).ToList();
             if (!results.Any()) return new List<DigimonWorldItem>();
             return results;
         }
-        public static List<DigimonWorldItem> GetMissingSouls(ArchipelagoClient client)
+        public static List<DigimonWorldItem> GetMissingRecruits(ArchipelagoClient client)
         {
-            var list = client.CurrentSession.Items.AllItemsReceived.Where(x => x.ItemId >= 694000 && x.ItemId <= 694999).Select(x => x.ItemId).ToList();
-            var soulLookup = GetDigimonSouls();
-            var results = soulLookup.Where(x => !list.Contains(x.Id)).ToList();
+            var receivedIds = client.CurrentSession.Items.AllItemsReceived.Where(x => x.ItemId >= 691000 && x.ItemId <= 691049).Select(x => x.ItemId).ToList();
+            var recruitLookup = GetDigimonRecruits();
+            var results = recruitLookup.Where(x => !receivedIds.Contains(x.Id)).ToList();
             return results;
         }
         public static DigimonTechniqueData PopulateTechData(this DigimonTechniqueData technique)
@@ -486,7 +480,10 @@ namespace DWAP
             var digimonLocations = GetLocations();
             foreach (var digimonLocation in digimonLocations)
             {
-                if (digimonLocation.Check())
+                // Check town-presence flag (old range) rather than event-completion flag
+                var location = (Location)digimonLocation;
+                var townPresenceAddress = location.Address - Addresses.EventToTownFlagOffset;
+                if (Memory.ReadBit(townPresenceAddress, location.AddressBit))
                 {
                     if (rookieList.Contains(digimonLocation.Name))
                     {

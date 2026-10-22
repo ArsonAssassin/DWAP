@@ -14,7 +14,6 @@
     <None Remove="Resources\APItems.json" />
     <None Remove="Resources\DigimonCards.json" />
     <None Remove="Resources\DigimonItems.json" />
-    <None Remove="Resources\DigimonSouls.json" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\Prosperity.json" />
   </ItemGroup>
@@ -32,9 +31,6 @@
     <AvaloniaResource Include="Resources\DigimonItems.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
-    <AvaloniaResource Include="Resources\DigimonSouls.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AvaloniaResource>
     <AvaloniaResource Include="Resources\Locations.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
@@ -44,13 +40,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Archipelago.Core" Version="2.0.3" />
-    <PackageReference Include="Archipelago.Core.AvaloniaGUI" Version="1.0.1" />
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Archipelago.Core.AvaloniaGUI\Archipelago.Core.AvaloniaGUI\Archipelago.Core.AvaloniaGUI.csproj" />
+    <ProjectReference Include="..\..\..\Archipelago.Core\Archipelago.Core.csproj" />
   </ItemGroup>
 </Project>

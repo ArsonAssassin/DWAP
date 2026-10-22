@@ -5,7 +5,7 @@ class RecruitDigimon(NamedTuple):
     prosperity_value: int
     digimon_requirements: List[str]
     prosperity_requirement: int
-    requires_soul: bool
+    requires_recruit: bool
     meramon_gate: bool = False
     min_statcap: int = 0
     or_digimon_requirements: tuple = ()

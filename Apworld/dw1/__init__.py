@@ -1,4 +1,6 @@
 # world/dw1/__init__.py
+import os
+import pkgutil
 from typing import Dict, Set, List
 
 from BaseClasses import MultiWorld, Region, Item, Entrance, Tutorial, ItemClassification
@@ -10,6 +12,7 @@ from worlds.generic.Rules import set_rule, add_rule, add_item_rule
 from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, key_item_categories, item_descriptions, _all_items, BuildItemPool
 from .Locations import DigimonWorldLocation, DigimonWorldLocationCategory, location_tables, location_dictionary
 from .Options import DigimonWorldOption
+from .Patch import DW1ProcedurePatch, DW1Settings
 from .RecruitDigimon import recruit_digimon_list
 
 class DigimonWorldWeb(WebWorld):
@@ -38,6 +41,8 @@ class DigimonWorldWorld(World):
     options: DigimonWorldOption
     topology_present: bool = True
     web = DigimonWorldWeb()
+    settings_key = "dw1_settings"
+    settings: DW1Settings  # type: ignore
     data_version = 0
     base_id = 690000
     enabled_location_categories: Set[DigimonWorldLocationCategory]
@@ -132,14 +137,14 @@ class DigimonWorldWorld(World):
         print(f"Itempool size: {itempoolSize}")
 
         for item in _all_items:
-            if item.category == DigimonWorldItemCategory.SOUL:
-                if item.name == "Agumon Soul":
+            if item.category == DigimonWorldItemCategory.RECRUIT:
+                if item.name == "Agumon":
                     continue
                 itempool.append(self.create_item(item.name))
                 itempoolSize -= 1
             
         
-        print(f"Itempool size after adding souls: {itempoolSize}")
+        print(f"Itempool size after adding recruits: {itempoolSize}")
         filler_pool = BuildItemPool(self.multiworld, itempoolSize, self.options)
         for item in filler_pool:
             itempool.append(self.create_item(item.name))
@@ -151,7 +156,7 @@ class DigimonWorldWorld(World):
             location = self.multiworld.get_location("1 Prosperity", self.player)
             location.place_locked_item(self.create_item("Progressive Stat Cap"))
         location = self.multiworld.get_location("Start Game", self.player)
-        location.place_locked_item(self.create_item("Agumon Soul"))
+        location.place_locked_item(self.create_item("Agumon"))
         # Add regular items to itempool
         print("Final itempool order:")
         for i, item in enumerate(itempool[:20]):
@@ -193,8 +198,8 @@ class DigimonWorldWorld(World):
                     if digimon.name == current_digimon:
                         requirements_met = False
                         continue
-                    if digimon.requires_soul:
-                        if not state.has(digimon.name + " Soul", self.player):
+                    if digimon.requires_recruit:
+                        if not state.has(digimon.name, self.player):
                             requirements_met = False
                             continue
                     if digimon.prosperity_requirement > current_prosperity:
@@ -224,7 +229,7 @@ class DigimonWorldWorld(World):
 
         def build_digimon_rule(d, world):
             def rule(state):
-                if d.requires_soul and not state.has(f"{d.name} Soul", world.player):
+                if d.requires_recruit and not state.has(d.name, world.player):
                     return False
                 if d.min_statcap > 0 and not has_minimum_statcap(world, state, d.min_statcap):
                     return False
@@ -253,7 +258,7 @@ class DigimonWorldWorld(World):
 
         set_rule(self.multiworld.get_location("Start Game", self.player), lambda state: True)
         set_rule(self.multiworld.get_entrance(f"Start Game", self.player), lambda state: True)
-        set_rule(self.multiworld.get_entrance(f"Digimon", self.player), lambda state: state.has("Agumon Soul", self.player))
+        set_rule(self.multiworld.get_entrance(f"Digimon", self.player), lambda state: state.has("Agumon", self.player))
 
         for digimon in recruit_digimon_list:
             if digimon.name == "Agumon":
@@ -262,7 +267,7 @@ class DigimonWorldWorld(World):
 
         for card in [card for card in self.multiworld.get_locations(self.player) if card.category == DigimonWorldLocationCategory.CARD]:            
             if(card.name == "Machinedramon Card"):
-                set_rule(card, lambda state, s=self: state.has("Digitamamon Soul", s.player) and calculate_prosperity(s, state) >= 50 and state.can_reach_location("Agumon", s.player))
+                set_rule(card, lambda state, s=self: state.has("Digitamamon", s.player) and calculate_prosperity(s, state) >= 50 and state.can_reach_location("Agumon", s.player))
                 continue
             set_rule(card, lambda state, s=self: (state.can_reach_location("Meramon", s.player) or calculate_prosperity(s, state) >= 6))
 
@@ -325,3 +330,9 @@ class DigimonWorldWorld(World):
         }
 
         return slot_data
+
+    def generate_output(self, output_directory: str) -> None:
+        patch = DW1ProcedurePatch(player=self.player, player_name=self.multiworld.player_name[self.player])
+        patch.write_file("dw1_iso.bsdiff4", pkgutil.get_data(__name__, "data/dw1_iso.bsdiff4"))
+        out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}{DW1ProcedurePatch.patch_file_ending}")
+        patch.write(out_path)

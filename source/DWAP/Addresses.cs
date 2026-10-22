@@ -38,6 +38,10 @@ namespace DWAP
         public static ulong MeramonTunnel_DrimogemonState = 0x001BE042;
         public static ulong MeramonTunnel_DiggingState = 0x001BE04F;
 
+        // Offset between event-completion flags (424+id) and town-presence flags (200+id)
+        // New event flags are 28 bytes (224 triggers / 8) higher in the trigger bitfield
+        public static ulong EventToTownFlagOffset = 0x1C;
+
         public static ulong CardStartAddress = 0x001bdfac;
 
         public static ulong ChartStartAddress = 0x001be00d;

@@ -29,6 +29,7 @@ namespace DWAP;
 
 public partial class App : Application
 {
+    internal MainWindow MainWindow;
     static MainWindowViewModel Context;
     public static ArchipelagoClient Client { get; set; }
     public static PositionData CurrentLocation { get; set; }
@@ -49,19 +50,17 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         Start();
+        MainWindow = new MainWindow()
+        {
+            DataContext = Context
+        };
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = Context
-            };
+            desktop.MainWindow = MainWindow;
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewPlatform.MainView = new MainWindow
-            {
-                DataContext = Context
-            };
+            singleViewPlatform.MainView = MainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -85,8 +84,7 @@ public partial class App : Application
         Log.Information("Initialising collections...");
         Log.Information("Loading Items");
         Helpers.APItems = Helpers.GetAPItems();
-        Log.Information("Loading Souls");
-        Helpers.DigimonSouls = Helpers.GetDigimonSouls();
+        Log.Information("Loading Recruits");
         Helpers.DigimonItems = Helpers.GetConsumables();
         Log.Information("Ready to connect!");
     }
@@ -394,7 +392,7 @@ public partial class App : Application
         }
         CurrentLocation = Helpers.GetCurrentLocation();
         EnsureStatCap();
-        EnsureSouls();
+        EnsureRecruits();
         EnsureWorldFlags();
         EnsureProsperity();
 
@@ -430,16 +428,26 @@ public partial class App : Application
         }
     }
 
-    private async void EnsureSouls()
+    private async void EnsureRecruits()
     {
         var locations = Helpers.GetLocations();
-        var souls = Helpers.GetMissingSouls(Client);
-        foreach (var soul in souls)
-        {
-            var digimonName = soul.Name.Split(" ")[0];
-            var recruitLocation = (Location)locations.FirstOrDefault(x => x.Name == digimonName);
 
-            Memory.WriteBit(recruitLocation.Address, recruitLocation.AddressBit, false);
+        // Set town-presence flags (old range) for received recruits
+        var acquiredRecruits = Helpers.GetAcquiredRecruits(Client);
+        foreach (var recruit in acquiredRecruits)
+        {
+            var recruitLocation = (Location)locations.FirstOrDefault(x => x.Name == recruit.Name);
+            var townPresenceAddress = recruitLocation.Address - Addresses.EventToTownFlagOffset;
+            Memory.WriteBit(townPresenceAddress, recruitLocation.AddressBit, true);
+        }
+
+        // Clear town-presence flags (old range) for missing recruits
+        var missingRecruits = Helpers.GetMissingRecruits(Client);
+        foreach (var recruit in missingRecruits)
+        {
+            var recruitLocation = (Location)locations.FirstOrDefault(x => x.Name == recruit.Name);
+            var townPresenceAddress = recruitLocation.Address - Addresses.EventToTownFlagOffset;
+            Memory.WriteBit(townPresenceAddress, recruitLocation.AddressBit, false);
         }
     }
     public async Task Connect(ConnectClickedEventArgs args)
@@ -449,7 +457,14 @@ public partial class App : Application
             Client.Connected -= OnConnected;
             Client.Disconnected -= OnDisconnected;
         }
-        GameClient client = new GameClient("duckstation");
+        GameClient client;
+        var processHandler = new ProcessPickerWindow("duckstation");
+        var result = await processHandler.ShowDialog<ProcessInfo?>(MainWindow);
+        if (result != null)
+        {
+            client = new GameClient(result.ProcessName, result.PID);
+        }
+        else client = new GameClient("duckstation");
         var duckstationConnected = client.Connect();
         if (!duckstationConnected)
         {
@@ -519,20 +534,19 @@ public partial class App : Application
                 }
             }).ConfigureAwait(false);
         }
-        var soulLocations = new List<Archipelago.Core.Models.ILocation>();
-        var acquiredSouls = Helpers.GetAcquiredSouls(Client);
-        if (acquiredSouls.Any())
+        var recruitedLocations = new List<Archipelago.Core.Models.ILocation>();
+        var acquiredRecruits = Helpers.GetAcquiredRecruits(Client);
+        if (acquiredRecruits.Any())
         {
-            var recruitLocations = Helpers.GetLocations();
-            foreach (var soul in acquiredSouls)
+            var allLocations = Helpers.GetLocations();
+            foreach (var recruit in acquiredRecruits)
             {
-                var digimonName = soul.Name.Split(" ")[0];
-                var recruitLocation = recruitLocations.FirstOrDefault(x => x.Name == digimonName);
-                soulLocations.Add(recruitLocation);
+                var recruitLocation = allLocations.FirstOrDefault(x => x.Name == recruit.Name);
+                recruitedLocations.Add(recruitLocation);
             }
-            if (soulLocations.Any())
+            if (recruitedLocations.Any())
             {
-                Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, soulLocations);
+                Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, recruitedLocations);
             }
         }
     }
@@ -565,15 +579,11 @@ public partial class App : Application
                 else StatCap = (boostsReceived * 100) + 100;
             }
         }
-        else if (Helpers.DigimonSouls.Any(x => x.Id == args.Item.Id))
+        else if (Helpers.DigimonRecruits.Any(x => x.Id == args.Item.Id))
         {
-            var item = Helpers.DigimonSouls.First(x => x.Id == args.Item.Id);
-            if (item.Type == ItemType.Soul)
-            {
-                var soulName = item.Name.Split(" ")[0];
-                var digimonRecruit = Helpers.GetLocations().Where(x => x.Name.Contains(soulName)).ToList();
-                Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, digimonRecruit);
-            }
+            var item = Helpers.DigimonRecruits.First(x => x.Id == args.Item.Id);
+            var digimonRecruit = Helpers.GetLocations().Where(x => x.Name == item.Name).ToList();
+            Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, digimonRecruit);
         }
     }
     private void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
