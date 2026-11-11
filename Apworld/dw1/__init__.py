@@ -1,19 +1,43 @@
 # world/dw1/__init__.py
 import os
+import json
 import pkgutil
-from typing import Dict, Set, List
+from typing import ClassVar, Dict, Set, List
 
 from BaseClasses import MultiWorld, Region, Item, Entrance, Tutorial, ItemClassification
-from Options import Toggle
+from Options import Toggle, OptionError
 
 from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule, add_rule, add_item_rule
 
-from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, key_item_categories, item_descriptions, _all_items, BuildItemPool
+from worlds.LauncherComponents import Component, Type, SuffixIdentifier, components
+
+from .Items import DigimonWorldItem, DigimonWorldItemCategory, item_dictionary, key_item_names, key_item_categories, item_descriptions, _all_items, BuildItemPool, booster_pack_cards
 from .Locations import DigimonWorldLocation, DigimonWorldLocationCategory, location_tables, location_dictionary
-from .Options import DigimonWorldOption
+from .Options import DigimonWorldOption, ALL_CUSTOM_DIGIMON
 from .Patch import DW1ProcedurePatch, DW1Settings
+from . import cd_sector
+from worlds.Files import APTokenTypes
 from .RecruitDigimon import recruit_digimon_list
+
+
+def launch_client(*args: str) -> None:
+    from Patch import create_rom_file
+    if args:
+        auto_start = args[0]
+    else:
+        auto_start = None
+    if auto_start:
+        create_rom_file(auto_start)
+
+
+components.append(Component(
+    "Digimon World Client",
+    component_type=Type.CLIENT,
+    func=launch_client,
+    file_identifier=SuffixIdentifier(".apdw1"),
+    game_name="Digimon World",
+))
 
 class DigimonWorldWeb(WebWorld):
     bug_report_page = ""
@@ -42,7 +66,7 @@ class DigimonWorldWorld(World):
     topology_present: bool = True
     web = DigimonWorldWeb()
     settings_key = "dw1_settings"
-    settings: DW1Settings  # type: ignore
+    settings: ClassVar[DW1Settings]
     data_version = 0
     base_id = 690000
     enabled_location_categories: Set[DigimonWorldLocationCategory]
@@ -50,6 +74,9 @@ class DigimonWorldWorld(World):
     item_name_to_id = DigimonWorldItem.get_name_to_id()
     location_name_to_id = DigimonWorldLocation.get_name_to_id()
     item_name_groups = {
+        "Recruits": {i.name for i in _all_items if i.category == DigimonWorldItemCategory.RECRUIT},
+        "Souls": {i.name for i in _all_items if i.category == DigimonWorldItemCategory.SOUL},
+        "Booster Packs": {i.name for i in _all_items if i.category == DigimonWorldItemCategory.BOOSTER},
     }
     item_descriptions = item_descriptions
 
@@ -70,6 +97,34 @@ class DigimonWorldWorld(World):
             self.enabled_location_categories.add(DigimonWorldLocationCategory.CARD)
         if self.options.include_chest_locations.value:
             self.enabled_location_categories.add(DigimonWorldLocationCategory.CHEST)
+        if self.options.enemysanity.value:
+            self.enabled_location_categories.add(DigimonWorldLocationCategory.FIGHT)
+        if self.options.include_shop_locations.value:
+            self.enabled_location_categories.add(DigimonWorldLocationCategory.SHOP)
+        self.check_item_budget()
+
+    def check_item_budget(self):
+        """Fail early, with a readable reason, when the options put more progression items in the pool
+        than there are randomized locations (the generator would otherwise fail deep in fill)."""
+        locations = sum(1 for table in location_tables.values() for loc in table
+                        if loc.category in self.enabled_location_categories)
+        by_cat = lambda cat: sum(1 for i in _all_items if i.category == cat)
+        needed = {"recruits": by_cat(DigimonWorldItemCategory.RECRUIT)}
+        if self.options.recruit_souls.value:
+            needed["souls (recruit_souls)"] = by_cat(DigimonWorldItemCategory.SOUL)
+        if self.options.progressive_stats.value:
+            needed["Progressive Stat Caps (progressive_stats)"] = 9
+        if self.options.include_card_locations.value:
+            needed["booster packs (include_card_locations)"] = by_cat(DigimonWorldItemCategory.BOOSTER)
+        if self.options.guaranteed_items.value:
+            needed["guaranteed_items"] = sum(self.options.guaranteed_items.value.values())
+        total = sum(needed.values())
+        if total > locations:
+            detail = ", ".join(f"{v} {k}" for k, v in needed.items())
+            raise OptionError(
+                f"Digimon World ({self.multiworld.player_name[self.player]}): {total} required items "
+                f"({detail}) but only {locations} locations. Enable include_chest_locations, "
+                f"include_card_locations or enemysanity, or turn off recruit_souls / progressive_stats.")
         
 
 
@@ -190,6 +245,23 @@ class DigimonWorldWorld(World):
             
         
         print(f"Itempool size after adding recruits: {itempoolSize}")
+        if self.options.recruit_souls.value:
+            # one Soul per recruit: the digimon is not in the world until it is received
+            for item in _all_items:
+                if item.category == DigimonWorldItemCategory.SOUL:
+                    itempool.append(self.create_item(item.name))
+                    itempoolSize -= 1
+            print(f"Itempool size after adding souls: {itempoolSize}")
+        # Booster packs gate the card shop. With card locations in the pool they are progression items;
+        # without, the player starts with all of them so the shop still works.
+        for item in _all_items:
+            if item.category == DigimonWorldItemCategory.BOOSTER:
+                if self.options.include_card_locations.value:
+                    itempool.append(self.create_item(item.name))
+                    itempoolSize -= 1
+                else:
+                    self.multiworld.push_precollected(self.create_item(item.name))
+        print(f"Itempool size after adding booster packs: {itempoolSize}")
         filler_pool = BuildItemPool(self.multiworld, itempoolSize, self.options)
         for item in filler_pool:
             itempool.append(self.create_item(item.name))
@@ -244,8 +316,12 @@ class DigimonWorldWorld(World):
             set_rule(location, rule)
             self.multiworld.register_indirect_condition(region, entrance)
 
+        souls_on = bool(self.options.recruit_souls.value)
+
         def build_digimon_rule(d, world):
             def rule(state):
+                if souls_on and not state.has(f"{d.name} Soul", world.player):
+                    return False
                 if d.min_statcap > 0 and not has_minimum_statcap(world, state, d.min_statcap):
                     return False
                 for req in d.digimon_requirements:
@@ -310,6 +386,10 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_entrance("Ice Sanctuary -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
         set_rule(self.multiworld.get_entrance("Ogre Fortress -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
 
+        # Enemysanity: Meteormon only shows up once Tyrannomon has been recruited
+        set_rule(self.multiworld.get_location("Defeated Meteormon", self.player),
+                 lambda state, s=self: state.has("Tyrannomon", s.player))
+
         for digimon in recruit_digimon_list:
             location = self.multiworld.get_location(digimon.name, self.player)
             set_rule(location, build_digimon_rule(digimon, self))
@@ -317,11 +397,29 @@ class DigimonWorldWorld(World):
             for entrance in region.entrances:
                 self.multiworld.register_indirect_condition(region, entrance)
 
-        for card in [card for card in self.multiworld.get_locations(self.player) if card.category == DigimonWorldLocationCategory.CARD]:            
+        # card id = location id - 69002000; a card is obtainable once any booster pack that can drop it is
+        # owned (the 100-bit "Random Card" row is deliberately not in logic). Card 0 (Player Card) comes from
+        # the shop's first-visit script; card 65 keeps its scripted rule.
+        packs_for_card = {}
+        for pack_name, card_ids in booster_pack_cards.items():
+            for card_id in card_ids:
+                packs_for_card.setdefault(card_id, []).append(pack_name)
+        for card in [card for card in self.multiworld.get_locations(self.player) if card.category == DigimonWorldLocationCategory.CARD]:
             if(card.name == "Machinedramon Card"):
                 set_rule(card, lambda state, s=self: state.has("Digitamamon", s.player) and calculate_prosperity(s, state) >= 50)
                 continue
-            set_rule(card, lambda state, s=self: True)
+            packs = packs_for_card.get(location_dictionary[card.name][0] - 69002000)   # id even when the category is disabled (address None)
+            if packs:
+                set_rule(card, lambda state, s=self, p=packs: state.has_any(p, s.player))
+            else:
+                set_rule(card, lambda state, s=self: True)
+
+        # Shop checks: the keeper's recruit item (they must be in town); Market Manager and merit shop by region only
+        shop_cfg = json.loads(pkgutil.get_data(__name__, "data/shop_items.json").decode("utf-8"))
+        for it in shop_cfg["items"]:
+            if it["shop"] in ("item_shop", "secret_item_shop", "market"):
+                set_rule(self.multiworld.get_location(it["location"], self.player),
+                         lambda state, s=self, k=it["keeper"]: state.has(k, s.player))
 
         # Event flag rules
         set_rule(self.multiworld.get_location("Will get ambushed by Greymon in File City", self.player),
@@ -405,7 +503,13 @@ class DigimonWorldWorld(World):
                 "easy_monochromon": self.options.easy_monochromon.value,
                 "fast_drimogemon": self.options.fast_drimogemon.value,
                 "include_card_locations": self.options.include_card_locations.value,
-                "include_chest_locations": self.options.include_chest_locations.value
+                "include_chest_locations": self.options.include_chest_locations.value,
+                "include_shop_locations": self.options.include_shop_locations.value,
+                "enemysanity": self.options.enemysanity.value,
+                "recruit_souls": self.options.recruit_souls.value,
+                "tabbed_chart": self.options.tabbed_chart.value,
+                "mega_chart_page": self.options.mega_chart_page.value,
+                "custom_digimon": self.enabled_custom_digimon()
             },
             "seed": self.multiworld.seed_name,  # to verify the server's multiworld
             "slot": self.multiworld.player_name[self.player],  # to connect to server
@@ -419,8 +523,90 @@ class DigimonWorldWorld(World):
 
         return slot_data
 
+    def enabled_custom_digimon(self) -> list:
+        """All custom digimon minus the excluded_custom_digimon blacklist ("all" = none), sorted."""
+        excluded = set(self.options.excluded_custom_digimon.value)
+        if "all" in excluded:
+            return []
+        return sorted(ALL_CUSTOM_DIGIMON - excluded)
+
     def generate_output(self, output_directory: str) -> None:
+        """Layered patches (dw_decomp tools/build_variants.py -> data/variants.json): the base
+        build, then the option variants in parent-first order, then one token write of the
+        EXTINIT.BIN sector that holds the custom-digimon enable table (byte per id), rebuilt here
+        for the selected variants and chosen Digimon with its CD EDC/ECC recomputed."""
         patch = DW1ProcedurePatch(player=self.player, player_name=self.multiworld.player_name[self.player])
-        patch.write_file("dw1_iso.bsdiff4", pkgutil.get_data(__name__, "data/dw1_iso.bsdiff4"))
+        manifest = json.loads(pkgutil.get_data(__name__, "data/variants.json").decode("utf-8"))
+        wanted = {
+            "new_chart": bool(self.options.tabbed_chart.value),
+            "mega_tab": bool(self.options.tabbed_chart.value) and bool(self.options.mega_chart_page.value),
+            "souls_always_on": not self.options.recruit_souls.value,
+        }
+        layers = [manifest["base"]]
+        # variants: a layer requires its parent, so keep manifest order (parents first) and drop
+        # anything whose parent was not selected
+        selected = set()
+        for name, entry in manifest["variants"].items():
+            parent = entry.get("on_top_of", "base")
+            if wanted.get(name) and (parent == "base" or parent in selected):
+                selected.add(name)
+                layers.append(entry["file"])
+        for fn in layers:
+            patch.write_file(fn, pkgutil.get_data(__name__, "data/" + fn))
+        patch.procedure = [("apply_bsdiff4", [fn]) for fn in layers]
+        chosen = self.enabled_custom_digimon()
+        if chosen:
+            table = manifest["digimon_table"]
+            sector = bytearray(pkgutil.get_data(__name__, "data/" + table["sector_file"]))
+            for name in manifest["variants"]:
+                if name in selected:
+                    for off, val in table["variant_sector_bytes"].get(name, {}).items():
+                        sector[int(off)] = val
+            for stem in chosen:
+                entry = manifest["digimon"].get(stem)
+                if entry is None:
+                    raise Exception(f"custom digimon '{stem}' is not in data/variants.json")
+                sector[table["table_offset"] + entry["id"]] = 1
+            patch.write_token(APTokenTypes.WRITE, table["image_offset"], cd_sector.fix_sector(sector))
+        if self.options.include_shop_locations.value and "shop_text" in manifest:
+            self.write_shop_text(patch, manifest["shop_text"])
+        if patch.get_token_binary():
+            patch.write_file("token_data.bin", patch.get_token_binary())
+            if ("apply_tokens", ["token_data.bin"]) not in patch.procedure:
+                patch.procedure.append(("apply_tokens", ["token_data.bin"]))
         out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}{DW1ProcedurePatch.patch_file_ending}")
         patch.write(out_path)
+
+    def write_shop_text(self, patch, text) -> None:
+        """Fill each shop check's description slot (64 B ASCII, EXTINIT +0x1E000) with "<player>'s <item>",
+        clipped to the description box, and queue the rebuilt sectors (EDC/ECC fixed) as token writes."""
+        raw = bytearray(pkgutil.get_data(__name__, "data/" + text["sector_file"]))
+        slot_size = text["slot_size"]
+        sector_data = [bytearray(raw[i * 2352 + 24:i * 2352 + 24 + 2048]) for i in range(text["sectors"])]
+        for loc_name, slot in text["slots"].items():
+            location = self.multiworld.get_location(loc_name, self.player)
+            if location.item is None:
+                continue
+            owner = self.multiworld.player_name[location.item.player]
+            desc = self.shop_description(owner, location.item.name, location.item.player == self.player)
+            buf = desc.encode("ascii", "replace")[:slot_size - 1].ljust(slot_size, b"\0")
+            off = slot * slot_size
+            sector_data[off // 2048][off % 2048: off % 2048 + slot_size] = buf
+        for i, data in enumerate(sector_data):
+            sector = bytearray(raw[i * 2352:(i + 1) * 2352])
+            sector[24:24 + 2048] = data
+            patch.write_token(APTokenTypes.WRITE, text["image_offset"] + i * 2352, cd_sector.fix_sector(sector))
+
+    @staticmethod
+    def shop_description(owner: str, item: str, own: bool, width: int = 27) -> str:
+        """One line for the shop's description box: own items read "Your <item>", others "<owner>'s <item>";
+        only letters, digits, space and basic punctuation survive; the item is clipped before the owner."""
+        clean = lambda t: "".join(c if c.isalnum() or c in " .,'!?-+()/:" else " " for c in t)
+        owner, item = clean(owner), clean(item)
+        prefix = "Your " if own else f"{owner}'s "
+        if len(prefix) + len(item) <= width:
+            return prefix + item
+        room = width - len(prefix)
+        if room >= 6:
+            return prefix + item[:room]
+        return (f"{owner[:width - 5]}'s " + item)[:width]

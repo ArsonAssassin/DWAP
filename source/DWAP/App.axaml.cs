@@ -43,6 +43,8 @@ public partial class App : Application
     private bool _easyMonochromon = false;
     private bool _includeCards = true;
     private bool _includeChests = true;
+    private bool _includeFights = true;
+    private bool _includeShops = true;
     private ILocation goalLocation;
     public override void Initialize()
     {
@@ -75,6 +77,10 @@ public partial class App : Application
         Context.ConnectClicked += Context_ConnectClicked;
         Context.CommandReceived += (e, a) =>
         {
+            if (HandleDebugCommand(a.Command))
+            {
+                return;
+            }
             Client?.SendMessage(a.Command);
         };
 
@@ -90,11 +96,98 @@ public partial class App : Application
         Helpers.DigimonItems = Helpers.GetConsumables();
         Log.Information("Ready to connect!");
     }
+    private readonly Queue<string> _textboxQueue = new();
+    private readonly object _textboxLock = new();
+
+    /// <summary>
+    /// Queue a message for the in-game textbox. Messages are written one at a time from
+    /// DrainTextboxQueue (timer tick) once the hook reports request == 0 and status == 0, so a
+    /// message arriving while a box is open or a cutscene is running is held, not lost.
+    /// </summary>
     public void ShowInGameMessage(string message)
     {
+        lock (_textboxLock)
+        {
+            _textboxQueue.Enqueue(message);
+        }
+        DrainTextboxQueue();
+    }
+
+    private void DrainTextboxQueue()
+    {
+        string? message = null;
+        lock (_textboxLock)
+        {
+            if (_textboxQueue.Count == 0)
+            {
+                return;
+            }
+            if (Memory.ReadByte(Addresses.TextboxRequest) != 0 || Memory.ReadByte(Addresses.TextboxStatus) != 0)
+            {
+                return; // previous message still pending or on screen
+            }
+            message = _textboxQueue.Dequeue();
+        }
         var sjisBytes = Helpers.EncodeToSJIS(message);
+        if (sjisBytes.Length > Addresses.TextboxBufferSize)
+        {
+            Log.Warning($"Textbox message is {sjisBytes.Length} bytes, truncating to {Addresses.TextboxBufferSize}");
+            // keep the 5-byte terminator intact
+            sjisBytes = sjisBytes.Take(Addresses.TextboxBufferSize - 5).Concat(sjisBytes.Skip(sjisBytes.Length - 5)).ToArray();
+        }
         Memory.WriteByteArray(Addresses.TextboxBuffer, sjisBytes);
         Memory.WriteByte(Addresses.TextboxRequest, 1);
+    }
+
+    /// <summary>
+    /// Local debug commands typed into the client's command box. Returns true when the text was a
+    /// debug command (and so must not be forwarded to the server).
+    ///   /textbox <text>   write <text> to the in-game textbox hook (SJIS) and request it
+    ///   /textbox          show the hook's request/status bytes, queue length and the start of the buffer
+    ///   /textbox clear    clear the request and status bytes and drop queued messages
+    ///   /itemindex        show the ReceivedItemIndex stored in the save-file tail
+    /// </summary>
+    private bool HandleDebugCommand(string command)
+    {
+        if (string.IsNullOrWhiteSpace(command))
+        {
+            return false;
+        }
+        var text = command.Trim();
+        if (text.StartsWith("/textbox", StringComparison.OrdinalIgnoreCase))
+        {
+            var arg = text.Length > 8 ? text.Substring(8).Trim() : string.Empty;
+            if (arg.Length == 0)
+            {
+                var request = Memory.ReadByte(Addresses.TextboxRequest);
+                var status = Memory.ReadByte(Addresses.TextboxStatus);
+                var header = Memory.ReadByteArray(Addresses.TextboxHeader, 4);
+                var head = Memory.ReadByteArray(Addresses.TextboxBuffer, 16);
+                int queued;
+                lock (_textboxLock) { queued = _textboxQueue.Count; }
+                Log.Information($"Textbox hook: request={request} status={status} queued={queued} header={BitConverter.ToString(header)} buffer[0..16]={BitConverter.ToString(head)}");
+            }
+            else if (arg.Equals("clear", StringComparison.OrdinalIgnoreCase))
+            {
+                lock (_textboxLock) { _textboxQueue.Clear(); }
+                Memory.WriteByte(Addresses.TextboxRequest, 0);
+                Memory.WriteByte(Addresses.TextboxStatus, 0);
+                Log.Information("Textbox hook: request and status cleared, queue dropped");
+            }
+            else
+            {
+                ShowInGameMessage(arg);
+                Log.Information($"Textbox hook: requested \"{arg}\" ({Helpers.EncodeToSJIS(arg).Length} SJIS bytes)");
+            }
+            return true;
+        }
+        if (text.Equals("/itemindex", StringComparison.OrdinalIgnoreCase))
+        {
+            var saved = Memory.ReadInt(Addresses.ItemReceivedIndex);
+            Log.Information($"ReceivedItemIndex in save tail: {saved} (client SavedItemIndex: {Client?.SavedItemIndex})");
+            return true;
+        }
+        return false;
     }
 
     private void AddDigimonItem(int id)
@@ -179,6 +272,14 @@ public partial class App : Application
         if (options.ContainsKey("include_chest_locations"))
         {
             _includeChests = Convert.ToInt32(options["include_chest_locations"].ToString()) > 0;
+        }
+        if (options.ContainsKey("enemysanity"))
+        {
+            _includeFights = Convert.ToInt32(options["enemysanity"].ToString()) > 0;
+        }
+        if (options.ContainsKey("include_shop_locations"))
+        {
+            _includeShops = Convert.ToInt32(options["include_shop_locations"].ToString()) > 0;
         }
         if (options.ContainsKey("random_starter"))
         {
@@ -406,8 +507,11 @@ public partial class App : Application
         CurrentLocation = Helpers.GetCurrentLocation();
         EnsureStatCap();
         EnsureRecruits();
+        EnsureSouls();
+        EnsureBoosterPacks();
         EnsureWorldFlags();
         EnsureItemReceivedIndex();
+        DrainTextboxQueue();
 
         if (goalLocation?.Check() ?? false)
         {
@@ -417,7 +521,8 @@ public partial class App : Application
 
     private void EnsureItemReceivedIndex()
     {
-        Memory.Write(Addresses.ItemReceivedIndex, (ushort)Client.SavedItemIndex);
+        // int32 in the save-file tail (see Addresses.ItemReceivedIndex)
+        Memory.WriteByteArray(Addresses.ItemReceivedIndex, BitConverter.GetBytes((int)Client.SavedItemIndex));
     }
 
     private bool IsOnLavaCaveMap()
@@ -446,6 +551,56 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// Set the soul flag (trigger 1024+id, save-file tail) of every "<Digimon> Soul" received.
+    /// Idempotent; runs on the timer so a new game (which zeroes the tail) is re-populated.
+    /// Never clears bits: with the souls_always_on patch the bits are unused anyway.
+    /// </summary>
+    private void EnsureSouls()
+    {
+        var souls = Helpers.GetAcquiredSouls(Client);
+        if (!souls.Any()) return;
+        var locations = Helpers.GetLocations();
+        foreach (var soul in souls)
+        {
+            SetSoulFlag(soul, locations);
+        }
+    }
+    private void SetSoulFlag(DigimonWorldItem soul, List<ILocation>? locations = null)
+    {
+        var digimonName = soul.Name.EndsWith(" Soul") ? soul.Name[..^" Soul".Length] : soul.Name;
+        var flag = Helpers.GetSoulFlag(digimonName, locations ?? Helpers.GetLocations());
+        if (flag == null)
+        {
+            Log.Warning($"No recruit entry for soul item '{soul.Name}'; flag not set");
+            return;
+        }
+        if (!Memory.ReadBit(flag.Value.address, flag.Value.bit))
+        {
+            Memory.WriteBit(flag.Value.address, flag.Value.bit, true);
+        }
+    }
+    /// <summary>Set the flag of every "<Pack> Booster Pack" received (save-file tail byte). Idempotent, timer driven.</summary>
+    private void EnsureBoosterPacks()
+    {
+        foreach (var pack in Helpers.GetAcquiredBoosterPacks(Client))
+        {
+            SetBoosterPackFlag(pack);
+        }
+    }
+    private void SetBoosterPackFlag(DigimonWorldItem pack)
+    {
+        var flag = Helpers.GetBoosterPackFlag(pack);
+        if (flag == null)
+        {
+            Log.Warning($"Booster pack item '{pack.Name}' ({pack.Id}) has no flag; not set");
+            return;
+        }
+        if (!Memory.ReadBit(flag.Value.address, flag.Value.bit))
+        {
+            Memory.WriteBit(flag.Value.address, flag.Value.bit, true);
+        }
+    }
     private async void EnsureRecruits()
     {
         var locations = Helpers.GetLocations();
@@ -500,6 +655,8 @@ public partial class App : Application
         var locations = Helpers.GetProsperityLocations();
         if (_includeCards) locations.AddRange(Helpers.GetDigimonCards());
         if (_includeChests) locations.AddRange(Helpers.GetChests());
+        if (_includeFights) locations.AddRange(Helpers.GetFights());
+        if (_includeShops) locations.AddRange(Helpers.GetShops());
         locations.AddRange(Helpers.GetLocations());
         locations.AddRange(Helpers.GetEventFlags());
         Client.LocationManager.EnableLocationsCondition = ()=> Helpers.IsInGame();
@@ -522,7 +679,7 @@ public partial class App : Application
         Client.ItemManager.ItemReceived += OnItemReceived;
 
         // Restore item index from PS1 save data if it's behind the server's index (crash recovery)
-        var savedIndex = Memory.ReadShort(Addresses.ItemReceivedIndex);
+        var savedIndex = Memory.ReadInt(Addresses.ItemReceivedIndex);
         if (savedIndex > 0 && savedIndex < Client.SavedItemIndex)
         {
             Log.Information($"Restoring item index from save data: {savedIndex} (server had {Client.SavedItemIndex})");
@@ -582,6 +739,16 @@ public partial class App : Application
             if (item.Type == ItemType.Recruit)
             {
                 ShowInGameMessage($"{item.Name} recruited!");
+            }
+            else if (item.Type == ItemType.Soul)
+            {
+                SetSoulFlag(item);
+                ShowInGameMessage($"{item.Name} received!");
+            }
+            else if (item.Type == ItemType.Booster)
+            {
+                SetBoosterPackFlag(item);
+                ShowInGameMessage($"{item.Name} received!");
             }
         }
     }

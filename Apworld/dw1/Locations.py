@@ -13,6 +13,8 @@ class DigimonWorldLocationCategory(IntEnum):
     CARD = 5,
     CHEST = 6,
     FLAG = 7,
+    FIGHT = 8,
+    SHOP = 9,
 
 
 class DigimonWorldLocationData(NamedTuple):
@@ -246,6 +248,27 @@ location_tables = {
     ],
     "File City":
     [
+        # shop checks (include_shop_locations): "AP Item" rows bought once, flag in the save tail
+        DigimonWorldLocationData(69007000, "Item Shop: Monochromon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007001, "Item Shop: Monochromon 2000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007002, "Item Shop: Patamon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007003, "Item Shop: Patamon 2000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007004, "Item Shop: Biyomon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007005, "Item Shop: Biyomon 2000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007006, "Item Shop: Unimon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007007, "Item Shop: Unimon 2000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007008, "Secret Item Shop: Numemon 1500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007009, "Secret Item Shop: Numemon 3000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007010, "Secret Item Shop: Mojyamon 1500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007011, "Secret Item Shop: Mojyamon 3000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007012, "Secret Item Shop: Mamemon 1500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007013, "Secret Item Shop: Mamemon 3000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007014, "Secret Item Shop: Devimon 1500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007015, "Secret Item Shop: Devimon 3000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007016, "Market: Betamon 500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007017, "Market: Betamon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007018, "Market: Coelamon 500 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007019, "Market: Coelamon 1000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
         DigimonWorldLocationData(69001000, "Agumon", "1000 Bits", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001002, "Greymon", "Greymon", DigimonWorldLocationCategory.RECRUIT),
 
@@ -256,6 +279,13 @@ location_tables = {
     ],
     "Native Forest":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006086, "Defeated Aruraumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006074, "Defeated Dokunemon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006080, "Defeated Goburimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006083, "Defeated ModokiBetamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006077, "Defeated RedVegiemon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006096, "Defeated Tsukaimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001007, "Seadramon", "Seadramon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001025, "Kunemon", "Kunemon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001049, "Ninjamon", "Ninjamon", DigimonWorldLocationCategory.RECRUIT),
@@ -291,6 +321,17 @@ location_tables = {
      ],
     "Gear Savanna":
     [
+        # shop checks (include_shop_locations): "AP Item" rows bought once, flag in the save tail
+        DigimonWorldLocationData(69007020, "Recycled Goods Shop: 2000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007021, "Recycled Goods Shop: 4000 Bits", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006095, "Defeated Akatorimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006113, "Defeated Meteormon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006079, "Defeated NiseDrimogemon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006082, "Defeated Psychemon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006106, "Defeated Saberdramon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006097, "Defeated Sharmamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006075, "Defeated ShimaUnimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001010, "Mamemon", "Mamemon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001039, "Leomon", "Leomon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001036, "Biyomon", "Biyomon", DigimonWorldLocationCategory.RECRUIT),
@@ -303,6 +344,18 @@ location_tables = {
     ],
     "Tropical Jungle":
     [
+        # shop checks (include_shop_locations): "AP Item" rows bought once, flag in the save tail
+        DigimonWorldLocationData(69007022, "Merit Shop: 15 Merit", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007023, "Merit Shop: 40 Merit", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007024, "Merit Shop: 100 Merit", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007025, "Merit Shop: 250 Merit", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        DigimonWorldLocationData(69007026, "Merit Shop: 500 Merit", "1000 Bits", DigimonWorldLocationCategory.SHOP),
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006110, "Defeated Gekomon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006078, "Defeated J-Mojyamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006093, "Defeated Muchomon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006109, "Defeated Otamamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006067, "Defeated Yanmamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001001, "Betamon", "Betamon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001046, "Piximon", "Piximon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001029, "Centarumon", "Centarumon", DigimonWorldLocationCategory.RECRUIT),
@@ -320,6 +373,12 @@ location_tables = {
     ],
     "Freezeland":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006072, "Defeated Hyogamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006100, "Defeated IceDevimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006071, "Defeated SnowAgumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006103, "Defeated SnowGoburimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006088, "Defeated Vermilimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001048, "Penguinmon", "Penguinmon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001043, "Mojyamon", "Mojyamon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001017, "Garurumon", "Garurumon", DigimonWorldLocationCategory.RECRUIT),
@@ -341,6 +400,12 @@ location_tables = {
     ],
     "Great Canyon":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006101, "Defeated Darkrizamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006105, "Defeated Gururumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006102, "Defeated SandYanmamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006107, "Defeated Soulmon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006099, "Defeated Weedmon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001038, "Monochromon", "Monochromon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001016, "Birdramon", "Birdramon", DigimonWorldLocationCategory.RECRUIT),
 
@@ -367,6 +432,8 @@ location_tables = {
     ],
     "Grey Lords Mansion":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006108, "Defeated Rockmon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69005000, "Chest: Mansion Attic 1", "1000 Bits", DigimonWorldLocationCategory.CHEST),
         DigimonWorldLocationData(69005001, "Chest: Mansion Attic 2", "1000 Bits", DigimonWorldLocationCategory.CHEST),
         DigimonWorldLocationData(69005002, "Chest: Mansion Attic 3", "1000 Bits", DigimonWorldLocationCategory.CHEST),
@@ -387,6 +454,10 @@ location_tables = {
     ],
     "Factorial Town":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006087, "Defeated Geremon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006092, "Defeated Guardromon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006073, "Defeated PlatinumSukamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001008, "Numemon", "Numemon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001022, "MetalMamemon", "MetalMamemon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001033, "Andromon", "Andromon", DigimonWorldLocationCategory.RECRUIT),
@@ -403,6 +474,9 @@ location_tables = {
     ],
     "Misty Trees":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006089, "Defeated Fugamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006091, "Defeated MoriShellmon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001012, "Gabumon", "Gabumon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001041, "Kokatorimon", "Kokatorimon", DigimonWorldLocationCategory.RECRUIT),
 
@@ -411,6 +485,10 @@ location_tables = {
     ],
     "Toy Town":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006098, "Defeated ClearAgumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006076, "Defeated Tankmon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006084, "Defeated ToyAgumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001011, "Monzaemon", "Monzaemon", DigimonWorldLocationCategory.RECRUIT),
 
         DigimonWorldLocationData(69005018, "Chest: Toy Mansion 4F", "1000 Bits", DigimonWorldLocationCategory.CHEST),
@@ -419,6 +497,9 @@ location_tables = {
     ],
     "Ice Sanctuary":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006104, "Defeated BlueMeramon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006094, "Defeated Icemon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001015, "Angemon", "Angemon", DigimonWorldLocationCategory.RECRUIT),
 
         DigimonWorldLocationData(69005007, "Chest: Ice Sanctuary B1 1", "1000 Bits", DigimonWorldLocationCategory.CHEST),
@@ -431,6 +512,8 @@ location_tables = {
     ],
     "Mt Infinity":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006085, "Defeated Piddomon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001045, "Megadramon", "Megadramon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001047, "Digitamamon", "Digitamamon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001003, "Devimon", "Devimon", DigimonWorldLocationCategory.RECRUIT),
@@ -461,6 +544,10 @@ location_tables = {
     ],
     "Mt Panorama":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006069, "Defeated Flarerizamon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006068, "Defeated Gotsumon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
+        DigimonWorldLocationData(69006081, "Defeated MudFrigimon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001023, "Vademon", "Vademon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001026, "Unimon", "Unimon", DigimonWorldLocationCategory.RECRUIT),
 
@@ -480,6 +567,8 @@ location_tables = {
     ],
     "Beetle Land":
     [
+        # Enemysanity: wild species fights, set by the game when the species is first beaten
+        DigimonWorldLocationData(69006111, "Defeated Tentomon", "1000 Bits", DigimonWorldLocationCategory.FIGHT),
         DigimonWorldLocationData(69001014, "Kabuterimon", "Kabuterimon", DigimonWorldLocationCategory.RECRUIT),
         DigimonWorldLocationData(69001042, "Kuwagamon", "Kuwagamon", DigimonWorldLocationCategory.RECRUIT),
     ],

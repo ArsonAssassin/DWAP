@@ -1,6 +1,8 @@
 from enum import IntEnum
 from typing import NamedTuple
 from BaseClasses import Item, MultiWorld
+import json
+import pkgutil
 
 
 class DigimonWorldItemCategory(IntEnum):
@@ -10,7 +12,9 @@ class DigimonWorldItemCategory(IntEnum):
     RECRUIT = 3,
     SKIP = 4,
     DV = 5,
-    FLAG = 6
+    FLAG = 6,
+    SOUL = 7,
+    BOOSTER = 8
 
 
 class DigimonWorldItemData(NamedTuple):
@@ -34,6 +38,8 @@ key_item_names = {
 key_item_categories = {
     DigimonWorldItemCategory.RECRUIT,
     DigimonWorldItemCategory.FLAG,
+    DigimonWorldItemCategory.SOUL,
+    DigimonWorldItemCategory.BOOSTER,
 }
 
 _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [    
@@ -87,6 +93,58 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Digitamamon",            1047, DigimonWorldItemCategory.RECRUIT),  
     ("Penguinmon",            1048, DigimonWorldItemCategory.RECRUIT),  
     ("Ninjamon",            1049, DigimonWorldItemCategory.RECRUIT),  
+    # Recruit souls (recruit_souls option): the digimon only appears in the world once its
+    # Soul is received; the client sets trigger 1024+id in the save-file tail.
+    ("Agumon Soul",              1100, DigimonWorldItemCategory.SOUL),
+    ("Betamon Soul",             1101, DigimonWorldItemCategory.SOUL),
+    ("Greymon Soul",             1102, DigimonWorldItemCategory.SOUL),
+    ("Devimon Soul",             1103, DigimonWorldItemCategory.SOUL),
+    ("Airdramon Soul",           1104, DigimonWorldItemCategory.SOUL),
+    ("Tyrannomon Soul",          1105, DigimonWorldItemCategory.SOUL),
+    ("Meramon Soul",             1106, DigimonWorldItemCategory.SOUL),
+    ("Seadramon Soul",           1107, DigimonWorldItemCategory.SOUL),
+    ("Numemon Soul",             1108, DigimonWorldItemCategory.SOUL),
+    ("MetalGreymon Soul",        1109, DigimonWorldItemCategory.SOUL),
+    ("Mamemon Soul",             1110, DigimonWorldItemCategory.SOUL),
+    ("Monzaemon Soul",           1111, DigimonWorldItemCategory.SOUL),
+    ("Gabumon Soul",             1112, DigimonWorldItemCategory.SOUL),
+    ("Elecmon Soul",             1113, DigimonWorldItemCategory.SOUL),
+    ("Kabuterimon Soul",         1114, DigimonWorldItemCategory.SOUL),
+    ("Angemon Soul",             1115, DigimonWorldItemCategory.SOUL),
+    ("Birdramon Soul",           1116, DigimonWorldItemCategory.SOUL),
+    ("Garurumon Soul",           1117, DigimonWorldItemCategory.SOUL),
+    ("Frigimon Soul",            1118, DigimonWorldItemCategory.SOUL),
+    ("Whamon Soul",              1119, DigimonWorldItemCategory.SOUL),
+    ("Vegiemon Soul",            1120, DigimonWorldItemCategory.SOUL),
+    ("SkullGreymon Soul",        1121, DigimonWorldItemCategory.SOUL),
+    ("MetalMamemon Soul",        1122, DigimonWorldItemCategory.SOUL),
+    ("Vademon Soul",             1123, DigimonWorldItemCategory.SOUL),
+    ("Patamon Soul",             1124, DigimonWorldItemCategory.SOUL),
+    ("Kunemon Soul",             1125, DigimonWorldItemCategory.SOUL),
+    ("Unimon Soul",              1126, DigimonWorldItemCategory.SOUL),
+    ("Ogremon Soul",             1127, DigimonWorldItemCategory.SOUL),
+    ("Shellmon Soul",            1128, DigimonWorldItemCategory.SOUL),
+    ("Centarumon Soul",          1129, DigimonWorldItemCategory.SOUL),
+    ("Bakemon Soul",             1130, DigimonWorldItemCategory.SOUL),
+    ("Drimogemon Soul",          1131, DigimonWorldItemCategory.SOUL),
+    ("Sukamon Soul",             1132, DigimonWorldItemCategory.SOUL),
+    ("Andromon Soul",            1133, DigimonWorldItemCategory.SOUL),
+    ("Giromon Soul",             1134, DigimonWorldItemCategory.SOUL),
+    ("Etemon Soul",              1135, DigimonWorldItemCategory.SOUL),
+    ("Biyomon Soul",             1136, DigimonWorldItemCategory.SOUL),
+    ("Palmon Soul",              1137, DigimonWorldItemCategory.SOUL),
+    ("Monochromon Soul",         1138, DigimonWorldItemCategory.SOUL),
+    ("Leomon Soul",              1139, DigimonWorldItemCategory.SOUL),
+    ("Coelamon Soul",            1140, DigimonWorldItemCategory.SOUL),
+    ("Kokatorimon Soul",         1141, DigimonWorldItemCategory.SOUL),
+    ("Kuwagamon Soul",           1142, DigimonWorldItemCategory.SOUL),
+    ("Mojyamon Soul",            1143, DigimonWorldItemCategory.SOUL),
+    ("Nanimon Soul",             1144, DigimonWorldItemCategory.SOUL),
+    ("Megadramon Soul",          1145, DigimonWorldItemCategory.SOUL),
+    ("Piximon Soul",             1146, DigimonWorldItemCategory.SOUL),
+    ("Digitamamon Soul",         1147, DigimonWorldItemCategory.SOUL),
+    ("Penguinmon Soul",          1148, DigimonWorldItemCategory.SOUL),
+    ("Ninjamon Soul",            1149, DigimonWorldItemCategory.SOUL),
     
     ("SM Recovery",            2000, DigimonWorldItemCategory.CONSUMABLE),
     ("Med Recovery",           2001, DigimonWorldItemCategory.CONSUMABLE),
@@ -358,6 +416,19 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Factorial Town entrance open",                   5034, DigimonWorldItemCategory.FLAG),
     ("Toy Mansion unlocked",                           5035, DigimonWorldItemCategory.FLAG),
 ]]
+
+# Booster packs (data/booster_packs.json, the same file dw_decomp bakes into the game): one progression
+# item per flagged pack, dw_code 3003 + flag; the client sets bit `flag` of the save-tail byte at
+# 0x13334C when it arrives.  booster_pack_cards maps the item name to the card ids it can drop.
+BOOSTER_CODE_BASE = 3003
+_booster_cfg = json.loads(pkgutil.get_data(__name__, "data/booster_packs.json").decode("utf-8"))
+booster_pack_cards = {}
+for _p in _booster_cfg["packs"]:
+    if _p.get("random"):
+        continue
+    _name = f"{_p['name']} Booster Pack"
+    _all_items.append(DigimonWorldItemData(_name, BOOSTER_CODE_BASE + int(_p["flag"]), DigimonWorldItemCategory.BOOSTER))
+    booster_pack_cards[_name] = {_booster_cfg["card_ids"][c] for t in _p["tiers"] for c in t["cards"]}
 
 item_descriptions = {
 }

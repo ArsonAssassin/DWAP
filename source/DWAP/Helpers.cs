@@ -38,6 +38,20 @@ namespace DWAP
             var list = JsonConvert.DeserializeObject<List<DigimonItem>>(json);
             return list;
         }
+        /// <summary>Wild-species fight locations: bit per NPC species type in the save-file tail (0x13332C).</summary>
+        public static List<ILocation> GetFights()
+        {
+            var json = OpenAvaloniaResource("Fights.json");
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
+            return list;
+        }
+        /// <summary>Shop check locations: bit per "AP Item" purchase in the save-file tail (0x13334D, 4 bytes).</summary>
+        public static List<ILocation> GetShops()
+        {
+            var json = OpenAvaloniaResource("Shops.json");
+            var list = LocationJsonHelper.Instance.DeserializeLocations(json);
+            return list;
+        }
         public static List<ILocation> GetChests()
         {
             var json = OpenAvaloniaResource("Chests.json");
@@ -451,6 +465,48 @@ namespace DWAP
             var results = recruitLookup.Where(x => receivedIds.Contains(x.Id)).ToList();
             if (!results.Any()) return new List<DigimonWorldItem>();
             return results;
+        }
+        public static List<DigimonWorldItem> GetSouls()
+        {
+            return APItems?.Where(x => x.Type == ItemType.Soul).ToList() ?? new List<DigimonWorldItem>();
+        }
+        public static List<DigimonWorldItem> GetAcquiredSouls(ArchipelagoClient client)
+        {
+            var souls = GetSouls();
+            if (!souls.Any()) return souls;
+            var receivedIds = client.CurrentSession.Items.AllItemsReceived.Select(x => x.ItemId).ToHashSet();
+            return souls.Where(x => receivedIds.Contains(x.Id)).ToList();
+        }
+        /// <summary>
+        /// Save-tail address and bit of a digimon's soul flag (trigger 1024+id), derived from the
+        /// recruit's done-flag entry in Locations.json (trigger 720+id). Null if the name is unknown.
+        /// </summary>
+        public static (ulong address, int bit)? GetSoulFlag(string digimonName, List<ILocation> recruitLocations)
+        {
+            var recruit = recruitLocations.OfType<Location>().FirstOrDefault(x => x.Name == digimonName);
+            if (recruit == null) return null;
+            var doneTrigger = (int)(recruit.Address - Addresses.TriggerBitsBase) * 8 + recruit.AddressBit;
+            var digimonId = doneTrigger - Addresses.RecruitDoneFlagBase;
+            if (digimonId < 0 || digimonId > 1023) return null;
+            return (Addresses.SoulFlagsBase + (ulong)(digimonId / 8), digimonId % 8);
+        }
+        public static List<DigimonWorldItem> GetBoosterPacks()
+        {
+            return APItems?.Where(x => x.Type == ItemType.Booster).ToList() ?? new List<DigimonWorldItem>();
+        }
+        public static List<DigimonWorldItem> GetAcquiredBoosterPacks(ArchipelagoClient client)
+        {
+            var packs = GetBoosterPacks();
+            if (!packs.Any()) return packs;
+            var receivedIds = client.CurrentSession.Items.AllItemsReceived.Select(x => x.ItemId).ToHashSet();
+            return packs.Where(x => receivedIds.Contains(x.Id)).ToList();
+        }
+        /// <summary>Save-tail address and bit of a booster pack's flag (bit = item id - BoosterPackItemBase, 0..7).</summary>
+        public static (ulong address, int bit)? GetBoosterPackFlag(DigimonWorldItem pack)
+        {
+            var flag = pack.Id - Addresses.BoosterPackItemBase;
+            if (flag < 0 || flag > 7) return null;
+            return (Addresses.BoosterPackBits, (int)flag);
         }
         public static List<DigimonWorldItem> GetMissingRecruits(ArchipelagoClient client)
         {
@@ -911,12 +967,13 @@ namespace DWAP
                         break;
                 }
             }
-            // End-of-text: newline + null terminator + end opcode
+            // End-of-text: newline + null terminator, then END_SECTION (0xFE) so the script
+            // section the textbox hook starts on this buffer ends right after the box is dismissed
             result.Add(0x0D);
             result.Add(0x00);
             result.Add(0x00);
             result.Add(0x00);
-            result.Add(0x1A);
+            result.Add(0xFE);
             return result.ToArray();
         }
 

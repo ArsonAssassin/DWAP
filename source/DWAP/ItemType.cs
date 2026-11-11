@@ -13,6 +13,8 @@ namespace DWAP
         Event = 2,
         Recruit = 3,
         Skip = 4,
-        DV = 5
+        DV = 5,
+        Soul = 6,
+        Booster = 7
     }
 }

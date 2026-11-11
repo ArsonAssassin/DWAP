@@ -237,7 +237,7 @@
   {
     "Name": "Digitamamon",
     "Id": 691047,
-    "Type": 3 
+    "Type": 3
   },
   {
     "Name": "Penguinmon",
@@ -717,7 +717,7 @@
   {
     "Name": "Red Shell",
     "Id": 692093,
-    "Type":5
+    "Type": 5
   },
   {
     "Name": "Hard Scale",
@@ -767,7 +767,7 @@
   {
     "Name": "Silver ball",
     "Id": 692103,
-    "Type":5
+    "Type": 5
   },
   {
     "Name": "Metal armor",
@@ -787,7 +787,7 @@
   {
     "Name": "X Bandage",
     "Id": 692107,
-    "Type":5
+    "Type": 5
   },
   {
     "Name": "Ray Gun",
@@ -903,5 +903,285 @@
     "Name": "Progressive Stat Cap",
     "Id": 693000,
     "Type": 1
+  },
+  {
+    "Id": 691100,
+    "Name": "Agumon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691101,
+    "Name": "Betamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691102,
+    "Name": "Greymon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691103,
+    "Name": "Devimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691104,
+    "Name": "Airdramon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691105,
+    "Name": "Tyrannomon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691106,
+    "Name": "Meramon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691107,
+    "Name": "Seadramon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691108,
+    "Name": "Numemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691109,
+    "Name": "MetalGreymon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691110,
+    "Name": "Mamemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691111,
+    "Name": "Monzaemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691112,
+    "Name": "Gabumon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691113,
+    "Name": "Elecmon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691114,
+    "Name": "Kabuterimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691115,
+    "Name": "Angemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691116,
+    "Name": "Birdramon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691117,
+    "Name": "Garurumon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691118,
+    "Name": "Frigimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691119,
+    "Name": "Whamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691120,
+    "Name": "Vegiemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691121,
+    "Name": "SkullGreymon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691122,
+    "Name": "MetalMamemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691123,
+    "Name": "Vademon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691124,
+    "Name": "Patamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691125,
+    "Name": "Kunemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691126,
+    "Name": "Unimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691127,
+    "Name": "Ogremon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691128,
+    "Name": "Shellmon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691129,
+    "Name": "Centarumon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691130,
+    "Name": "Bakemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691131,
+    "Name": "Drimogemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691132,
+    "Name": "Sukamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691133,
+    "Name": "Andromon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691134,
+    "Name": "Giromon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691135,
+    "Name": "Etemon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691136,
+    "Name": "Biyomon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691137,
+    "Name": "Palmon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691138,
+    "Name": "Monochromon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691139,
+    "Name": "Leomon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691140,
+    "Name": "Coelamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691141,
+    "Name": "Kokatorimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691142,
+    "Name": "Kuwagamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691143,
+    "Name": "Mojyamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691144,
+    "Name": "Nanimon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691145,
+    "Name": "Megadramon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691146,
+    "Name": "Piximon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691147,
+    "Name": "Digitamamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691148,
+    "Name": "Penguinmon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 691149,
+    "Name": "Ninjamon Soul",
+    "Type": 6
+  },
+  {
+    "Id": 693003,
+    "Name": "The Poop squad Booster Pack",
+    "Type": 7
+  },
+  {
+    "Id": 693004,
+    "Name": "Unlucky Dip Booster Pack",
+    "Type": 7
+  },
+  {
+    "Id": 693005,
+    "Name": "Vile Virus Booster Pack",
+    "Type": 7
+  },
+  {
+    "Id": 693006,
+    "Name": "Frosty Friends Booster Pack",
+    "Type": 7
+  },
+  {
+    "Id": 693007,
+    "Name": "Blazing Heat Booster Pack",
+    "Type": 7
+  },
+  {
+    "Id": 693008,
+    "Name": "Tech Town Booster Pack",
+    "Type": 7
   }
 ]

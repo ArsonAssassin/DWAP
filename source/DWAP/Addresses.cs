@@ -49,14 +49,37 @@ namespace DWAP
 
         public static ulong RecruitmentFunctionAddress = 0x00000000;
 
-        // Stored in PS1 save data, after the event-completion flags (last at 0x001BE02E bit 2)
-        // 2 bytes for a ushort to track item received index for crash recovery
-        public static ulong ItemReceivedIndex = 0x001BE02F;
+        // Stored in the unused tail of the PS1 save-file block (SAVE_FILE + 0x1900, RAM 0x8013322C).
+        // int32, written by the client, persisted with every save, zeroed by the game on new game
+        // and restored on load. See dw_decomp PATCH_MEMORY_MAP.md "Save File Layout".
+        public static ulong ItemReceivedIndex = 0x0013322C;
 
-        // Custom textbox hook (ROM patch: patch_textbox_hook.py)
-        // Write 1 to trigger; routine clears it and sets status to 1 while showing
-        public static ulong TextboxRequest = 0x0007C98C;  // 1 byte: write 1 to trigger
-        public static ulong TextboxStatus  = 0x0007C98D;  // 1 byte: 0=idle, 1=showing
-        public static ulong TextboxBuffer  = 0x0007C990;  // ~364 bytes: SJIS text data
+        // Recruit "soul" flags: trigger 1024+digimonId, stored as a bitfield in the save-file tail
+        // (SAVE_FILE + 0x1980, RAM 0x801332AC; byte id/8, bit id%8). A recruitable digimon only
+        // appears in the world once its soul bit is set; the client sets it when the
+        // "<Digimon> Soul" item arrives. The digimon id comes from the recruit's done flag
+        // (Locations.json address/bit = trigger 720+id). Zeroed by the game on new game.
+        public static ulong SoulFlagsBase = 0x001332AC;
+        public static ulong TriggerBitsBase = 0x001BDFCD;   // ScriptState.triggers (800 bits)
+        public static int RecruitDoneFlagBase = 720;
+
+        // Booster pack flags: one byte in the save-file tail (SAVE_FILE + 0x1A20, RAM 0x8013334C),
+        // bit = pack flag = item id - BoosterPackItemBase. The card shop lists a pack once its bit is
+        // set; the client sets it when the "<Pack> Booster Pack" item arrives. Zeroed on new game.
+        public static ulong BoosterPackBits = 0x0013334C;
+        public static long BoosterPackItemBase = 693003;
+
+        // Custom textbox hook (ROM patch: patch_textbox_hook.py). Data lives in the 8MB extended
+        // RAM region (RAM 0x80200000+), so the emulator must run in 8MB mode.
+        // Write the SJIS text (terminated by 0D 00 00 00 FE) to the buffer, then write 1 to the
+        // request byte. When the script engine is idle the hook starts a real script section on the
+        // buffer (it writes SET_DIALOG_OWNER/SHOW_TEXTBOX at 0x200004 in front of the text), sets
+        // status to 1, and clears status back to 0 on the first idle frame after the box is gone.
+        // Only write a new message while request == 0 and status == 0 (see TextboxQueue).
+        public static ulong TextboxRequest = 0x00200000;  // 1 byte: write 1 to trigger
+        public static ulong TextboxStatus  = 0x00200001;  // 1 byte: 1 = message in progress, 0 = idle
+        public static ulong TextboxHeader  = 0x00200004;  // 4 bytes: written by the hook (1B FF 1A 00)
+        public static ulong TextboxBuffer  = 0x00200008;  // 360 bytes: SJIS text + 0D 00 00 00 FE
+        public static int   TextboxBufferSize = 360;
     }
 }
