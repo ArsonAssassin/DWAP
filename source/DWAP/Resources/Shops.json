@@ -1,0 +1,191 @@
+[
+  {
+    "Name": "Item Shop: Monochromon 1000 Bits",
+    "Id": 69007000,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Item Shop: Monochromon 2000 Bits",
+    "Id": 69007001,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Item Shop: Patamon 1000 Bits",
+    "Id": 69007002,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Item Shop: Patamon 2000 Bits",
+    "Id": 69007003,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Item Shop: Biyomon 1000 Bits",
+    "Id": 69007004,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Item Shop: Biyomon 2000 Bits",
+    "Id": 69007005,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Item Shop: Unimon 1000 Bits",
+    "Id": 69007006,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Item Shop: Unimon 2000 Bits",
+    "Id": 69007007,
+    "Address": "0x0013334D",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Secret Item Shop: Numemon 1500 Bits",
+    "Id": 69007008,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Secret Item Shop: Numemon 3000 Bits",
+    "Id": 69007009,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Secret Item Shop: Mojyamon 1500 Bits",
+    "Id": 69007010,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Secret Item Shop: Mojyamon 3000 Bits",
+    "Id": 69007011,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Secret Item Shop: Mamemon 1500 Bits",
+    "Id": 69007012,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Secret Item Shop: Mamemon 3000 Bits",
+    "Id": 69007013,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Secret Item Shop: Devimon 1500 Bits",
+    "Id": 69007014,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Secret Item Shop: Devimon 3000 Bits",
+    "Id": 69007015,
+    "Address": "0x0013334E",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Market: Betamon 500 Bits",
+    "Id": 69007016,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Market: Betamon 1000 Bits",
+    "Id": 69007017,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Market: Coelamon 500 Bits",
+    "Id": 69007018,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Market: Coelamon 1000 Bits",
+    "Id": 69007019,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Recycled Goods Shop: 2000 Bits",
+    "Id": 69007020,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Recycled Goods Shop: 4000 Bits",
+    "Id": 69007021,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Merit Shop: 15 Merit",
+    "Id": 69007022,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Merit Shop: 40 Merit",
+    "Id": 69007023,
+    "Address": "0x0013334F",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Merit Shop: 100 Merit",
+    "Id": 69007024,
+    "Address": "0x00133350",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Merit Shop: 250 Merit",
+    "Id": 69007025,
+    "Address": "0x00133350",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Merit Shop: 500 Merit",
+    "Id": 69007026,
+    "Address": "0x00133350",
+    "CheckType": 0,
+    "AddressBit": 2
+  }
+]

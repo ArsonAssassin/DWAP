@@ -1,0 +1,310 @@
+[
+  {
+    "Name": "Defeated Akatorimon",
+    "Id": 69006095,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated Aruraumon",
+    "Id": 69006086,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Defeated BlueMeramon",
+    "Id": 69006104,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Defeated ClearAgumon",
+    "Id": 69006098,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Defeated Darkrizamon",
+    "Id": 69006101,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated Dokunemon",
+    "Id": 69006074,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Defeated Flarerizamon",
+    "Id": 69006069,
+    "Address": "0x00133334",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated Fugamon",
+    "Id": 69006089,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated Gekomon",
+    "Id": 69006110,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Defeated Geremon",
+    "Id": 69006087,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated Goburimon",
+    "Id": 69006080,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Defeated Gotsumon",
+    "Id": 69006068,
+    "Address": "0x00133334",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Guardromon",
+    "Id": 69006092,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Gururumon",
+    "Id": 69006105,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated Hyogamon",
+    "Id": 69006072,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Defeated IceDevimon",
+    "Id": 69006100,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Icemon",
+    "Id": 69006094,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Defeated J-Mojyamon",
+    "Id": 69006078,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Defeated Meteormon",
+    "Id": 69006113,
+    "Address": "0x0013333A",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated ModokiBetamon",
+    "Id": 69006083,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Defeated MoriShellmon",
+    "Id": 69006091,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Defeated Muchomon",
+    "Id": 69006093,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated MudFrigimon",
+    "Id": 69006081,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated NiseDrimogemon",
+    "Id": 69006079,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated Otamamon",
+    "Id": 69006109,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated Piddomon",
+    "Id": 69006085,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated PlatinumSukamon",
+    "Id": 69006073,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated Psychemon",
+    "Id": 69006082,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Defeated RedVegiemon",
+    "Id": 69006077,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "Defeated Rockmon",
+    "Id": 69006108,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Saberdramon",
+    "Id": 69006106,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "Defeated SandYanmamon",
+    "Id": 69006102,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "Defeated Sharmamon",
+    "Id": 69006097,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "Defeated ShimaUnimon",
+    "Id": 69006075,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Defeated SnowAgumon",
+    "Id": 69006071,
+    "Address": "0x00133334",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated SnowGoburimon",
+    "Id": 69006103,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated Soulmon",
+    "Id": 69006107,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Defeated Tankmon",
+    "Id": 69006076,
+    "Address": "0x00133335",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Tentomon",
+    "Id": 69006111,
+    "Address": "0x00133339",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "Defeated ToyAgumon",
+    "Id": 69006084,
+    "Address": "0x00133336",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "Defeated Tsukaimon",
+    "Id": 69006096,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Defeated Vermilimon",
+    "Id": 69006088,
+    "Address": "0x00133337",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "Defeated Weedmon",
+    "Id": 69006099,
+    "Address": "0x00133338",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "Defeated Yanmamon",
+    "Id": 69006067,
+    "Address": "0x00133334",
+    "CheckType": 0,
+    "AddressBit": 3
+  }
+]
