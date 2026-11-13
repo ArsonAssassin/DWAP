@@ -8,3 +8,6 @@ Digimon World Archipelago Randomiser
 
 # Tracker
 Seto has written a Poptracker you can use [here](https://github.com/seto10987/Digimon-World-AP-PopTracker-Pack)
+
+# Credits
+- **Ruki Makino** - the Digivice icon used for AP items in the in-game shops

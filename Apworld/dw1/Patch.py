@@ -22,9 +22,6 @@ class DW1ProcedurePatch(APProcedurePatch, APTokenMixin):
     patch_file_ending = ".apdw1"
     result_file_ending = ".bin"
 
-    # Layered patches (see dw_decomp tools/build_variants.py): the base build, then one
-    # small bsdiff per toggled option.  generate_output() sets the per-player list; this
-    # default is what a patch made without options would apply.
     procedure = [
         ("apply_bsdiff4", ["dw1_base.bsdiff4"]),
     ]

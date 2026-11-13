@@ -10,7 +10,6 @@ class RecruitDigimon(NamedTuple):
     or_digimon_requirements: tuple = ()
 
 recruit_digimon_list = [
-    RecruitDigimon("Agumon",        1, [],                                              0,  True),
     RecruitDigimon("Betamon",       1, [],                                      1,  True),
     RecruitDigimon("Kunemon",       1, [],                                      1,  True),
     RecruitDigimon("Palmon",        1, [],                                      1,  True),
@@ -31,7 +30,7 @@ recruit_digimon_list = [
     RecruitDigimon("Penguinmon",    1, [],                                      6,  True),
     RecruitDigimon("Mojyamon",      2, [],                                      6,  True),
     RecruitDigimon("Angemon",       2, [],                                      6,  True),
-    RecruitDigimon("Vegiemon",      2, ["Palmon"],                            1,  True),
+    RecruitDigimon("Vegiemon",      2, ["Palmon"],                           10,  True),
     RecruitDigimon("Shellmon",      2, [],                                      6,  True),
     RecruitDigimon("Piximon",       3, [],                                      1,  True, min_statcap=3),
     RecruitDigimon("Whamon",        2, [],                                      6,  True),
@@ -43,7 +42,7 @@ recruit_digimon_list = [
     RecruitDigimon("Garurumon",     2, [],                                      6,  True),
     RecruitDigimon("Monzaemon",     3, [],                                      6,  True),
     RecruitDigimon("Kokatorimon",   2, [],                                      6,  True),
-    RecruitDigimon("Ogremon",       2, ["Whamon"],                            6,  True),
+    RecruitDigimon("Ogremon",       2, [],                                      6,  True),
     RecruitDigimon("Kuwagamon",     2, [],                         1,  True),
     RecruitDigimon("Kabuterimon",   2, [],                         1,  True),
     RecruitDigimon("Drimogemon",    2, ["Meramon", "Leomon"],                           50,  True),

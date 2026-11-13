@@ -67,8 +67,7 @@ ALL_CUSTOM_DIGIMON = frozenset(["snowagumon", "panjyamon", "blackagumon", "metal
 
 class ExcludedCustomDigimonOption(OptionSet):
     """Custom Digimon (recolours and NPC forms) to leave OUT of this game. All of them are in by
-    default; list the ones you do not want, or "all" to disable every custom Digimon. Each is toggled
-    by its byte in the game's enable table; the names are the dw_decomp config file names."""
+    default; list the ones you do not want, or "all" to disable every custom Digimon."""
     display_name = "Excluded Custom Digimon"
     valid_keys = ALL_CUSTOM_DIGIMON | {"all"}
     default = frozenset()
@@ -80,14 +79,15 @@ class RecruitSoulsOption(DefaultOnToggle):
     display_name = "Recruit Souls"
 
 
+
 class EnemysanityOption(DefaultOnToggle):
-    """Enemysanity: one location per always-available wild Digimon species (44), checked the first
-    time you win a fight against one of them anywhere."""
+    """Enemysanity: one location per wild Digimon species, checked the first
+    time you win a fight against one of them."""
     display_name = "Enemysanity"
 
 class IncludeShopLocationsOption(DefaultOnToggle):
     """Shopsanity: 27 one-time "AP Item" purchases in the item shops (two per shopkeeper), the Gear
-    Savanna shop and ShogunGekomon's merit shop. The description shows whose item it is."""
+    Savanna shop and ShogunGekomon's merit shop."""
     display_name = "Include Shop Locations"
 
 class IncludeChestLocationsOption(DefaultOnToggle):

@@ -70,7 +70,7 @@ class DigimonWorldWorld(World):
     data_version = 0
     base_id = 690000
     enabled_location_categories: Set[DigimonWorldLocationCategory]
-    required_client_version = (0, 6, 2)
+    required_client_version = (0, 6, 7)
     item_name_to_id = DigimonWorldItem.get_name_to_id()
     location_name_to_id = DigimonWorldLocation.get_name_to_id()
     item_name_groups = {
@@ -104,8 +104,6 @@ class DigimonWorldWorld(World):
         self.check_item_budget()
 
     def check_item_budget(self):
-        """Fail early, with a readable reason, when the options put more progression items in the pool
-        than there are randomized locations (the generator would otherwise fail deep in fill)."""
         locations = sum(1 for table in location_tables.values() for loc in table
                         if loc.category in self.enabled_location_categories)
         by_cat = lambda cat: sum(1 for i in _all_items if i.category == cat)
@@ -152,7 +150,6 @@ class DigimonWorldWorld(World):
         create_connection("Menu", "Start Game")
         create_connection("Start Game", "Prosperity")
 
-        # Geographic regions — flat graph for now (all from File City)
         create_connection("Start Game", "File City")
         
         create_connection("Start Game", "Nanimon")
@@ -246,14 +243,12 @@ class DigimonWorldWorld(World):
         
         print(f"Itempool size after adding recruits: {itempoolSize}")
         if self.options.recruit_souls.value:
-            # one Soul per recruit: the digimon is not in the world until it is received
             for item in _all_items:
                 if item.category == DigimonWorldItemCategory.SOUL:
                     itempool.append(self.create_item(item.name))
                     itempoolSize -= 1
             print(f"Itempool size after adding souls: {itempoolSize}")
-        # Booster packs gate the card shop. With card locations in the pool they are progression items;
-        # without, the player starts with all of them so the shop still works.
+        # booster packs: progression when card locations are on, otherwise precollected
         for item in _all_items:
             if item.category == DigimonWorldItemCategory.BOOSTER:
                 if self.options.include_card_locations.value:
@@ -301,7 +296,7 @@ class DigimonWorldWorld(World):
     
     def set_rules(self) -> None:
         def calculate_prosperity(self, state, current_digimon = None) -> int:
-            current_prosperity = 0
+            current_prosperity = 1   # Agumon, vanilla
             for digimon in recruit_digimon_list:
                 if state.has(digimon.name, self.player):
                     current_prosperity += digimon.prosperity_value
@@ -358,10 +353,10 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_entrance("Start Game -> Prosperity", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Start Game -> File City", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Start Game -> Nanimon", self.player), lambda state, s=self: True)
-        set_rule(self.multiworld.get_entrance("File City -> Native Forest", self.player), lambda state, s=self: state.can_reach_location("Agumon", s.player))
+        set_rule(self.multiworld.get_entrance("File City -> Native Forest", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("File City -> Factorial Town", self.player), lambda state, s=self: state.can_reach_location("Whamon", s.player))
         set_rule(self.multiworld.get_entrance("File City -> Mt Infinity", self.player), lambda state, s=self: calculate_prosperity(s, state) >= 50)
-        set_rule(self.multiworld.get_entrance("Native Forest -> Tropical Jungle", self.player), lambda state, s=self: state.can_reach_location("Agumon", s.player))
+        set_rule(self.multiworld.get_entrance("Native Forest -> Tropical Jungle", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Native Forest -> Drill Tunnel", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Native Forest -> Mt Panorama", self.player), lambda state, s=self: state.has("Landslide blocking path to Unimon cleared", s.player))
         set_rule(self.multiworld.get_entrance("Native Forest -> Beetle Land", self.player), lambda state, s=self: state.can_reach_location("Seadramon", s.player))
@@ -370,7 +365,7 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_entrance("Lava Cave - Cooled -> Mt Panorama", self.player), lambda state, s=self: state.has("Back Exit for Drill Tunnel opened", s.player))
         set_rule(self.multiworld.get_entrance("Drill Tunnel -> Leomon Cave", self.player), lambda state, s=self: calculate_prosperity(s, state) >= 45)
         set_rule(self.multiworld.get_entrance("Tropical Jungle -> Ancient Dino Region", self.player), lambda state, s=self: state.can_reach_location("Centarumon", s.player))
-        set_rule(self.multiworld.get_entrance("Tropical Jungle -> Great Canyon", self.player), lambda state, s=self: state.has("Yuramon told you about the Invisible Bridge", s.player))
+        set_rule(self.multiworld.get_entrance("Tropical Jungle -> Great Canyon", self.player), lambda state, s=self: state.has("Yuramon told you about the Invisible Bridge", s.player) and state.has("Coelamon", s.player))
         set_rule(self.multiworld.get_entrance("Tropical Jungle -> Grey Lords Mansion", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Great Canyon -> Ogre Fortress", self.player), lambda state, s=self: True)
         set_rule(self.multiworld.get_entrance("Great Canyon -> Freezeland", self.player), lambda state, s=self: True)
@@ -386,7 +381,7 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_entrance("Ice Sanctuary -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
         set_rule(self.multiworld.get_entrance("Ogre Fortress -> Back Dimension", self.player), lambda state, s=self: state.can_reach_location("Digitamamon", s.player))
 
-        # Enemysanity: Meteormon only shows up once Tyrannomon has been recruited
+        # Meteormon only appears once Tyrannomon is recruited
         set_rule(self.multiworld.get_location("Defeated Meteormon", self.player),
                  lambda state, s=self: state.has("Tyrannomon", s.player))
 
@@ -397,9 +392,7 @@ class DigimonWorldWorld(World):
             for entrance in region.entrances:
                 self.multiworld.register_indirect_condition(region, entrance)
 
-        # card id = location id - 69002000; a card is obtainable once any booster pack that can drop it is
-        # owned (the 100-bit "Random Card" row is deliberately not in logic). Card 0 (Player Card) comes from
-        # the shop's first-visit script; card 65 keeps its scripted rule.
+        # a card needs one of the packs that can drop it; the random card row is not in logic
         packs_for_card = {}
         for pack_name, card_ids in booster_pack_cards.items():
             for card_id in card_ids:
@@ -408,18 +401,22 @@ class DigimonWorldWorld(World):
             if(card.name == "Machinedramon Card"):
                 set_rule(card, lambda state, s=self: state.has("Digitamamon", s.player) and calculate_prosperity(s, state) >= 50)
                 continue
-            packs = packs_for_card.get(location_dictionary[card.name][0] - 69002000)   # id even when the category is disabled (address None)
+            packs = packs_for_card.get(location_dictionary[card.name][0] - 69002000)
             if packs:
                 set_rule(card, lambda state, s=self, p=packs: state.has_any(p, s.player))
             else:
                 set_rule(card, lambda state, s=self: True)
 
-        # Shop checks: the keeper's recruit item (they must be in town); Market Manager and merit shop by region only
+        # shop checks need their keeper in town; the Secret Item Shop is the Item Shop's basement,
+        # so it also needs the Item Shop built (any of its four keepers)
         shop_cfg = json.loads(pkgutil.get_data(__name__, "data/shop_items.json").decode("utf-8"))
         for it in shop_cfg["items"]:
-            if it["shop"] in ("item_shop", "secret_item_shop", "market"):
+            if it["shop"] in ("item_shop", "market"):
                 set_rule(self.multiworld.get_location(it["location"], self.player),
                          lambda state, s=self, k=it["keeper"]: state.has(k, s.player))
+            elif it["shop"] == "secret_item_shop":
+                set_rule(self.multiworld.get_location(it["location"], self.player),
+                         lambda state, s=self, k=it["keeper"]: state.has(k, s.player) and shop_level(s, state) >= 1)
 
         # Event flag rules
         set_rule(self.multiworld.get_location("Will get ambushed by Greymon in File City", self.player),
@@ -435,7 +432,7 @@ class DigimonWorldWorld(World):
         set_rule(self.multiworld.get_location("Unlocked Amazing Rod", self.player),
             lambda state, s=self: state.has("Path to Volume Villa has been opened", s.player))
         set_rule(self.multiworld.get_location("Defeated Ogremon #1", self.player),
-            lambda state, s=self: True)
+            lambda state, s=self: state.has("Yuramon told you about the Invisible Bridge", s.player) and state.has("Coelamon", s.player))
         set_rule(self.multiworld.get_location("Beat Ogremon #2", self.player),
             lambda state, s=self: state.has("Defeated Ogremon #1", s.player))
         set_rule(self.multiworld.get_location("Beaten Ogremon #3", self.player),
@@ -455,6 +452,8 @@ class DigimonWorldWorld(World):
         add_rule(self.multiworld.get_location("Greymon", self.player),
             lambda state, s=self: state.has("Will get ambushed by Greymon in File City", s.player))
         add_rule(self.multiworld.get_location("Ogremon", self.player),
+            lambda state, s=self: state.has("Beaten Ogremon #3", s.player))
+        add_rule(self.multiworld.get_location("Whamon", self.player),
             lambda state, s=self: state.has("Beaten Ogremon #3", s.player))
         add_rule(self.multiworld.get_location("Chest: Secret Beach Cave", self.player),
             lambda state, s=self: state.has("Beaten Ogremon #3", s.player))
@@ -524,17 +523,12 @@ class DigimonWorldWorld(World):
         return slot_data
 
     def enabled_custom_digimon(self) -> list:
-        """All custom digimon minus the excluded_custom_digimon blacklist ("all" = none), sorted."""
         excluded = set(self.options.excluded_custom_digimon.value)
         if "all" in excluded:
             return []
         return sorted(ALL_CUSTOM_DIGIMON - excluded)
 
     def generate_output(self, output_directory: str) -> None:
-        """Layered patches (dw_decomp tools/build_variants.py -> data/variants.json): the base
-        build, then the option variants in parent-first order, then one token write of the
-        EXTINIT.BIN sector that holds the custom-digimon enable table (byte per id), rebuilt here
-        for the selected variants and chosen Digimon with its CD EDC/ECC recomputed."""
         patch = DW1ProcedurePatch(player=self.player, player_name=self.multiworld.player_name[self.player])
         manifest = json.loads(pkgutil.get_data(__name__, "data/variants.json").decode("utf-8"))
         wanted = {
@@ -543,8 +537,7 @@ class DigimonWorldWorld(World):
             "souls_always_on": not self.options.recruit_souls.value,
         }
         layers = [manifest["base"]]
-        # variants: a layer requires its parent, so keep manifest order (parents first) and drop
-        # anything whose parent was not selected
+        # manifest order is parents first; a layer without its parent is dropped
         selected = set()
         for name, entry in manifest["variants"].items():
             parent = entry.get("on_top_of", "base")
@@ -578,8 +571,6 @@ class DigimonWorldWorld(World):
         patch.write(out_path)
 
     def write_shop_text(self, patch, text) -> None:
-        """Fill each shop check's description slot (64 B ASCII, EXTINIT +0x1E000) with "<player>'s <item>",
-        clipped to the description box, and queue the rebuilt sectors (EDC/ECC fixed) as token writes."""
         raw = bytearray(pkgutil.get_data(__name__, "data/" + text["sector_file"]))
         slot_size = text["slot_size"]
         sector_data = [bytearray(raw[i * 2352 + 24:i * 2352 + 24 + 2048]) for i in range(text["sectors"])]
@@ -599,8 +590,6 @@ class DigimonWorldWorld(World):
 
     @staticmethod
     def shop_description(owner: str, item: str, own: bool, width: int = 27) -> str:
-        """One line for the shop's description box: own items read "Your <item>", others "<owner>'s <item>";
-        only letters, digits, space and basic punctuation survive; the item is clipped before the owner."""
         clean = lambda t: "".join(c if c.isalnum() or c in " .,'!?-+()/:" else " " for c in t)
         owner, item = clean(owner), clean(item)
         prefix = "Your " if own else f"{owner}'s "

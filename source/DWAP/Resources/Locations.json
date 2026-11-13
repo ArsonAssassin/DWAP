@@ -1,11 +1,5 @@
 [
   {
-    "Name": "Agumon",
-    "Id": 69001000,
-    "Address": "0x001be027",
-    "AddressBit": 3
-  },
-  {
     "Name": "Betamon",
     "Id": 69001001,
     "Address": "0x001be027",

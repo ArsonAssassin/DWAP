@@ -1,10 +1,5 @@
 [
   {
-    "Id": 691000,
-    "Name": "Agumon",
-    "Type": 3
-  },
-  {
     "Id": 691001,
     "Name": "Betamon",
     "Type": 3
@@ -903,11 +898,6 @@
     "Name": "Progressive Stat Cap",
     "Id": 693000,
     "Type": 1
-  },
-  {
-    "Id": 691100,
-    "Name": "Agumon Soul",
-    "Type": 6
   },
   {
     "Id": 691101,

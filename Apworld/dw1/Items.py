@@ -43,7 +43,6 @@ key_item_categories = {
 }
 
 _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [    
-    ("Agumon",             1000, DigimonWorldItemCategory.RECRUIT),  
     ("Betamon",            1001, DigimonWorldItemCategory.RECRUIT),  
     ("Greymon",            1002, DigimonWorldItemCategory.RECRUIT),  
     ("Devimon",            1003, DigimonWorldItemCategory.RECRUIT),  
@@ -93,9 +92,7 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Digitamamon",            1047, DigimonWorldItemCategory.RECRUIT),  
     ("Penguinmon",            1048, DigimonWorldItemCategory.RECRUIT),  
     ("Ninjamon",            1049, DigimonWorldItemCategory.RECRUIT),  
-    # Recruit souls (recruit_souls option): the digimon only appears in the world once its
-    # Soul is received; the client sets trigger 1024+id in the save-file tail.
-    ("Agumon Soul",              1100, DigimonWorldItemCategory.SOUL),
+    # souls: one per recruit
     ("Betamon Soul",             1101, DigimonWorldItemCategory.SOUL),
     ("Greymon Soul",             1102, DigimonWorldItemCategory.SOUL),
     ("Devimon Soul",             1103, DigimonWorldItemCategory.SOUL),
@@ -417,9 +414,7 @@ _all_items = [DigimonWorldItemData(row[0], row[1], row[2]) for row in [
     ("Toy Mansion unlocked",                           5035, DigimonWorldItemCategory.FLAG),
 ]]
 
-# Booster packs (data/booster_packs.json, the same file dw_decomp bakes into the game): one progression
-# item per flagged pack, dw_code 3003 + flag; the client sets bit `flag` of the save-tail byte at
-# 0x13334C when it arrives.  booster_pack_cards maps the item name to the card ids it can drop.
+# booster packs from data/booster_packs.json; booster_pack_cards maps item name -> card ids
 BOOSTER_CODE_BASE = 3003
 _booster_cfg = json.loads(pkgutil.get_data(__name__, "data/booster_packs.json").decode("utf-8"))
 booster_pack_cards = {}

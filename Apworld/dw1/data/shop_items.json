@@ -4,25 +4,6 @@
  "name": "AP Item",
  "default_text": "Archipelago item",
  "text_slot_size": 64,
- "icons": [
-  {
-   "name": "ap_item",
-   "copy_item": 124
-  }
- ],
- "icon": "ap_item",
- "exttim_icon_sector_base": 9000,
- "exttim_digimon_sectors": 9000,
- "vram": {
-  "pixels": [
-   656,
-   256
-  ],
-  "cluts": [
-   656,
-   272
-  ]
- },
  "items": [
   {
    "flag": 0,
